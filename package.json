@@ -1,0 +1,23 @@
+{
+  "name": "iconkit",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/fs-extra": "11.0.4",
+    "@types/node": "24.0.1",
+    "prettier": "3.5.3",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "fs-extra": "11.3.0"
+  }
+}

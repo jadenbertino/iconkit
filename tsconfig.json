@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    // Strict mode
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "useUnknownInCatchVariables": true,
+
+    // No unused code
+    "noUnusedLocals": true,
+    "allowUnreachableCode": false,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": false,
+
+    // No implicit code
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+
+    // Other Type Checks
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+    // "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // APIs
+    "target": "ESNext",
+    "module": "NodeNext", // set package.json to "type": "module"
+    "moduleResolution": "NodeNext",
+    "lib": ["dom", "es2017"],
+
+		// Misc
+    "resolveJsonModule": true,
+    "removeComments": false,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "jsx": "preserve",
+    "skipLibCheck": true
+  },
+  "include": ["src", ".eslintrc.cjs"],
+  "exclude": ["node_modules"],
+}
