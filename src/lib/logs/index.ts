@@ -3,7 +3,7 @@ import { ConsoleTransport } from './console.js'
 import { serialize } from './utils.js'
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: 'debug',
   transports: [ConsoleTransport],
 })
 

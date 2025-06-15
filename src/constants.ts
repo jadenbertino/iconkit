@@ -1,27 +1,35 @@
 import path from 'path'
 import type { Options as PrettierOptions } from 'prettier'
 import { fileURLToPath } from 'url'
+import { z } from 'zod'
+import { logger } from './lib/logs/index.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-type IconProviderId = 'hero_icons'
+const IconProviderIdSchema = z.enum(['hero_icons'])
 
-type Icon = {
-  id: string
-  name: string
-  style: 'solid' | 'outline'
-  pixels: number
-  svg_content: string
-  provider: IconProviderId
-}
+const IconSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  style: z.enum(['solid', 'outline']),
+  pixels: z.number(),
+  svg_content: z.string(),
+  provider: IconProviderIdSchema,
+})
 
-type IconProvider = {
-  id: IconProviderId
-  name: string
-  git_url: string
-  sub_dir?: string
-}
+type Icon = z.infer<typeof IconSchema>
+
+const IconProviderSchema = z.object({
+  id: IconProviderIdSchema,
+  name: z.string(),
+  git_url: z.string(),
+  sub_dir: z.string().optional(),
+})
+
+type IconProvider = z.infer<typeof IconProviderSchema>
+
+type IconProviderId = z.infer<typeof IconProviderIdSchema>
 
 const ICON_PROVIDERS: Record<IconProviderId, Omit<IconProvider, 'id'>> = {
   hero_icons: {
@@ -33,14 +41,12 @@ const ICON_PROVIDERS: Record<IconProviderId, Omit<IconProvider, 'id'>> = {
 
 for (const [iconProviderId, { git_url }] of Object.entries(ICON_PROVIDERS)) {
   if (!git_url.endsWith('.git') || !git_url.startsWith('https://')) {
-    console.error(
-      `${iconProviderId} git_url is not a valid git url: ${git_url}`,
-    )
+    logger.error(`${iconProviderId} git_url is not a valid git url: ${git_url}`)
     process.exit(1)
   }
 }
 
-const OUTPUT_FILE = path.join(__dirname, '../icon-list.json')
+const ICONS_JSON_FILEPATH = path.join(__dirname, '../icon-list.json')
 
 const prettierSvgConfig: PrettierOptions = {
   parser: 'html',
@@ -50,5 +56,11 @@ const prettierSvgConfig: PrettierOptions = {
   useTabs: false,
 }
 
-export { ICON_PROVIDERS, OUTPUT_FILE, prettierSvgConfig }
+export {
+  ICON_PROVIDERS,
+  IconProviderSchema,
+  ICONS_JSON_FILEPATH,
+  IconSchema,
+  prettierSvgConfig,
+}
 export type { Icon }

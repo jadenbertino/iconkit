@@ -9,10 +9,14 @@ function serialize(value: unknown): string {
     you can set { unsafe: true } if you wanna disable it.
   */
 
-  if (value instanceof Error) {
-    return serializeJavascript(serializeError(value))
+  const serializeOptions: serializeJavascript.SerializeJSOptions = {
+    unsafe: true,
   }
-  return serializeJavascript(value)
+
+  if (value instanceof Error) {
+    return serializeJavascript(serializeError(value), serializeOptions)
+  }
+  return serializeJavascript(value, serializeOptions)
 }
 
 export { serialize }

@@ -1,10 +1,11 @@
+import { logger } from '@/lib/logs/index.js'
 import * as fs from 'fs'
 import * as path from 'path'
 import prettier from 'prettier'
 import {
   Icon,
   ICON_PROVIDERS,
-  OUTPUT_FILE,
+  ICONS_JSON_FILEPATH,
   prettierSvgConfig,
 } from '../constants.js'
 
@@ -35,13 +36,19 @@ import {
 async function getHeroIcons(): Promise<Icon[]> {
   const sizes = ['16', '20', '24']
   const styles = ['solid', 'outline']
+  const iconsDir = ICON_PROVIDERS.hero_icons.sub_dir
+  if (!iconsDir) throw new Error('iconsDir is not defined')
+  logger.debug(`iconsDir: ${iconsDir}`)
 
   return await Promise.all(
     sizes.flatMap((size) => {
-      const sizeDir = path.join(ICON_PROVIDERS.hero_icons.sub_dir ?? '.', size)
+      const sizeDir = path.join(iconsDir, size)
       return styles.flatMap((style) => {
         const styleDir = path.join(sizeDir, style)
-        if (!fs.existsSync(styleDir)) return []
+        if (!fs.existsSync(styleDir)) {
+          logger.warn(`styleDir does not exist: ${styleDir}`)
+          return []
+        }
 
         return fs
           .readdirSync(styleDir)
@@ -74,10 +81,10 @@ async function getHeroIcons(): Promise<Icon[]> {
 async function createIconsList() {
   try {
     const icons = await getHeroIcons()
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(icons, null, 2))
-    console.log(`Successfully generated icon list with ${icons.length} icons`)
+    fs.writeFileSync(ICONS_JSON_FILEPATH, JSON.stringify(icons, null, 2))
+    logger.info(`Successfully generated icon list with ${icons.length} icons`)
   } catch (error) {
-    console.error('Error generating icon list:', error)
+    logger.error('Error generating icon list:', error)
     process.exit(1)
   }
 }
