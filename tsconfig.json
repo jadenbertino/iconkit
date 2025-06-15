@@ -32,9 +32,8 @@
     "target": "ESNext",
     "module": "NodeNext", // set package.json to "type": "module"
     "moduleResolution": "NodeNext",
-    "lib": ["dom", "es2017"],
 
-		// Misc
+    // Misc
     "resolveJsonModule": true,
     "removeComments": false,
     "esModuleInterop": true,
@@ -42,8 +41,14 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "preserve",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    // Paths
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", ".eslintrc.cjs"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }
