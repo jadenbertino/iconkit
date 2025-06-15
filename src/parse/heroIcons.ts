@@ -1,18 +1,13 @@
-import { fse, fsp, pathExists } from '@/lib/fs.js'
+import { cloneRepo, fsp, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
-import { exec } from 'child_process'
 import * as path from 'path'
 import prettier from 'prettier'
-import tmp from 'tmp'
-import { promisify } from 'util'
 import {
   Icon,
   ICON_PROVIDERS,
   ICONS_JSON_FILEPATH,
   prettierSvgConfig,
 } from '../constants.js'
-const execAsync = promisify(exec)
-tmp.setGracefulCleanup()
 
 /**
  * Retrieves and processes Hero Icons from the file system.
@@ -42,10 +37,7 @@ async function getHeroIcons(): Promise<Icon[]> {
   const { gitUrl, subDir } = ICON_PROVIDERS.hero_icons
 
   // Clone icons repo to tmp dir
-  const tmpDir = tmp.dirSync({ unsafeCleanup: true })
-  const repoDir = path.join(tmpDir.name, 'heroicons')
-  await execAsync(`git clone ${gitUrl} ${repoDir}`)
-  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`)
+  const repoDir = await cloneRepo(gitUrl, 'heroicons')
   const iconsDir = path.join(repoDir, subDir)
   if (!(await pathExists(iconsDir))) {
     throw new Error(`Icons directory does not exist: ${iconsDir}`)

@@ -1,5 +1,5 @@
 import { ICONS_JSON_FILEPATH, IconSchema } from '@/constants.js'
-import { readJsonFile } from '@/lib/index.js'
+import { readJsonFile } from '@/lib/fs.js'
 import { z } from 'zod'
 import { createIconsList } from './heroIcons.js'
 

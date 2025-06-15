@@ -2,7 +2,6 @@ import path from 'path'
 import type { Options as PrettierOptions } from 'prettier'
 import { fileURLToPath } from 'url'
 import { z } from 'zod'
-import { logger } from './lib/logs/index.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -38,13 +37,6 @@ const ICON_PROVIDERS = {
     gitUrl: 'https://github.com/tailwindlabs/heroicons.git',
   },
 } as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
-
-for (const [iconProviderId, { gitUrl }] of Object.entries(ICON_PROVIDERS)) {
-  if (!gitUrl.endsWith('.git') || !gitUrl.startsWith('https://')) {
-    logger.error(`${iconProviderId} git_url is not a valid git url: ${gitUrl}`)
-    process.exit(1)
-  }
-}
 
 const ICONS_JSON_FILEPATH = path.join(__dirname, '../icon-list.json')
 
