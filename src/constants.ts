@@ -23,25 +23,25 @@ type Icon = z.infer<typeof IconSchema>
 const IconProviderSchema = z.object({
   id: IconProviderIdSchema,
   name: z.string(),
-  git_url: z.string(),
-  sub_dir: z.string().optional(),
+  gitUrl: z.string(),
+  subDir: z.string().optional(),
 })
 
 type IconProvider = z.infer<typeof IconProviderSchema>
 
 type IconProviderId = z.infer<typeof IconProviderIdSchema>
 
-const ICON_PROVIDERS: Record<IconProviderId, Omit<IconProvider, 'id'>> = {
+const ICON_PROVIDERS = {
   hero_icons: {
     name: 'Hero Icons',
-    sub_dir: path.join(__dirname, '../../heroicons/optimized'),
-    git_url: 'https://github.com/tailwindlabs/heroicons.git',
+    subDir: 'optimized',
+    gitUrl: 'https://github.com/tailwindlabs/heroicons.git',
   },
-}
+} as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
 
-for (const [iconProviderId, { git_url }] of Object.entries(ICON_PROVIDERS)) {
-  if (!git_url.endsWith('.git') || !git_url.startsWith('https://')) {
-    logger.error(`${iconProviderId} git_url is not a valid git url: ${git_url}`)
+for (const [iconProviderId, { gitUrl }] of Object.entries(ICON_PROVIDERS)) {
+  if (!gitUrl.endsWith('.git') || !gitUrl.startsWith('https://')) {
+    logger.error(`${iconProviderId} git_url is not a valid git url: ${gitUrl}`)
     process.exit(1)
   }
 }

@@ -1,13 +1,18 @@
+import { fse, fsp, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
-import * as fs from 'fs'
+import { exec } from 'child_process'
 import * as path from 'path'
 import prettier from 'prettier'
+import tmp from 'tmp'
+import { promisify } from 'util'
 import {
   Icon,
   ICON_PROVIDERS,
   ICONS_JSON_FILEPATH,
   prettierSvgConfig,
 } from '../constants.js'
+const execAsync = promisify(exec)
+tmp.setGracefulCleanup()
 
 /**
  * Retrieves and processes Hero Icons from the file system.
@@ -34,54 +39,67 @@ import {
  *
  */
 async function getHeroIcons(): Promise<Icon[]> {
+  const { gitUrl, subDir } = ICON_PROVIDERS.hero_icons
+
+  // Clone icons repo to tmp dir
+  const tmpDir = tmp.dirSync({ unsafeCleanup: true })
+  const repoDir = path.join(tmpDir.name, 'heroicons')
+  await execAsync(`git clone ${gitUrl} ${repoDir}`)
+  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`)
+  const iconsDir = path.join(repoDir, subDir)
+  if (!(await pathExists(iconsDir))) {
+    throw new Error(`Icons directory does not exist: ${iconsDir}`)
+  }
+
+  // Get all icons
   const sizes = ['16', '20', '24']
   const styles = ['solid', 'outline']
-  const iconsDir = ICON_PROVIDERS.hero_icons.sub_dir
-  if (!iconsDir) throw new Error('iconsDir is not defined')
-  logger.debug(`iconsDir: ${iconsDir}`)
+  const iconPromises = sizes.flatMap((size) => {
+    const sizeDir = path.join(iconsDir, size)
+    return styles.flatMap(async (style) => {
+      const styleDir = path.join(sizeDir, style)
 
-  return await Promise.all(
-    sizes.flatMap((size) => {
-      const sizeDir = path.join(iconsDir, size)
-      return styles.flatMap((style) => {
-        const styleDir = path.join(sizeDir, style)
-        if (!fs.existsSync(styleDir)) {
-          logger.warn(`styleDir does not exist: ${styleDir}`)
-          return []
-        }
+      // Verify dir exists
+      if (!(await pathExists(styleDir))) {
+        logger.warn(`Style directory does not exist: ${styleDir}`)
+        return []
+      }
 
-        return fs
-          .readdirSync(styleDir)
-          .filter((file) => file.endsWith('.svg'))
-          .map(async (file) => {
-            const name = path.basename(file, '.svg')
-            const svgPath = path.join(styleDir, file)
-            const svgContent = fs.readFileSync(svgPath, 'utf-8')
-            const formattedSvg = await prettier.format(
-              svgContent,
-              prettierSvgConfig,
-            )
+      // Get svg files
+      const files = await fsp.readdir(styleDir)
+      const svgFiles = files.filter((file) => file.endsWith('.svg'))
 
-            const icon: Icon = {
-              id: crypto.randomUUID(),
-              name,
-              style: style as 'solid' | 'outline',
-              pixels: parseInt(size),
-              svg_content: formattedSvg,
-              provider: 'hero_icons',
-            }
+      // Parse svg files
+      return Promise.all(
+        svgFiles.map(async (file): Promise<Icon> => {
+          const name = path.basename(file, '.svg')
+          const svgPath = path.join(styleDir, file)
+          const svgContent = await fsp.readFile(svgPath, 'utf-8')
+          const formattedSvg = await prettier.format(
+            svgContent,
+            prettierSvgConfig,
+          )
+          return {
+            id: crypto.randomUUID(),
+            name,
+            style: style as 'solid' | 'outline',
+            pixels: parseInt(size),
+            svg_content: formattedSvg,
+            provider: 'hero_icons',
+          }
+        }),
+      )
+    })
+  })
 
-            return icon
-          })
-      })
-    }),
-  )
+  const nestedResults = await Promise.all(iconPromises)
+  return nestedResults.flat().flat()
 }
 
 async function createIconsList() {
   try {
     const icons = await getHeroIcons()
-    fs.writeFileSync(ICONS_JSON_FILEPATH, JSON.stringify(icons, null, 2))
+    await fsp.writeFile(ICONS_JSON_FILEPATH, JSON.stringify(icons, null, 2))
     logger.info(`Successfully generated icon list with ${icons.length} icons`)
   } catch (error) {
     logger.error('Error generating icon list:', error)
