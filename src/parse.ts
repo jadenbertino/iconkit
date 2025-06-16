@@ -1,5 +1,6 @@
 import {
   Icon,
+  ICON_PROVIDER_IDS,
   ICON_PROVIDERS,
   IconProviderId,
   prettierSvgConfig,
@@ -11,14 +12,9 @@ import prettier from 'prettier'
 
 async function getAllIcons(filepath: string): Promise<void> {
   try {
-    // TODO: fix - this seems to be running sequentially, not in parallel
-    const iconProviders = await Promise.all([
-      getIconsFromProvider('hero_icons'), // 1288
-      getIconsFromProvider('lucide'), // 1601
-      getIconsFromProvider('simple_icons'), // 3308
-      // TODO: FontAwesome Free
-      // TODO: Feather
-    ])
+    const iconProviders = await Promise.all(
+      ICON_PROVIDER_IDS.map(getIconsFromProvider),
+    )
     const icons = iconProviders.flat()
 
     await fsp.writeFile(filepath, JSON.stringify(icons, null, 2))
