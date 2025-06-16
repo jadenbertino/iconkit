@@ -2,13 +2,14 @@ import { fsp } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
 import { getHeroIcons } from './heroIcons.js'
 import { getLucideIcons } from './lucide.js'
+import { getSimpleIcons } from './simpleIcons.js'
 
 async function createIconsList(filepath: string) {
   try {
     const iconProviders = await Promise.all([
       getHeroIcons(),
       getLucideIcons(),
-      // TODO: Simple Icons
+      getSimpleIcons(),
       // TODO: FontAwesome Free
       // TODO: Feather
     ])

@@ -6,7 +6,7 @@ import { z } from 'zod'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const ICON_PROVIDER_IDS = ['hero_icons', 'lucide'] as const
+const ICON_PROVIDER_IDS = ['hero_icons', 'lucide', 'simple_icons'] as const
 const IconProviderIdSchema = z.enum(ICON_PROVIDER_IDS)
 type IconProviderId = z.infer<typeof IconProviderIdSchema>
 
@@ -38,6 +38,11 @@ const ICON_PROVIDERS = {
     name: 'Lucide',
     subDir: 'icons',
     gitUrl: 'https://github.com/lucide-icons/lucide.git',
+  },
+  simple_icons: {
+    name: 'Simple Icons',
+    subDir: 'icons',
+    gitUrl: 'https://github.com/simple-icons/simple-icons.git',
   },
 } as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
 
