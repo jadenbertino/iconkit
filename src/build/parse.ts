@@ -10,22 +10,11 @@ import { logger } from '@/lib/logs/index.js'
 import path from 'path'
 import prettier from 'prettier'
 
-async function getAllIcons(filepath: string): Promise<void> {
-  try {
-    const iconProviders = await Promise.all(
-      ICON_PROVIDER_IDS.map(getIconsFromProvider),
-    )
-    const icons = iconProviders.flat()
-
-    await fsp.writeFile(filepath, JSON.stringify(icons, null, 2))
-    logger.info(`Successfully generated icon list with ${icons.length} icons`)
-  } catch (error) {
-    logger.error('Error generating icon list:', error)
-    process.exit(1)
-  }
+async function getAllIcons(): Promise<void> {
+  await Promise.all(ICON_PROVIDER_IDS.map(getIconsFromProvider))
 }
 
-async function getIconsFromProvider(provider: IconProviderId): Promise<Icon[]> {
+async function getIconsFromProvider(provider: IconProviderId) {
   // Clone repo to tmp dir
   const start = Date.now()
   const { gitUrl, subDir } = ICON_PROVIDERS[provider]
@@ -58,14 +47,20 @@ async function getIconsFromProvider(provider: IconProviderId): Promise<Icon[]> {
     }),
   )
 
-  // Log and return
+  // Log and write to file
   const stop = Date.now()
   const seconds = (stop - start) / 1000
   logger.info(`${provider} Icons parsed`, {
     count: icons.length,
     seconds,
   })
-  return icons
+  const outputDir = path.join(process.cwd(), 'icons')
+  await fsp.mkdir(outputDir, { recursive: true })
+  const outputPath = path.join(outputDir, `${provider}.json`)
+  await fsp.writeFile(outputPath, JSON.stringify(icons, null, 2))
+  logger.info(
+    `Successfully generated icon list for ${provider} with ${icons.length} icons`,
+  )
 }
 
 export { getAllIcons }
