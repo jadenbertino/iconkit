@@ -50,6 +50,7 @@ async function getIconsFromProvider(
         name,
         innerSvgContent: innerContent,
         provider,
+        blobPath: null,
       }
     }),
   )

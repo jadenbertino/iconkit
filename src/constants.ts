@@ -21,8 +21,9 @@ type IconProviderId = z.infer<typeof IconProviderIdSchema>
 const IconSchema = z.object({
   id: z.string(),
   name: z.string(),
-  svg_content: z.string(),
+  innerSvgContent: z.string(),
   provider: IconProviderIdSchema,
+  blobPath: z.string().nullable(),
 })
 type Icon = z.infer<typeof IconSchema>
 
