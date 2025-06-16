@@ -12,7 +12,7 @@ const ICON_PROVIDER_IDS = [
   'boxicons',
   'ionicons',
   'eva_icons',
-  'typicons', // - causing issues
+  // 'typicons', // - causing issues
   'tabler_icons',
 ] as const
 const IconProviderIdSchema = z.enum(ICON_PROVIDER_IDS)
@@ -85,11 +85,11 @@ const ICON_PROVIDERS = {
     subDir: 'package/icons',
     gitUrl: 'https://github.com/akveo/eva-icons.git',
   },
-  typicons: {
-    name: 'Typicons',
-    subDir: 'src/svg',
-    gitUrl: 'https://github.com/stephenhutchings/typicons.git',
-  },
+  // typicons: {
+  //   name: 'Typicons',
+  //   subDir: 'src/svg',
+  //   gitUrl: 'https://github.com/stephenhutchings/typicons.git',
+  // },
   tabler_icons: {
     name: 'Tabler Icons',
     subDir: 'icons',
