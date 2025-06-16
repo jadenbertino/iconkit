@@ -1,5 +1,4 @@
 import { ICONS_JSON_FILEPATH } from './constants.js'
-import { createIconsList } from './parse/index.js'
+import { getAllIcons } from './parse.js'
 
-await createIconsList(ICONS_JSON_FILEPATH)
-
+await getAllIcons(ICONS_JSON_FILEPATH)

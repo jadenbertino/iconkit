@@ -1,13 +1,7 @@
-import {
-  ICON_PROVIDERS,
-  IconProviderId,
-  prettierSvgConfig,
-} from '@/constants.js'
 import { exec } from 'child_process'
 import { default as fs, promises as fsp } from 'fs'
 import * as fse from 'fs-extra'
 import * as path from 'path'
-import prettier from 'prettier'
 import tmp from 'tmp'
 import { promisify } from 'util'
 import { z } from 'zod'
@@ -79,35 +73,4 @@ async function readJsonFile<T>(
   return validation.data
 }
 
-/**
- * Creates a temporary directory for an icon provider
- * and returns the path to the icons directory
- */
-async function getIconDir(provider: IconProviderId): Promise<string> {
-  const { gitUrl, subDir } = ICON_PROVIDERS[provider]
-  const repoDir = await cloneRepo(gitUrl, provider)
-  const iconsDir = path.join(repoDir, subDir)
-  if (!(await pathExists(iconsDir))) {
-    throw new Error(
-      `Icons directory for ${provider} does not exist: ${iconsDir}`,
-    )
-  }
-  return iconsDir
-}
-
-async function formatSvg(svgContent: string): Promise<string> {
-  return await prettier.format(svgContent, prettierSvgConfig)
-}
-
-export {
-  cloneRepo,
-  execAsync,
-  formatSvg,
-  fs,
-  fse,
-  fsp,
-  getIconDir,
-  pathExists,
-  readJsonFile,
-  tmp,
-}
+export { cloneRepo, execAsync, fs, fse, fsp, pathExists, readJsonFile, tmp }

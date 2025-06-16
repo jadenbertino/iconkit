@@ -6,15 +6,18 @@ import { z } from 'zod'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const ICON_PROVIDER_IDS = ['hero_icons', 'lucide', 'simple_icons'] as const
+const ICON_PROVIDER_IDS = [
+  'hero_icons',
+  'lucide',
+  'simple_icons',
+  'feather_icons',
+] as const
 const IconProviderIdSchema = z.enum(ICON_PROVIDER_IDS)
 type IconProviderId = z.infer<typeof IconProviderIdSchema>
 
 const IconSchema = z.object({
   id: z.string(),
   name: z.string(),
-  style: z.enum(['solid', 'outline']).nullable(),
-  pixels: z.number().nullable(),
   svg_content: z.string(),
   provider: IconProviderIdSchema,
 })
@@ -43,6 +46,11 @@ const ICON_PROVIDERS = {
     name: 'Simple Icons',
     subDir: 'icons',
     gitUrl: 'https://github.com/simple-icons/simple-icons.git',
+  },
+  feather_icons: {
+    name: 'Feather Icons',
+    subDir: 'icons',
+    gitUrl: 'https://github.com/feathericons/feather.git',
   },
 } as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
 
