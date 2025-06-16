@@ -27,6 +27,7 @@ async function getAllIcons(filepath: string): Promise<void> {
 
 async function getIconsFromProvider(provider: IconProviderId): Promise<Icon[]> {
   // Clone repo to tmp dir
+  const start = Date.now()
   const { gitUrl, subDir } = ICON_PROVIDERS[provider]
   const repoDir = await cloneRepo(gitUrl, provider)
   const iconsDir = path.join(repoDir, subDir)
@@ -58,7 +59,12 @@ async function getIconsFromProvider(provider: IconProviderId): Promise<Icon[]> {
   )
 
   // Log and return
-  logger.info(`${provider} Icons parsed`, { count: icons.length })
+  const stop = Date.now()
+  const seconds = (stop - start) / 1000
+  logger.info(`${provider} Icons parsed`, {
+    count: icons.length,
+    seconds,
+  })
   return icons
 }
 
