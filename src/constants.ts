@@ -6,17 +6,18 @@ import { z } from 'zod'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const IconProviderIdSchema = z.enum(['hero_icons'])
+const ICON_PROVIDER_IDS = ['hero_icons', 'lucide'] as const
+const IconProviderIdSchema = z.enum(ICON_PROVIDER_IDS)
+type IconProviderId = z.infer<typeof IconProviderIdSchema>
 
 const IconSchema = z.object({
   id: z.string(),
   name: z.string(),
-  style: z.enum(['solid', 'outline']),
-  pixels: z.number(),
+  style: z.enum(['solid', 'outline']).nullable(),
+  pixels: z.number().nullable(),
   svg_content: z.string(),
   provider: IconProviderIdSchema,
 })
-
 type Icon = z.infer<typeof IconSchema>
 
 const IconProviderSchema = z.object({
@@ -25,16 +26,18 @@ const IconProviderSchema = z.object({
   gitUrl: z.string(),
   subDir: z.string().optional(),
 })
-
 type IconProvider = z.infer<typeof IconProviderSchema>
-
-type IconProviderId = z.infer<typeof IconProviderIdSchema>
 
 const ICON_PROVIDERS = {
   hero_icons: {
     name: 'Hero Icons',
     subDir: 'optimized',
     gitUrl: 'https://github.com/tailwindlabs/heroicons.git',
+  },
+  lucide: {
+    name: 'Lucide',
+    subDir: 'icons',
+    gitUrl: 'https://github.com/lucide-icons/lucide.git',
   },
 } as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
 
@@ -55,4 +58,4 @@ export {
   IconSchema,
   prettierSvgConfig,
 }
-export type { Icon }
+export type { Icon, IconProviderId }

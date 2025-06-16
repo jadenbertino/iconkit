@@ -1,15 +1,20 @@
-import { ICONS_JSON_FILEPATH, IconSchema } from '@/constants.js'
-import { fsp, readJsonFile } from '@/lib/fs.js'
+import { fsp } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
-import { z } from 'zod'
 import { getHeroIcons } from './heroIcons.js'
+import { getLucideIcons } from './lucide.js'
 
-async function createIconsList() {
+async function createIconsList(filepath: string) {
   try {
-    const iconProviders = await Promise.all([getHeroIcons()])
-    const icons = iconProviders.flatMap((icons) => icons)
+    const iconProviders = await Promise.all([
+      getHeroIcons(),
+      getLucideIcons(),
+      // TODO: Simple Icons
+      // TODO: FontAwesome Free
+      // TODO: Feather
+    ])
+    const icons = iconProviders.flat()
 
-    await fsp.writeFile(ICONS_JSON_FILEPATH, JSON.stringify(icons, null, 2))
+    await fsp.writeFile(filepath, JSON.stringify(icons, null, 2))
     logger.info(`Successfully generated icon list with ${icons.length} icons`)
   } catch (error) {
     logger.error('Error generating icon list:', error)
@@ -17,5 +22,4 @@ async function createIconsList() {
   }
 }
 
-const result = await readJsonFile(ICONS_JSON_FILEPATH, z.array(IconSchema))
-console.log(result.slice(0, 5))
+export { createIconsList }

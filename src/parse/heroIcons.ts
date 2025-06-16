@@ -1,8 +1,7 @@
-import { cloneRepo, fsp, pathExists } from '@/lib/fs.js'
+import { formatSvg, fsp, getIconDir, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
 import path from 'path'
-import prettier from 'prettier'
-import { Icon, ICON_PROVIDERS, prettierSvgConfig } from '../constants.js'
+import { Icon } from '../constants.js'
 
 /**
  * Retrieves and processes Hero Icons from the file system.
@@ -29,16 +28,8 @@ import { Icon, ICON_PROVIDERS, prettierSvgConfig } from '../constants.js'
  *
  */
 async function getHeroIcons(): Promise<Icon[]> {
-  const { gitUrl, subDir } = ICON_PROVIDERS.hero_icons
-
-  // Clone icons repo to tmp dir
-  const repoDir = await cloneRepo(gitUrl, 'heroicons')
-  const iconsDir = path.join(repoDir, subDir)
-  if (!(await pathExists(iconsDir))) {
-    throw new Error(`Icons directory does not exist: ${iconsDir}`)
-  }
-
   // Get all icons
+  const iconsDir = await getIconDir('hero_icons')
   const sizes = ['16', '20', '24']
   const styles = ['solid', 'outline']
   const iconPromises = sizes.flatMap((size) => {
@@ -62,10 +53,7 @@ async function getHeroIcons(): Promise<Icon[]> {
           const name = path.basename(file, '.svg')
           const svgPath = path.join(styleDir, file)
           const svgContent = await fsp.readFile(svgPath, 'utf-8')
-          const formattedSvg = await prettier.format(
-            svgContent,
-            prettierSvgConfig,
-          )
+          const formattedSvg = await formatSvg(svgContent)
           return {
             id: crypto.randomUUID(),
             name,
@@ -80,7 +68,9 @@ async function getHeroIcons(): Promise<Icon[]> {
   })
 
   const nestedResults = await Promise.all(iconPromises)
-  return nestedResults.flat().flat()
+  const icons = nestedResults.flat().flat()
+  logger.info('Hero Icons parsed', { count: icons.length })
+  return icons
 }
 
 export { getHeroIcons }
