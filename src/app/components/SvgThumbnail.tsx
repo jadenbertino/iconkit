@@ -17,6 +17,7 @@ const SvgThumnail = ({ icon }: { icon: Icon }) => {
             {...htmlAttributesToReact(domNode.attribs)}
             fill={domNode.attribs['fill'] ?? 'currentColor'}
             stroke={domNode.attribs['stroke'] ?? 'currentColor'}
+            className='w-full h-full'
           >
             {domToReact(domNode.children as any)}
           </domNode.name>

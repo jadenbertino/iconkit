@@ -12,24 +12,21 @@ import remixIcon from '../../../../icons/remix_icon.json'
 import simpleIcons from '../../../../icons/simple_icons.json'
 import tablerIcons from '../../../../icons/tabler_icons.json'
 
-const allIcons = [
-  // doesn't work
+const brokenIcons = [
   // evaIcons,
-
-  // works
   // boxIcons,
-
-  featherIcons,
-  // fontAwesomeFree,
   // heroIcons,
-  // ionicons,
-  // lucide,
   // octicons,
   // remixIcon,
   // simpleIcons,
-  // tablerIcons,
 ].flat()
 
-const validatedIcons = z.array(IconSchema).parse(allIcons)
+const workingIcons = [
+  fontAwesomeFree,
+  featherIcons,
+  ionicons,
+  lucide,
+  tablerIcons,
+].flat()
 
-export { validatedIcons as allIcons }
+export { workingIcons as allIcons }
