@@ -10,45 +10,56 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
-
     // No unused code
     "noUnusedLocals": true,
     "allowUnreachableCode": false,
     "noUnusedParameters": true,
     "allowUnusedLabels": false,
-
     // No implicit code
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-
     // Other Type Checks
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noFallthroughCasesInSwitch": true,
     // "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
-
-    // APIs
-    "target": "ESNext",
-    "module": "NodeNext", // set package.json to "type": "module"
-    "moduleResolution": "NodeNext",
-
+    // Next.js specific settings
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     // Misc
     "resolveJsonModule": true,
     "removeComments": false,
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "jsx": "preserve",
     "skipLibCheck": true,
-
     // Paths
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "noEmit": true
   },
-  "include": ["src", ".eslintrc.cjs"],
+  "include": [
+    "src",
+    ".eslintrc.cjs",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
