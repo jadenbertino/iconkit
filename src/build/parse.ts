@@ -3,7 +3,7 @@ import {
   ICON_PROVIDER_IDS,
   ICON_PROVIDERS,
   IconProviderId,
-} from '@/constants.js'
+} from '@/constants/index.js'
 import { execAsync, fsp, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
 import path from 'path'
@@ -43,18 +43,14 @@ async function getIconsFromProvider(
       const name = path.basename(filePath, '.svg')
       const svgContent = await fsp.readFile(filePath, 'utf-8')
       // Remove the SVG wrapper tags and get the inner content
-      const innerContent = svgContent
-        .replace(/<\/?svg[^>]*>/g, '') // remove svg wrapper tags
+      const cleanedSvgContent = svgContent
         .replace(/"/g, "'") // replace " with '
         .trim()
-      if (!innerContent) {
-        throw new Error(`Failed to parse svg content from file: ${filePath}`)
-      }
 
       return {
         id: crypto.randomUUID(),
         name,
-        innerSvgContent: innerContent,
+        svgContent: cleanedSvgContent,
         provider,
         blobPath: path.relative(repoDir, filePath),
       }

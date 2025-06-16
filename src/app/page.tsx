@@ -4,6 +4,7 @@ import { Icon } from '@/constants'
 import { toGithubUrl } from '@/lib'
 import { ReactNode, useEffect, useState } from 'react'
 import { getIcons } from './api/icons/client'
+import { SvgThumnail } from './components/SvgThumbnail'
 
 export default function Home() {
   const [icons, setIcons] = useState<Icon[]>([])
@@ -16,35 +17,17 @@ export default function Home() {
     <Container>
       <div className='flex flex-wrap gap-2'>
         {icons.map((icon) => (
-          <SvgIcon
-            key={icon.name}
-            icon={icon}
-          />
+          <a
+            href={toGithubUrl(icon)}
+            target='_blank'
+            rel='noopener noreferrer'
+            key={icon.id}
+          >
+            <SvgThumnail icon={icon} />
+          </a>
         ))}
       </div>
     </Container>
-  )
-}
-
-const SvgIcon = ({ icon }: { icon: Icon }) => {
-  const innerSvg = icon.innerSvgContent
-
-  return (
-    <a
-      className='w-20 h-20 p-2 bg-white rounded-lg shadow-md'
-      href={toGithubUrl(icon)}
-      target='_blank'
-      rel='noopener noreferrer'
-    >
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        viewBox='0 0 24 24'
-        preserveAspectRatio='xMidYMid meet'
-        fill='currentColor'
-        className='text-black hover:text-blue-500 transition-colors duration-300 cursor-pointer w-full h-full'
-        dangerouslySetInnerHTML={{ __html: innerSvg }}
-      />
-    </a>
   )
 }
 

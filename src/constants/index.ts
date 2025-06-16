@@ -21,7 +21,7 @@ type IconProviderId = z.infer<typeof IconProviderIdSchema>
 const IconSchema = z.object({
   id: z.string(),
   name: z.string(),
-  innerSvgContent: z.string(),
+  svgContent: z.string(),
   provider: IconProviderIdSchema,
   blobPath: z.string(),
 })
@@ -141,6 +141,7 @@ const prettierSvgConfig: PrettierOptions = {
   useTabs: false,
 }
 
+export * from './classes'
 export {
   ICON_PROVIDER_IDS,
   ICON_PROVIDERS,
