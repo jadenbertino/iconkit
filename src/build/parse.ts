@@ -5,7 +5,7 @@ import {
   IconProviderId,
   prettierSvgConfig,
 } from '@/constants.js'
-import { cloneRepo, fs, fsp, pathExists } from '@/lib/fs.js'
+import { execAsync, fsp, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
 import path from 'path'
 import prettier from 'prettier'
@@ -26,19 +26,12 @@ async function getIconsFromProvider(
 ) {
   // Clone repo to tmp dir
   const start = Date.now()
-  const { gitUrl, subDir } = ICON_PROVIDERS[provider]
-  const repoDir = await cloneRepo(gitUrl, provider)
-  const iconsDir = path.join(repoDir, subDir)
-  if (!(await pathExists(iconsDir))) {
-    throw new Error(
-      `Icons directory for ${provider} does not exist: ${iconsDir}`,
-    )
-  }
+  const iconsDir = await getIconDir(provider)
 
   // Get all files recursively
-  const svgFiles = (fs.readdirSync(iconsDir, { recursive: true }) as string[])
-    .filter((file) => file.endsWith('.svg'))
-    .map((file) => path.join(iconsDir, file))
+  const filenames = await fsp.readdir(iconsDir, { recursive: true })
+  const files = filenames.map((f) => path.join(iconsDir, f))
+  const svgFiles = files.filter((file) => file.endsWith('.svg'))
 
   // Parse svg files
   const icons: Icon[] = await Promise.all(
@@ -66,6 +59,67 @@ async function getIconsFromProvider(
   await fsp.writeFile(outputFile, JSON.stringify(icons, null, 2))
   logger.info(
     `Successfully generated icon list for ${provider} with ${icons.length} icons`,
+  )
+}
+
+async function getIconDir(provider: IconProviderId) {
+  const { gitUrl, subDir } = ICON_PROVIDERS[provider]
+  const repoDir = await cloneRepo(gitUrl, provider)
+  const iconsDir = path.join(repoDir, subDir)
+  if (!(await pathExists(iconsDir))) {
+    throw new Error(
+      `Icons directory for ${provider} does not exist: ${iconsDir}`,
+    )
+  }
+  return iconsDir
+}
+
+/**
+ * Clones a git repository to a temporary directory
+ * @param gitUrl - The git repository URL to clone
+ * @param repoName - Optional name for the repository directory (defaults to 'repo')
+ * @returns The path to the cloned repository directory
+ */
+async function cloneRepo(gitUrl: string, repoName: string): Promise<string> {
+  if (!isValidGitUrl(gitUrl)) {
+    throw new Error(`Invalid git URL: ${gitUrl}`)
+  }
+  const repoDir = path.join('/tmp/iconProviders', repoName)
+
+  // Cache hit
+  if (await pathExists(repoDir)) {
+    try {
+      const { stdout: currentRemote } = await execAsync(
+        `cd ${repoDir} && git remote get-url origin`,
+      )
+      if (currentRemote.trim() === gitUrl) {
+        logger.info(`Using existing repo at ${repoDir}`)
+        await execAsync(`cd ${repoDir} && git pull`)
+        logger.info(`Updated repo at ${repoDir}`)
+        return repoDir
+      } else {
+        throw new Error('Invalid git repository remote')
+      }
+    } catch (error) {
+      // If git command fails, directory might be corrupted
+      logger.warn(`Invalid git repository at ${repoDir}, removing...`)
+      await execAsync(`rm -rf ${repoDir}`)
+    }
+  }
+
+  // Cache miss / invalid remote
+  await fsp.mkdir(path.dirname(repoDir), { recursive: true })
+  await execAsync(`git clone ${gitUrl} ${repoDir}`)
+  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`)
+  return repoDir
+}
+
+function isValidGitUrl(gitUrl: string): boolean {
+  return (
+    gitUrl.endsWith('.git') &&
+    (gitUrl.startsWith('https://') ||
+      gitUrl.startsWith('http://') ||
+      gitUrl.startsWith('git@'))
   )
 }
 

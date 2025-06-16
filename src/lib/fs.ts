@@ -1,11 +1,10 @@
 import { exec } from 'child_process'
 import { default as fs, promises as fsp } from 'fs'
 import * as fse from 'fs-extra'
-import * as path from 'path'
 import tmp from 'tmp'
 import { promisify } from 'util'
 import { z } from 'zod'
-import { logger, serialize } from './logs/index.js'
+import { serialize } from './logs/index.js'
 
 const execAsync = promisify(exec)
 tmp.setGracefulCleanup()
@@ -20,32 +19,6 @@ async function pathExists(path: string): Promise<boolean> {
   } catch {
     return false
   }
-}
-
-/**
- * Clones a git repository to a temporary directory
- * @param gitUrl - The git repository URL to clone
- * @param repoName - Optional name for the repository directory (defaults to 'repo')
- * @returns The path to the cloned repository directory
- */
-async function cloneRepo(gitUrl: string, repoName: string): Promise<string> {
-  if (!isValidGitUrl(gitUrl)) {
-    throw new Error(`Invalid git URL: ${gitUrl}`)
-  }
-  const tmpDir = tmp.dirSync({ unsafeCleanup: true })
-  const repoDir = path.join(tmpDir.name, repoName)
-  await execAsync(`git clone ${gitUrl} ${repoDir}`)
-  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`)
-  return repoDir
-}
-
-function isValidGitUrl(gitUrl: string): boolean {
-  return (
-    gitUrl.endsWith('.git') &&
-    (gitUrl.startsWith('https://') ||
-      gitUrl.startsWith('http://') ||
-      gitUrl.startsWith('git@'))
-  )
 }
 
 async function readJsonFile<T>(
@@ -73,4 +46,4 @@ async function readJsonFile<T>(
   return validation.data
 }
 
-export { cloneRepo, execAsync, fs, fse, fsp, pathExists, readJsonFile, tmp }
+export { execAsync, fs, fse, fsp, pathExists, readJsonFile, tmp }
