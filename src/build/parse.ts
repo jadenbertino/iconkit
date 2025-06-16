@@ -84,7 +84,8 @@ async function cloneRepo(gitUrl: string, repoName: string): Promise<string> {
   if (!isValidGitUrl(gitUrl)) {
     throw new Error(`Invalid git URL: ${gitUrl}`)
   }
-  const repoDir = path.join('/tmp/iconProviders', repoName)
+  const randomId = 'dd000030-8ae8-4fda-adf8-c2d5416318af' as const // to avoid collisions
+  const repoDir = path.join(`/tmp/iconProviders-${randomId}`, repoName)
 
   // Cache hit
   if (await pathExists(repoDir)) {
