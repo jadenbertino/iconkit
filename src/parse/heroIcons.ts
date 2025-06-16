@@ -1,13 +1,8 @@
 import { cloneRepo, fsp, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
-import * as path from 'path'
+import path from 'path'
 import prettier from 'prettier'
-import {
-  Icon,
-  ICON_PROVIDERS,
-  ICONS_JSON_FILEPATH,
-  prettierSvgConfig,
-} from '../constants.js'
+import { Icon, ICON_PROVIDERS, prettierSvgConfig } from '../constants.js'
 
 /**
  * Retrieves and processes Hero Icons from the file system.
@@ -88,15 +83,4 @@ async function getHeroIcons(): Promise<Icon[]> {
   return nestedResults.flat().flat()
 }
 
-async function createIconsList() {
-  try {
-    const icons = await getHeroIcons()
-    await fsp.writeFile(ICONS_JSON_FILEPATH, JSON.stringify(icons, null, 2))
-    logger.info(`Successfully generated icon list with ${icons.length} icons`)
-  } catch (error) {
-    logger.error('Error generating icon list:', error)
-    process.exit(1)
-  }
-}
-
-export { createIconsList }
+export { getHeroIcons }
