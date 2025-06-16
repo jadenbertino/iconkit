@@ -32,7 +32,7 @@ const IconProviderSchema = z.object({
   name: z.string(),
   git: z.object({
     iconsDir: z.string().optional(),
-    url: z.string(),
+    url: z.string().url().startsWith('https://'),
     branch: z.string(),
   }),
 })

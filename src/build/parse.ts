@@ -108,9 +108,6 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
 
   // Cache miss / invalid remote
   await fsp.mkdir(path.dirname(repoDir), { recursive: true })
-  if (!isValidGitUrl(gitUrl)) {
-    throw new Error(`Invalid git URL: ${gitUrl}`)
-  }
   await execAsync(`git clone ${gitUrl} ${repoDir}`)
   await execAsync(`cd ${repoDir} && git checkout ${branch}`)
   await execAsync(`cd ${repoDir} && git pull`)
@@ -121,15 +118,6 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
     branch: currentBranch.trim(),
   })
   return repoDir
-}
-
-function isValidGitUrl(gitUrl: string): boolean {
-  return (
-    gitUrl.endsWith('.git') &&
-    (gitUrl.startsWith('https://') ||
-      gitUrl.startsWith('http://') ||
-      gitUrl.startsWith('git@'))
-  )
 }
 
 export { getAllIcons }

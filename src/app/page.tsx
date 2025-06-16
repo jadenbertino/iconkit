@@ -1,6 +1,7 @@
 'use client'
 
 import { Icon } from '@/constants'
+import { toGithubUrl } from '@/lib'
 import { ReactNode, useEffect, useState } from 'react'
 import { getIcons } from './api/icons/client'
 
@@ -29,7 +30,12 @@ const SvgIcon = ({ icon }: { icon: Icon }) => {
   const innerSvg = icon.innerSvgContent
 
   return (
-    <div className='w-20 h-20 p-2 bg-white rounded-lg shadow-md'>
+    <a
+      className='w-20 h-20 p-2 bg-white rounded-lg shadow-md'
+      href={toGithubUrl(icon)}
+      target='_blank'
+      rel='noopener noreferrer'
+    >
       <svg
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 24 24'
@@ -38,7 +44,7 @@ const SvgIcon = ({ icon }: { icon: Icon }) => {
         className='text-black hover:text-blue-500 transition-colors duration-300 cursor-pointer w-full h-full'
         dangerouslySetInnerHTML={{ __html: innerSvg }}
       />
-    </div>
+    </a>
   )
 }
 
