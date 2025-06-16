@@ -24,7 +24,13 @@ async function getIconsFromProvider(
 ) {
   // Clone repo to tmp dir
   const start = Date.now()
-  const iconsDir = await getIconDir(provider)
+  const repoDir = await cloneRepo(provider)
+  const iconsDir = path.join(repoDir, ICON_PROVIDERS[provider].git.iconsDir)
+  if (!(await pathExists(iconsDir))) {
+    throw new Error(
+      `Icons directory for ${provider} does not exist: ${iconsDir}`,
+    )
+  }
 
   // Get all files recursively
   const filenames = await fsp.readdir(iconsDir, { recursive: true })
@@ -50,7 +56,7 @@ async function getIconsFromProvider(
         name,
         innerSvgContent: innerContent,
         provider,
-        blobPath: null,
+        blobPath: path.relative(repoDir, filePath),
       }
     }),
   )
@@ -66,18 +72,6 @@ async function getIconsFromProvider(
   logger.info(
     `Successfully generated icon list for ${provider} with ${icons.length} icons`,
   )
-}
-
-async function getIconDir(provider: IconProviderId) {
-  const { git } = ICON_PROVIDERS[provider]
-  const repoDir = await cloneRepo(provider)
-  const iconsDir = path.join(repoDir, git.iconsDir)
-  if (!(await pathExists(iconsDir))) {
-    throw new Error(
-      `Icons directory for ${provider} does not exist: ${iconsDir}`,
-    )
-  }
-  return iconsDir
 }
 
 async function cloneRepo(provider: IconProviderId): Promise<string> {
