@@ -3,12 +3,10 @@ import {
   ICON_PROVIDER_IDS,
   ICON_PROVIDERS,
   IconProviderId,
-  prettierSvgConfig,
 } from '@/constants.js'
 import { execAsync, fsp, pathExists } from '@/lib/fs.js'
 import { logger } from '@/lib/logs/index.js'
 import path from 'path'
-import prettier from 'prettier'
 
 async function getAllIcons(outputDir: string): Promise<void> {
   await fsp.mkdir(outputDir, { recursive: true })
@@ -38,13 +36,20 @@ async function getIconsFromProvider(
     svgFiles.map(async (filePath): Promise<Icon> => {
       const name = path.basename(filePath, '.svg')
       const svgContent = await fsp.readFile(filePath, 'utf-8')
-      const formattedSvg = await prettier.format(svgContent, prettierSvgConfig)
+      // Remove the SVG wrapper tags and get the inner content
+      const innerContent = svgContent
+        .replace(/<\/?svg[^>]*>/g, '') // remove svg wrapper tags
+        .replace(/"/g, "'") // replace " with '
+        .trim()
+      if (!innerContent) {
+        throw new Error(`Failed to parse svg content from file: ${filePath}`)
+      }
 
       return {
         id: crypto.randomUUID(),
         name,
-        svg_content: formattedSvg,
-        provider: 'hero_icons',
+        innerSvgContent: innerContent,
+        provider,
       }
     }),
   )
