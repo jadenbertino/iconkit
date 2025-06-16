@@ -10,11 +10,20 @@ import { logger } from '@/lib/logs/index.js'
 import path from 'path'
 import prettier from 'prettier'
 
-async function getAllIcons(): Promise<void> {
-  await Promise.all(ICON_PROVIDER_IDS.map(getIconsFromProvider))
+async function getAllIcons(outputDir: string): Promise<void> {
+  await fsp.mkdir(outputDir, { recursive: true })
+  await Promise.all(
+    ICON_PROVIDER_IDS.map((provider) => {
+      const outputFile = path.join(outputDir, `${provider}.json`)
+      return getIconsFromProvider(provider, outputFile)
+    }),
+  )
 }
 
-async function getIconsFromProvider(provider: IconProviderId) {
+async function getIconsFromProvider(
+  provider: IconProviderId,
+  outputFile: string,
+) {
   // Clone repo to tmp dir
   const start = Date.now()
   const { gitUrl, subDir } = ICON_PROVIDERS[provider]
@@ -54,10 +63,7 @@ async function getIconsFromProvider(provider: IconProviderId) {
     count: icons.length,
     seconds,
   })
-  const outputDir = path.join(process.cwd(), 'icons')
-  await fsp.mkdir(outputDir, { recursive: true })
-  const outputPath = path.join(outputDir, `${provider}.json`)
-  await fsp.writeFile(outputPath, JSON.stringify(icons, null, 2))
+  await fsp.writeFile(outputFile, JSON.stringify(icons, null, 2))
   logger.info(
     `Successfully generated icon list for ${provider} with ${icons.length} icons`,
   )

@@ -1,3 +1,5 @@
+import path from 'path'
 import { getAllIcons } from './parse.js'
 
-await getAllIcons()
+const outputDir = path.join(process.cwd(), 'icons')
+await getAllIcons(outputDir)
