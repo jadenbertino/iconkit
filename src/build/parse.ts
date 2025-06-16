@@ -69,9 +69,9 @@ async function getIconsFromProvider(
 }
 
 async function getIconDir(provider: IconProviderId) {
-  const { gitUrl, subDir } = ICON_PROVIDERS[provider]
-  const repoDir = await cloneRepo(gitUrl, provider)
-  const iconsDir = path.join(repoDir, subDir)
+  const { git } = ICON_PROVIDERS[provider]
+  const repoDir = await cloneRepo(provider)
+  const iconsDir = path.join(repoDir, git.iconsDir)
   if (!(await pathExists(iconsDir))) {
     throw new Error(
       `Icons directory for ${provider} does not exist: ${iconsDir}`,
@@ -80,18 +80,11 @@ async function getIconDir(provider: IconProviderId) {
   return iconsDir
 }
 
-/**
- * Clones a git repository to a temporary directory
- * @param gitUrl - The git repository URL to clone
- * @param repoName - Optional name for the repository directory (defaults to 'repo')
- * @returns The path to the cloned repository directory
- */
-async function cloneRepo(gitUrl: string, repoName: string): Promise<string> {
-  if (!isValidGitUrl(gitUrl)) {
-    throw new Error(`Invalid git URL: ${gitUrl}`)
-  }
+async function cloneRepo(provider: IconProviderId): Promise<string> {
+  const { git } = ICON_PROVIDERS[provider]
+  const { url: gitUrl, branch } = git
   const randomId = 'dd000030-8ae8-4fda-adf8-c2d5416318af' as const // to avoid collisions
-  const repoDir = path.join(`/tmp/iconProviders-${randomId}`, repoName)
+  const repoDir = path.join(`/tmp/iconProviders-${randomId}`, provider)
 
   // Cache hit
   if (await pathExists(repoDir)) {
@@ -100,9 +93,14 @@ async function cloneRepo(gitUrl: string, repoName: string): Promise<string> {
         `cd ${repoDir} && git remote get-url origin`,
       )
       if (currentRemote.trim() === gitUrl) {
-        logger.info(`Using existing repo at ${repoDir}`)
+        await execAsync(`cd ${repoDir} && git checkout ${branch}`)
         await execAsync(`cd ${repoDir} && git pull`)
-        logger.info(`Updated repo at ${repoDir}`)
+        const { stdout: currentBranch } = await execAsync(
+          `cd ${repoDir} && git branch --show-current`,
+        )
+        logger.info(`Updated ${provider} repo.`, {
+          branch: currentBranch.trim(),
+        })
         return repoDir
       } else {
         throw new Error('Invalid git repository remote')
@@ -116,8 +114,18 @@ async function cloneRepo(gitUrl: string, repoName: string): Promise<string> {
 
   // Cache miss / invalid remote
   await fsp.mkdir(path.dirname(repoDir), { recursive: true })
+  if (!isValidGitUrl(gitUrl)) {
+    throw new Error(`Invalid git URL: ${gitUrl}`)
+  }
   await execAsync(`git clone ${gitUrl} ${repoDir}`)
-  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`)
+  await execAsync(`cd ${repoDir} && git checkout ${branch}`)
+  await execAsync(`cd ${repoDir} && git pull`)
+  const { stdout: currentBranch } = await execAsync(
+    `cd ${repoDir} && git branch --show-current`,
+  )
+  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`, {
+    branch: currentBranch.trim(),
+  })
   return repoDir
 }
 

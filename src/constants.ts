@@ -30,71 +30,106 @@ type Icon = z.infer<typeof IconSchema>
 const IconProviderSchema = z.object({
   id: IconProviderIdSchema,
   name: z.string(),
-  gitUrl: z.string(),
-  subDir: z.string().optional(),
+  git: z.object({
+    iconsDir: z.string().optional(),
+    url: z.string(),
+    branch: z.string(),
+  }),
 })
 type IconProvider = z.infer<typeof IconProviderSchema>
 
 const ICON_PROVIDERS = {
   hero_icons: {
     name: 'Hero Icons',
-    subDir: 'optimized',
-    gitUrl: 'https://github.com/tailwindlabs/heroicons.git',
+    git: {
+      iconsDir: 'optimized',
+      url: 'https://github.com/tailwindlabs/heroicons.git',
+      branch: 'master',
+    },
   },
   lucide: {
     name: 'Lucide',
-    subDir: 'icons',
-    gitUrl: 'https://github.com/lucide-icons/lucide.git',
+    git: {
+      iconsDir: 'icons',
+      url: 'https://github.com/lucide-icons/lucide.git',
+      branch: 'main',
+    },
   },
   simple_icons: {
     name: 'Simple Icons',
-    subDir: 'icons',
-    gitUrl: 'https://github.com/simple-icons/simple-icons.git',
+    git: {
+      iconsDir: 'icons',
+      url: 'https://github.com/simple-icons/simple-icons.git',
+      branch: 'master',
+    },
   },
   feather_icons: {
     name: 'Feather Icons',
-    subDir: 'icons',
-    gitUrl: 'https://github.com/feathericons/feather.git',
+    git: {
+      iconsDir: 'icons',
+      url: 'https://github.com/feathericons/feather.git',
+      branch: 'main',
+    },
   },
   font_awesome_free: {
     name: 'Font Awesome Free',
-    subDir: 'svgs',
-    gitUrl: 'https://github.com/FortAwesome/Font-Awesome.git',
+    git: {
+      iconsDir: 'svgs',
+      url: 'https://github.com/FortAwesome/Font-Awesome.git',
+      branch: '6.x',
+    },
   },
   remix_icon: {
     name: 'Remix Icon',
-    subDir: 'icons',
-    gitUrl: 'https://github.com/Remix-Design/remixicon.git',
+    git: {
+      iconsDir: 'icons',
+      url: 'https://github.com/Remix-Design/remixicon.git',
+      branch: 'master',
+    },
   },
   octicons: {
     name: 'Octicons',
-    subDir: 'icons',
-    gitUrl: 'https://github.com/primer/octicons.git',
+    git: {
+      iconsDir: 'icons',
+      url: 'https://github.com/primer/octicons.git',
+      branch: 'main',
+    },
   },
   boxicons: {
     name: 'Boxicons',
-    subDir: 'svg',
-    gitUrl: 'https://github.com/atisawd/boxicons.git',
+    git: {
+      iconsDir: 'svg',
+      url: 'https://github.com/atisawd/boxicons.git',
+      branch: 'master',
+    },
   },
   ionicons: {
     name: 'Ionicons',
-    subDir: 'src/svg',
-    gitUrl: 'https://github.com/ionic-team/ionicons.git',
+    git: {
+      iconsDir: 'src/svg',
+      url: 'https://github.com/ionic-team/ionicons.git',
+      branch: 'main',
+    },
   },
   eva_icons: {
     name: 'Eva Icons',
-    subDir: 'package/icons',
-    gitUrl: 'https://github.com/akveo/eva-icons.git',
+    git: {
+      iconsDir: 'package/icons',
+      url: 'https://github.com/akveo/eva-icons.git',
+      branch: 'master',
+    },
   },
   // typicons: {
   //   name: 'Typicons',
-  //   subDir: 'src/svg',
-  //   gitUrl: 'https://github.com/stephenhutchings/typicons.git',
   // },
+  //   iconsDir: 'src/svg',
   tabler_icons: {
     name: 'Tabler Icons',
-    subDir: 'icons',
-    gitUrl: 'https://github.com/tabler/tabler-icons.git',
+    git: {
+      iconsDir: 'icons',
+      url: 'https://github.com/tabler/tabler-icons.git',
+      branch: 'main',
+    },
   },
 } as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
 
