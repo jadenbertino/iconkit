@@ -11,18 +11,21 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "fs-extra": "^11.3.0",
-    "serialize-error": "^12.0.0",
-    "serialize-javascript": "^6.0.2",
-    "tmp": "^0.2.3",
-    "winston": "^3.17.0",
-    "zod": "^3.25.64"
+    "fs-extra": "11.3.0",
+    "next": "15.3.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "serialize-error": "12.0.0",
+    "serialize-javascript": "6.0.2",
+    "tmp": "0.2.3",
+    "winston": "3.17.0",
+    "zod": "3.25.64"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",
     "@types/node": "24.0.1",
-    "@types/serialize-javascript": "^5.0.4",
-    "@types/tmp": "^0.2.6",
+    "@types/serialize-javascript": "5.0.4",
+    "@types/tmp": "0.2.6",
     "prettier": "3.5.3",
     "tsx": "4.20.3",
     "typescript": "5.8.3"
