@@ -1,5 +1,3 @@
-import { IconSchema } from '@/constants'
-import { z } from 'zod'
 import boxIcons from '../../../../icons/boxicons.json'
 import evaIcons from '../../../../icons/eva_icons.json'
 import featherIcons from '../../../../icons/feather_icons.json'
@@ -12,13 +10,13 @@ import remixIcon from '../../../../icons/remix_icon.json'
 import simpleIcons from '../../../../icons/simple_icons.json'
 import tablerIcons from '../../../../icons/tabler_icons.json'
 
-const brokenIcons = [
-  // evaIcons,
-  // boxIcons,
-  // heroIcons,
-  // octicons,
-  // remixIcon,
-  // simpleIcons,
+const _brokenIcons = [
+  evaIcons,
+  boxIcons,
+  heroIcons,
+  octicons,
+  remixIcon,
+  simpleIcons,
 ].flat()
 
 const workingIcons = [
