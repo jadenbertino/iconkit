@@ -1,6 +1,7 @@
 'use client'
 
 import { Icon } from '@/constants'
+import { CLIENT_ENV } from '@/env/client'
 import { toGithubUrl } from '@/lib'
 import { ReactNode, useEffect, useState } from 'react'
 import { getIcons } from './api/icons/client'
@@ -11,6 +12,7 @@ export default function Home() {
 
   useEffect(() => {
     getIcons().then(setIcons)
+    console.debug({ env: CLIENT_ENV.NEXT_PUBLIC_ENVIRONMENT })
   }, [])
 
   return (
