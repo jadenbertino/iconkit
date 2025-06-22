@@ -3,9 +3,9 @@ import {
   ICON_PROVIDER_IDS,
   ICON_PROVIDERS,
   IconProviderId,
-} from '@/constants/index.js'
-import { execAsync, fsp, pathExists } from '@/lib/fs.js'
-import { logger } from '@/lib/logs/index.js'
+} from '@/constants/index'
+import { execAsync, fsp, pathExists } from '@/lib/fs'
+import { serverLogger } from '@/lib/logs/server'
 import path from 'path'
 
 async function getAllIcons(outputDir: string): Promise<void> {
@@ -60,12 +60,12 @@ async function getIconsFromProvider(
   // Log and write to file
   const stop = Date.now()
   const seconds = (stop - start) / 1000
-  logger.info(`${provider} Icons parsed`, {
+  serverLogger.info(`${provider} Icons parsed`, {
     count: icons.length,
     seconds,
   })
   await fsp.writeFile(outputFile, JSON.stringify(icons, null, 2))
-  logger.info(
+  serverLogger.info(
     `Successfully generated icon list for ${provider} with ${icons.length} icons`,
   )
 }
@@ -88,7 +88,7 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
         const { stdout: currentBranch } = await execAsync(
           `cd ${repoDir} && git branch --show-current`,
         )
-        logger.info(`Updated ${provider} repo.`, {
+        serverLogger.info(`Updated ${provider} repo.`, {
           branch: currentBranch.trim(),
         })
         return repoDir
@@ -97,7 +97,7 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
       }
     } catch (error) {
       // If git command fails, directory might be corrupted
-      logger.warn(`Invalid git repository at ${repoDir}, removing...`)
+      serverLogger.warn(`Invalid git repository at ${repoDir}, removing...`)
       await execAsync(`rm -rf ${repoDir}`)
     }
   }
@@ -110,7 +110,7 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
   const { stdout: currentBranch } = await execAsync(
     `cd ${repoDir} && git branch --show-current`,
   )
-  logger.info(`Cloned repo from ${gitUrl} to ${repoDir}`, {
+  serverLogger.info(`Cloned repo from ${gitUrl} to ${repoDir}`, {
     branch: currentBranch.trim(),
   })
   return repoDir

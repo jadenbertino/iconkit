@@ -1,5 +1,5 @@
 import winston from 'winston'
-import { serialize } from './utils.js'
+import { serialize } from './utils'
 
 const ConsoleTransport = new winston.transports.Console({
   format: winston.format.combine(
@@ -15,4 +15,9 @@ const ConsoleTransport = new winston.transports.Console({
   ),
 })
 
-export { ConsoleTransport }
+const serverLogger = winston.createLogger({
+  level: 'debug',
+  transports: [ConsoleTransport],
+})
+
+export { serverLogger }
