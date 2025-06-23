@@ -23,15 +23,9 @@ if [ -z "$DOPPLER_TOKEN" ]; then
   exit 1
 fi
 
-# Validate DOPPLER_TOKEN is valid
-if ! doppler configure get project --token "$DOPPLER_TOKEN" > /dev/null 2>&1; then
-  echo "❌ Invalid DOPPLER_TOKEN in $ENV_FILE"
-  exit 1
-fi
-
 # Validate environment variables
-npx tsx src/env/client.ts
-npx tsx src/env/server.ts
+doppler run -- npx tsx src/env/client.ts
+doppler run -- npx tsx src/env/server.ts
 
 # Export DOPPLER_TOKEN
 export DOPPLER_TOKEN
