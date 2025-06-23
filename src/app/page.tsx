@@ -11,8 +11,8 @@ export default function Home() {
   const [icons, setIcons] = useState<Icon[]>([])
 
   useEffect(() => {
+    console.debug({ env: CLIENT_ENV.ENVIRONMENT })
     getIcons().then(setIcons)
-    console.debug({ env: CLIENT_ENV.NEXT_PUBLIC_ENVIRONMENT })
   }, [])
 
   return (
