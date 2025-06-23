@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-# Early return if DOPPLER_TOKEN already set
-if [ ! -z "$DOPPLER_TOKEN" ]; then
-  return 0
-fi
-
 # Determine environment, throw if not set
 if [ -z "$ENVIRONMENT" ]; then
   echo "❌ ENVIRONMENT not set"
@@ -22,14 +17,15 @@ fi
 # Source the environment file
 source "$ENV_FILE"
 
-# Validate DOPPLER_TOKEN is set and starts with dp.
+# Validate DOPPLER_TOKEN is set
 if [ -z "$DOPPLER_TOKEN" ]; then
   echo "❌ DOPPLER_TOKEN not set in $ENV_FILE"
   exit 1
 fi
 
-if [[ ! "$DOPPLER_TOKEN" =~ ^dp\. ]]; then
-  echo "❌ DOPPLER_TOKEN must start with 'dp.' (invalid token format)"
+# Validate DOPPLER_TOKEN is valid
+if ! doppler configure get project --token "$DOPPLER_TOKEN" > /dev/null 2>&1; then
+  echo "❌ Invalid DOPPLER_TOKEN in $ENV_FILE"
   exit 1
 fi
 
