@@ -8,12 +8,25 @@ function validateClientEnv() {
     VERSION: z.string().default(getVersionFromChangelog()),
   })
 
-  const clientValidation = clientSchema.safeParse(getRawClientEnv())
+  // Need to set process.env.KEYNAME because next.js inlines at build time
+  type ClientEnvKeys = keyof z.infer<typeof clientSchema>
+  const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
+    ENVIRONMENT: process.env['NEXT_PUBLIC_ENVIRONMENT'],
+    VERSION: process.env['NEXT_PUBLIC_VERSION'],
+  }
+
+  const clientValidation = clientSchema.safeParse(rawClientEnv)
   if (!clientValidation.success) {
-    console.error(
-      `❌ Invalid client environment variables`,
+    // Map the unprefixed error keys back to their NEXT_PUBLIC_ versions for clearer error messages
+    const prefixedErrors: Record<string, string[]> = {}
+    for (const [key, errors] of Object.entries(
       clientValidation.error.flatten().fieldErrors,
-    )
+    )) {
+      const prefixedKey = `NEXT_PUBLIC_${key}`
+      prefixedErrors[prefixedKey] = errors || []
+    }
+
+    console.error(`❌ Invalid client environment variables:`, prefixedErrors)
     throw new Error('Invalid client environment variables')
   }
 
@@ -30,20 +43,6 @@ function getVersionFromChangelog(): string {
   } catch {
     return '0.0.0'
   }
-}
-
-function getRawClientEnv() {
-  const clientEnv: Record<string, string | undefined> = {}
-
-  // Process all NEXT_PUBLIC_ environment variables and remove the prefix
-  Object.keys(process.env).forEach((key) => {
-    if (key.startsWith('NEXT_PUBLIC_')) {
-      const unprefixedKey = key.replace('NEXT_PUBLIC_', '')
-      clientEnv[unprefixedKey] = process.env[key]
-    }
-  })
-
-  return clientEnv
 }
 
 const CLIENT_ENV = validateClientEnv()
