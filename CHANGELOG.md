@@ -1,2 +1,2 @@
 0.0.1
-- Setup env vars
+- Setup environment variable validation + injection
