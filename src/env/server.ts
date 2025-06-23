@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { CLIENT_ENV } from './client'
 
 const serverSchema = z.object({
   // AWS
@@ -18,6 +19,9 @@ if (!serverValidation.success) {
   throw new Error('Invalid server environment variables')
 }
 
-const SERVER_ENV = serverValidation.data
+const SERVER_ENV = {
+  ...serverValidation.data,
+  ...CLIENT_ENV, // all client env vars are also available on the server
+}
 
 export { SERVER_ENV }
