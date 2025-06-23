@@ -4,8 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "bash scripts/dev.sh",
+    "build": "bash scripts/build.sh",
     "start": "next start",
     "lint": "next lint"
   },
