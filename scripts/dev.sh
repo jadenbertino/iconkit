@@ -5,4 +5,4 @@ export ENVIRONMENT=${ENVIRONMENT:-development}
 source scripts/utils/get_doppler_token.sh
 export DOPPLER_TOKEN
 
-doppler run -- next dev --turbopack
+doppler run -- npx next dev --turbopack

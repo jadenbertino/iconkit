@@ -29,5 +29,9 @@ if ! doppler configure get project --token "$DOPPLER_TOKEN" > /dev/null 2>&1; th
   exit 1
 fi
 
+# Validate environment variables
+npx tsx src/env/client.ts
+npx tsx src/env/server.ts
+
 # Export DOPPLER_TOKEN
 export DOPPLER_TOKEN

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "bash scripts/dev.sh",
-    "build": "next build",
+    "build": "bash scripts/build.sh",
     "start": "next start",
     "lint": "next lint"
   },
