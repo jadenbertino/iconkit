@@ -1,0 +1,10 @@
+- [ ] Environment variables
+  - [x] server vars
+    - [x] s3 credentials
+  - [x] client vars
+    - [x] environment
+    - [x] version (read from CHANGELOG.md)
+  - [x] validation
+  - [x] dev injection
+  - [ ] vercel integration
+- [ ] Setup linting

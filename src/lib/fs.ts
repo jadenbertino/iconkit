@@ -4,7 +4,7 @@ import * as fse from 'fs-extra'
 import tmp from 'tmp'
 import { promisify } from 'util'
 import { z } from 'zod'
-import { serialize } from './logs/index.js'
+import { serialize } from './logs/utils'
 
 const execAsync = promisify(exec)
 tmp.setGracefulCleanup()
