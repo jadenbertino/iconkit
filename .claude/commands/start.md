@@ -13,13 +13,13 @@ eza --tree --git-ignore --level=3 --no-permissions --no-user --no-time --all
 ## Read the following files
 
 Read the files below (ignore if they don't exist):
+
 - `.claude/README.md` (LLM system prompt)
 - `README.md` (project overview)
 - `.claude/docs/architecture.md` (system overview)
 
 Do not change any files!
 
-## Start development session
+## Next Steps: Create a feature spec
 
-Ask me:
-"What would you like to work on today?"
+Run the `/spec` command, which references the `.claude/commands/spec.md` file.
