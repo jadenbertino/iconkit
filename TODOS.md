@@ -7,3 +7,4 @@
   - [x] validation
   - [x] dev injection
   - [ ] vercel integration
+- [ ] Setup linting
