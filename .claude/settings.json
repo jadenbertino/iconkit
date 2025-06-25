@@ -1,10 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(eza:*)",
-      "Bash(ls:*)",
-      "context7:*"
-    ],
+    "allow": ["Bash(eza:*)", "Bash(ls:*)", "context7:*"],
     "deny": []
   },
   "mcpServers": {

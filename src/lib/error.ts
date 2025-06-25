@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { serverLogger } from './logs/server'
 
-type RouteHandler = (req: NextRequest, context?: Record<string, unknown>) => Promise<NextResponse>
+type RouteHandler = (
+  req: NextRequest,
+  context?: Record<string, unknown>,
+) => Promise<NextResponse>
 
 function handleErrors(handler: RouteHandler): RouteHandler {
   return async (req, context) => {

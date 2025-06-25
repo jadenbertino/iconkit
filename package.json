@@ -7,7 +7,8 @@
     "dev": "bash scripts/dev.sh",
     "build": "bash scripts/build.sh",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
