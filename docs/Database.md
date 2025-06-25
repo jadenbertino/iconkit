@@ -32,11 +32,17 @@
 - `git_branch` (VARCHAR): Default branch to scrape from
 - `git_icons_dir` (VARCHAR): Directory path within repo containing icon files
 
+### license_type
+
+- `id` (VARCHAR): Unique identifier for the license type (e.g., 'mit', 'cc_by_4', 'apache_2')
+- `name` (VARCHAR): License name (e.g., 'MIT License', 'Creative Commons Attribution 4.0')
+- `type` (VARCHAR): License category (e.g., 'MIT', 'CC BY', 'Apache', 'ISC', 'CC0')
+- `user_obligations` (TEXT): What users must do when using icons with this license type
+- `website_obligations` (TEXT): What the website must do regarding this license type
+
 ### license
 
 - `id` (UUID): Unique identifier for the license
 - `provider_id` (VARCHAR): Foreign key reference to provider table
-- `name` (VARCHAR): License name (e.g., 'MIT License', 'Apache 2.0')
-- `type` (VARCHAR): License type/category (e.g., 'MIT', 'Apache', 'BSD', 'Custom')
-- `url` (VARCHAR): URL to the full license text
-- `attribution_required` (BOOLEAN): Whether attribution is required when using icons
+- `license_type_id` (VARCHAR): Foreign key reference to license_type table
+- `url` (VARCHAR): URL to the full license text for this specific provider
