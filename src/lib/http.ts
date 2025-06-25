@@ -9,19 +9,17 @@ import axiosRetry, { IAxiosRetryConfig } from 'axios-retry'
 import { serializeError } from 'serialize-error'
 import { z } from 'zod'
 
-const ERROR_TYPES = [
-  'AUTH_CLIENT_ERROR',
-  'AUTH_HEADERS_NULL',
-  'REQUEST_FAILED',
-  'NOT_FOUND',
-  'VALIDATION_ERROR',
-] as const
-type ErrorType = (typeof ERROR_TYPES)[number]
+type ErrorType =
+  | 'AUTH_CLIENT_ERROR'
+  | 'AUTH_HEADERS_NULL'
+  | 'REQUEST_FAILED'
+  | 'NOT_FOUND'
+  | 'VALIDATION_ERROR'
 
 class HttpError extends Error {
   statusCode: number
   errorType: ErrorType;
-  [key: string]: any
+  [key: string]: unknown
 
   constructor({
     statusCode,
@@ -32,7 +30,7 @@ class HttpError extends Error {
     statusCode: number
     message: string
     errorType: ErrorType
-    [key: string]: any
+    [key: string]: unknown
   }) {
     super(message)
     this.statusCode = statusCode

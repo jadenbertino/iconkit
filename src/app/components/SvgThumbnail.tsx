@@ -1,6 +1,6 @@
 import { centerClasses, Icon } from '@/constants'
 import { cn, htmlAttributesToReact } from '@/lib'
-import parse, { domToReact } from 'html-react-parser'
+import parse, { DOMNode, domToReact } from 'html-react-parser'
 
 const SvgThumnail = ({ icon }: { icon: Icon }) => {
   const SvgElement = parse(icon.svgContent, {
@@ -19,7 +19,7 @@ const SvgThumnail = ({ icon }: { icon: Icon }) => {
             stroke={domNode.attribs['stroke'] ?? 'currentColor'}
             className='w-full h-full'
           >
-            {domToReact(domNode.children as any)}
+            {domToReact(domNode.children as DOMNode[])}
           </domNode.name>
         )
       }

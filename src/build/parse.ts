@@ -95,7 +95,7 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
       } else {
         throw new Error('Invalid git repository remote')
       }
-    } catch (error) {
+    } catch {
       // If git command fails, directory might be corrupted
       serverLogger.warn(`Invalid git repository at ${repoDir}, removing...`)
       await execAsync(`rm -rf ${repoDir}`)

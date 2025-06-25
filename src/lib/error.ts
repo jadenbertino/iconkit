@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { serverLogger } from './logs/server'
 
-type RouteHandler = (req: NextRequest, context?: any) => Promise<NextResponse>
+type RouteHandler = (req: NextRequest, context?: Record<string, unknown>) => Promise<NextResponse>
 
 function handleErrors(handler: RouteHandler): RouteHandler {
   return async (req, context) => {
@@ -10,8 +10,8 @@ function handleErrors(handler: RouteHandler): RouteHandler {
       return await handler(req, context)
     } catch (error: unknown) {
       // Generate response
-      let responseCode = 500
-      let publicMessage = 'Internal Server Error'
+      const responseCode = 500
+      const publicMessage = 'Internal Server Error'
       let privateMessage = 'Internal Server Error'
       if (error instanceof Error) {
         privateMessage = error.message
