@@ -2,14 +2,17 @@
   "permissions": {
     "allow": [
       "Bash(eza:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "context7:*"
     ],
     "deny": []
   },
   "mcpServers": {
     "context7": {
-      "command": "npx",
-      "args": ["context7"]
+      "transport": {
+        "type": "http",
+        "url": "https://mcp.context7.com/mcp"
+      }
     }
   }
 }

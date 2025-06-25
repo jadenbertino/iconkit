@@ -20,6 +20,7 @@ Read the files below (ignore if they don't exist):
 
 Do not change any files!
 
-## Next Steps: Create a feature spec
+## Next Steps: Begin development session
 
-Run the `/spec` command, which references the `.claude/commands/spec.md` file.
+Ask me:
+"What would you like to build today?"
