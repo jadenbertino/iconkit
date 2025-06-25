@@ -3,12 +3,16 @@ import { z } from 'zod'
 function validateClientEnv() {
   const clientSchema = z.object({
     ENVIRONMENT: z.enum(['development', 'staging', 'production']),
+    SUPABASE_URL: z.string().url(),
+    SUPABASE_ANON_KEY: z.string(),
   })
 
   // Need to set process.env.KEYNAME because next.js inlines at build time
   type ClientEnvKeys = keyof z.infer<typeof clientSchema>
   const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
     ENVIRONMENT: process.env['NEXT_PUBLIC_ENVIRONMENT'],
+    SUPABASE_URL: process.env['NEXT_PUBLIC_SUPABASE_URL'],
+    SUPABASE_ANON_KEY: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
   }
 
   const clientValidation = clientSchema.safeParse(rawClientEnv)
