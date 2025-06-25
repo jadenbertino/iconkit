@@ -1,14 +1,14 @@
 /**
  * @fileoverview Prevents axios imports in API route files (src/app/api/**)
- * 
+ *
  * Purpose: Enforces the use of the project's standardized HTTP client instead of axios
  * to ensure consistent error handling, request/response formatting, and configuration
  * across all API routes.
- * 
+ *
  * How to fix: Replace axios imports with the HTTP client from src/lib/http.ts
  * - Instead of: import axios from 'axios'
  * - Use: import { httpClient } from '@/lib/http'
- * 
+ *
  * @author Custom ESLint Plugin
  */
 'use strict'

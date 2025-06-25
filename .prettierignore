@@ -2,7 +2,6 @@
 
 # File types
 **/*.json # (can remove the *.json once we start uploading to s3)
-**/*.md
 
 # JSON files
 !package.json
@@ -57,3 +56,5 @@ pnpm-lock.yaml
 yarn.lock
 *.min.js
 *.min.css
+
+CHANGELOG.md

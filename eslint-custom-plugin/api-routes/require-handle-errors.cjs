@@ -1,15 +1,15 @@
 /**
  * @fileoverview Enforces that API route files (GET.ts, POST.ts, etc.) must import handleErrors.
- * 
+ *
  * Purpose: Ensures all API route handlers are wrapped with proper error handling logic to provide
  * consistent error responses, logging, and debugging information. This prevents unhandled exceptions
  * from crashing the application and ensures proper HTTP error status codes are returned.
- * 
+ *
  * How to fix: Import and use the handleErrors wrapper in your API route handlers
  * - Add: import { handleErrors } from '@/lib/error'
  * - Wrap your handler: export default handleErrors(async (request: Request) => { ... })
  * - This ensures all errors are caught and properly formatted as HTTP responses
- * 
+ *
  */
 'use strict'
 

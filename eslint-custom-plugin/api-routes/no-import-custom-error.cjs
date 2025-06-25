@@ -1,14 +1,14 @@
 /**
  * @fileoverview Prevents importing external error classes, enforcing use of local error handling.
- * 
+ *
  * Purpose: Enforces the use of the project's local error handling system instead of external
  * error classes to maintain consistent error formatting, logging, and debugging across the
  * entire application.
- * 
+ *
  * How to fix: Replace external error imports with local error handling from @/lib
  * - Instead of: import { CustomError } from '@ossa-ai/cloud'
  * - Use: import { CustomError } from '@/lib/error'
- * 
+ *
  * @author Custom ESLint Plugin
  */
 'use strict'

@@ -1,15 +1,15 @@
 /**
  * @fileoverview Enforces that 'route.ts' files only use default imports.
- * 
+ *
  * Purpose: Ensures that each HTTP method handler is kept in a separate file (GET.ts, POST.ts, etc.)
  * by preventing named imports in route.ts files. This promotes better code organization, easier
  * testing, and clearer separation of concerns for different HTTP methods.
- * 
+ *
  * How to fix: Use separate files for each HTTP method instead of named imports in route.ts
  * - Instead of: export { GET, POST } from './handlers' in route.ts
  * - Use: Create separate GET.ts and POST.ts files with default exports
  * - Example: export default function GET(request: Request) { ... }
- * 
+ *
  * @author Custom ESLint Plugin
  */
 'use strict'
