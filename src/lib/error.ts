@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { logger } from './logs'
+import { serverLogger } from './logs/server'
 
 type RouteHandler = (req: NextRequest, context?: any) => Promise<NextResponse>
 
@@ -18,7 +18,7 @@ function handleErrors(handler: RouteHandler): RouteHandler {
       }
 
       // Log the error
-      logger.error(privateMessage, {
+      serverLogger.error(privateMessage, {
         error,
         apiUrl: req.url,
         method: req.method,
