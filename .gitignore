@@ -47,3 +47,6 @@ env/.env.production
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# secrets
+.npmrc
