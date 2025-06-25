@@ -1,9 +1,5 @@
-import {
-  Icon,
-  ICON_PROVIDER_IDS,
-  ICON_PROVIDERS,
-  IconProviderId,
-} from '@/constants/index'
+import type { Icon, IconProviderId } from '@/constants/index'
+import { ICON_PROVIDER_IDS, ICON_PROVIDERS } from '@/constants/index'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import path from 'path'

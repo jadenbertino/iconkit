@@ -1,6 +1,8 @@
-import { centerClasses, Icon } from '@/constants'
+import type { Icon } from '@/constants'
+import { centerClasses } from '@/constants/classes'
 import { cn, htmlAttributesToReact } from '@/lib'
-import parse, { DOMNode, domToReact } from 'html-react-parser'
+import type { DOMNode } from 'html-react-parser'
+import parse, { domToReact } from 'html-react-parser'
 
 const SvgThumnail = ({ icon }: { icon: Icon }) => {
   const SvgElement = parse(icon.svgContent, {

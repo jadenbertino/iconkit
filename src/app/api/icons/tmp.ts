@@ -10,7 +10,7 @@
 // import simpleIcons from '../../../../icons/simple_icons.json'
 // import tablerIcons from '../../../../icons/tabler_icons.json'
 
-import { Icon } from '@/constants'
+import type { Icon } from '@/constants'
 
 // const _brokenIcons = [
 //   evaIcons,

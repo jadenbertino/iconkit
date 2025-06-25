@@ -1,7 +1,7 @@
-import { Icon } from '@/constants'
+import type { Icon } from '@/constants'
 import { handleErrors } from '@/lib/error'
 import { NextRequest, NextResponse } from 'next/server'
-import { GetResponse } from './schema'
+import type { GetResponse } from './schema'
 import { allIcons } from './tmp'
 
 const GET = handleErrors(

@@ -1,4 +1,5 @@
-import { Icon, ICON_PROVIDERS } from '@/constants'
+import type { Icon } from '@/constants'
+import { ICON_PROVIDERS } from '@/constants'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 

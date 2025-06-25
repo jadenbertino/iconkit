@@ -1,9 +1,10 @@
 'use client'
 
-import { Icon } from '@/constants'
+import type { Icon } from '@/constants'
 import { CLIENT_ENV } from '@/env/client'
 import { toGithubUrl } from '@/lib'
-import { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import { getIcons } from './api/icons/client'
 import { SvgThumnail } from './components/SvgThumbnail'
 
