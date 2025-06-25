@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(eza:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  },
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["context7"]
+    }
+  }
+}

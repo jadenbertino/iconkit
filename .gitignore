@@ -1,8 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# JSON files (can remove the *.json once we start uploading to s3)
 **/*.json
 !package.json
 !tsconfig.json
+!.claude/settings.json
 
 # dependencies
 /node_modules
