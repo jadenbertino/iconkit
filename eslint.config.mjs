@@ -1,6 +1,7 @@
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { FlatCompat } from '@eslint/eslintrc'
+import customPlugin from './eslint-custom-plugin/index.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -11,6 +12,17 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  {
+    plugins: {
+      custom: customPlugin,
+    },
+    rules: {
+      'custom/no-restricted-route-imports': 'error',
+      'custom/require-handle-errors': 'error',
+      'custom/no-axios-in-api-routes': 'error',
+      'custom/no-import-custom-error': 'error',
+    },
+  },
 ]
 
 export default eslintConfig
