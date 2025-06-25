@@ -23,21 +23,21 @@
 ### icon
 
 - `id` (int8): Unique identifier for the icon
-- `created_at` (timestamptz): Timestamp when the icon was created
-- `version` (TEXT): Git tag or commit hash when icon was scraped
-- `name` (TEXT): Icon filename without extension
-- `svg` (TEXT): Cleaned SVG markup content
-- `source_url` (TEXT): Direct GitHub URL to the original icon file
-- `provider_id` (int8, Foreign Key): Foreign key reference to `provider` table
+- `created_at` (timestamptz, NOT NULL): Timestamp when the icon was created
+- `version` (text, NOT NULL): Git tag or commit hash when icon was scraped
+- `name` (text, NOT NULL): Icon filename without extension
+- `svg` (text, NOT NULL): Cleaned SVG markup content
+- `source_url` (text, NOT NULL): Direct GitHub URL to the original icon file
+- `provider_id` (int8, NOT NULL, Foreign Key): Foreign key reference to `provider` table
 
 ### provider
 
 - `id` (int8): Unique identifier for the provider
-- `created_at` (timestamptz): Timestamp when the provider was created
-- `name` (TEXT): Human-readable provider name (e.g., 'Hero Icons', 'Lucide')
-- `git_url` (TEXT): Repository URL for the icon provider (e.g., 'https://github.com/heroicons/heroicons.git')
-- `git_branch` (TEXT): Default branch to scrape from
-- `git_icons_dir` (TEXT): Directory path within repo containing icon files
+- `created_at` (timestamptz, NOT NULL, DEFAULT now()): Timestamp when the provider was created
+- `name` (text, NOT NULL): Human-readable provider name (e.g., 'Hero Icons', 'Lucide')
+- `git_url` (text, NOT NULL): Repository URL for the icon provider (e.g., 'https://github.com/heroicons/heroicons.git')
+- `git_branch` (text, NOT NULL): Default branch to scrape from
+- `git_icons_dir` (text, NOT NULL): Directory path within repo containing icon files
 
 ### TODO: license
 
