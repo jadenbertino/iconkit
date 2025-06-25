@@ -16,31 +16,37 @@
 
 ## Table Schemas
 
+[Supabase Studio](https://supabase.com/dashboard/project/ojglkplkgnfcbmejsxvb/database/schemas)
+
+![Database Schema](https://i.imgur.com/Nj7azeG.png)
+
 ### icon
 
-- `id` (UUID): Unique identifier for the icon
-- `version` (VARCHAR): Git tag or commit hash when icon was scraped
-- `provider_id` (VARCHAR): Foreign key reference to provider table
-- `name` (VARCHAR): Icon filename without extension
-- `svg_content` (TEXT): Cleaned SVG markup content
-- `source_url` (VARCHAR): Direct GitHub URL to the original icon file
+- `id` (int8): Unique identifier for the icon
+- `created_at` (timestamptz): Timestamp when the icon was created
+- `version` (TEXT): Git tag or commit hash when icon was scraped
+- `name` (TEXT): Icon filename without extension
+- `svg` (TEXT): Cleaned SVG markup content
+- `source_url` (TEXT): Direct GitHub URL to the original icon file
+- `provider_id` (int8, Foreign Key): Foreign key reference to `provider` table
 
 ### provider
 
-- `id` (VARCHAR): Unique identifier matching provider constants (e.g., 'heroicons', 'lucide')
-- `name` (VARCHAR): Human-readable provider name (e.g., 'Hero Icons', 'Lucide')
-- `git_url` (VARCHAR): Repository URL for the icon provider
-- `git_branch` (VARCHAR): Default branch to scrape from
-- `git_icons_dir` (VARCHAR): Directory path within repo containing icon files
+- `id` (int8): Unique identifier for the provider
+- `created_at` (timestamptz): Timestamp when the provider was created
+- `name` (TEXT): Human-readable provider name (e.g., 'Hero Icons', 'Lucide')
+- `git_url` (TEXT): Repository URL for the icon provider (e.g., 'https://github.com/heroicons/heroicons.git')
+- `git_branch` (TEXT): Default branch to scrape from
+- `git_icons_dir` (TEXT): Directory path within repo containing icon files
 
-### license
+### TODO: license
 
 - `id` (UUID): Unique identifier for the license
 - `provider_id` (VARCHAR): Foreign key reference to provider table
 - `license_type_id` (VARCHAR): Foreign key reference to license_type table
 - `url` (VARCHAR): URL to the full license text for this specific provider
 
-### license_type
+### TODO: license_type
 
 - `id` (VARCHAR): Unique identifier for the license type (e.g., 'mit', 'cc_by_4', 'apache_2')
 - `name` (VARCHAR): License name (e.g., 'MIT License', 'Creative Commons Attribution 4.0')

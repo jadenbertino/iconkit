@@ -7,7 +7,7 @@ Follow the instructions below to understand the context of the project
 Run the following command:
 
 ```bash
-eza --tree --git-ignore --level=3 --no-permissions --no-user --no-time --all
+eza --tree --git-ignore --level=10 --no-permissions --no-user --no-time --all
 ```
 
 ## Read the following files
@@ -16,7 +16,7 @@ Read the files below (ignore if they don't exist):
 
 - `.claude/README.md` (LLM system prompt)
 - `README.md` (project overview)
-- `.claude/docs/architecture.md` (system overview)
+- `docs/*.md` (documentation)
 
 Do not change any files!
 
