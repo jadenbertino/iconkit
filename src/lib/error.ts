@@ -3,7 +3,7 @@ import { serverLogger } from './logs/server'
 
 type RouteHandler = (
   req: NextRequest,
-  context?: Record<string, unknown>,
+  context: { params: Promise<Record<string, string | string[]>> },
 ) => Promise<NextResponse>
 
 function handleErrors(handler: RouteHandler): RouteHandler {

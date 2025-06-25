@@ -1,6 +1,6 @@
+import { FlatCompat } from '@eslint/eslintrc'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
 import customPlugin from './eslint-custom-plugin/index.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -21,6 +21,14 @@ const eslintConfig = [
       'custom/require-handle-errors': 'error',
       'custom/no-axios-in-api-routes': 'error',
       'custom/no-import-custom-error': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
 ]
