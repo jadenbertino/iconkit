@@ -24,21 +24,25 @@
 ### Beginning context
 
 [List of files that exist at start — what files exist at start?]
+
 - file 1
-- file 2 
+- file 2
 - file 3
 
 ### Ending context
 
 [List of files that will exist at end — what files will exist at end?]
+
 - file 1
 - file 2
 - file 3
 
 ## Low-Level Tasks
+
 > Ordered from start to finish
 
 1. [First task — what is the first task?]
+
 ```claude
 What prompt would you run to complete this task?
 What file do you want to CREATE or UPDATE?
@@ -47,6 +51,7 @@ What are details you want to add to drive the code changes?
 ```
 
 2. [Second task — what is the second task?]
+
 ```claude
 What prompt would you run to complete this task?
 What file do you want to CREATE or UPDATE?
@@ -55,6 +60,7 @@ What are details you want to add to drive the code changes?
 ```
 
 3. [Third task — what is the third task?]
+
 ```claude
 What prompt would you run to complete this task?
 What file do you want to CREATE or UPDATE?

@@ -31,6 +31,7 @@ Configure ESLint to enforce code practices.
 - `scripts/build.sh`
 
 ## Low-Level Tasks
+
 > Ordered from start to finish
 
 1. Use context7 to research how to integrate ESLint flat config with Next.js
