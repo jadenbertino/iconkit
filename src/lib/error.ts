@@ -13,11 +13,15 @@ function handleErrors(handler: RouteHandler): RouteHandler {
       return await handler(req, context)
     } catch (error: unknown) {
       // Generate response
-      const responseCode = 500
-      const publicMessage = 'Internal Server Error'
+      let responseCode = 500
+      let publicMessage = 'Internal Server Error'
       let privateMessage = 'Internal Server Error'
       if (error instanceof Error) {
         privateMessage = error.message
+      } else if (error instanceof CustomError) {
+        responseCode = error.statusCode
+        publicMessage = error.message
+        privateMessage = error.details
       }
 
       // Log the error
@@ -39,4 +43,46 @@ function handleErrors(handler: RouteHandler): RouteHandler {
   }
 }
 
-export { handleErrors }
+class CustomError extends Error {
+  details?: any
+  statusCode: number
+
+  constructor({
+    message,
+    details,
+    statusCode,
+  }: {
+    message: string
+    details?: any
+    statusCode?: number
+  }) {
+    super(message)
+
+    // Ensure the name of this error is set as 'CustomError'
+    this.name = this.constructor.name
+
+    // Save the details and statusCode, if provided
+    this.details = details
+    this.statusCode = statusCode ?? 500
+  }
+}
+
+/**
+ * Custom error class for user errors.
+ * The message will be sent back to the client.
+ */
+class UserError extends CustomError {
+  constructor({
+    message,
+    statusCode,
+    details,
+  }: {
+    message: string
+    statusCode: number
+    details?: Record<string, unknown>
+  }) {
+    super({ message, statusCode, details })
+  }
+}
+
+export { CustomError, handleErrors, UserError }
