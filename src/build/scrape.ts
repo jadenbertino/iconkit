@@ -1,4 +1,4 @@
-import { ICON_PROVIDERS, type IconProviderId } from '@/constants/index'
+import { ICON_PROVIDERS, type IconProviderSlug } from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
 import { withTimeout } from '@/lib'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
@@ -21,7 +21,7 @@ async function execWithTimeout(
   return withTimeout(execAsync(command), timeoutMs, `Command: ${command}`)
 }
 
-async function scrapeIcons(provider: IconProviderId): Promise<ScrapedIcon[]> {
+async function scrapeIcons(provider: IconProviderSlug): Promise<ScrapedIcon[]> {
   // Wrap the entire scraping operation with timeout
   return withTimeout(
     _scrapeIconsInternal(provider),
@@ -31,7 +31,7 @@ async function scrapeIcons(provider: IconProviderId): Promise<ScrapedIcon[]> {
 }
 
 async function _scrapeIconsInternal(
-  provider: IconProviderId,
+  provider: IconProviderSlug,
 ): Promise<ScrapedIcon[]> {
   // Clone repo to tmp dir
   const repoDir = await cloneRepo(provider)
@@ -82,7 +82,7 @@ async function _scrapeIconsInternal(
   )
 }
 
-async function cloneRepo(provider: IconProviderId): Promise<string> {
+async function cloneRepo(provider: IconProviderSlug): Promise<string> {
   const { git } = ICON_PROVIDERS[provider]
   const { url: gitUrl, branch } = git
   const randomId = 'dd000030-8ae8-4fda-adf8-c2d5416318af' as const // to avoid collisions

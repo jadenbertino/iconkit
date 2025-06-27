@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const ICON_PROVIDER_IDS = [
+const ICON_PROVIDER_SLUGS = [
   'hero_icons',
   'lucide',
   'simple_icons',
@@ -14,11 +14,11 @@ const ICON_PROVIDER_IDS = [
   // 'typicons', // - causing issues
   'tabler_icons',
 ] as const
-const IconProviderIdSchema = z.enum(ICON_PROVIDER_IDS)
-type IconProviderId = z.infer<typeof IconProviderIdSchema>
+const IconProviderSlugSchema = z.enum(ICON_PROVIDER_SLUGS)
+type IconProviderSlug = z.infer<typeof IconProviderSlugSchema>
 
 const IconProviderSchema = z.object({
-  id: IconProviderIdSchema,
+  id: IconProviderSlugSchema,
   name: z.string(),
   git: z.object({
     iconsDir: z.string().optional(),
@@ -121,12 +121,12 @@ const ICON_PROVIDERS = {
       branch: 'main',
     },
   },
-} as const satisfies Record<IconProviderId, Omit<IconProvider, 'id'>>
+} as const satisfies Record<IconProviderSlug, Omit<IconProvider, 'id'>>
 
 export {
-  ICON_PROVIDER_IDS,
+  ICON_PROVIDER_SLUGS,
   ICON_PROVIDERS,
-  IconProviderIdSchema,
   IconProviderSchema,
+  IconProviderSlugSchema,
 }
-export type { IconProvider, IconProviderId }
+export type { IconProvider, IconProviderSlug }

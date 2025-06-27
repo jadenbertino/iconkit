@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { IconProviderIdSchema } from './provider'
+import { IconProviderSlugSchema } from './provider'
 
 const LicenseTypeSchema = z.object({
   id: z.string(),
@@ -55,7 +55,7 @@ const LICENSE_TYPES = {
 
 const LicenseSchema = z.object({
   id: z.string(),
-  providerId: IconProviderIdSchema,
+  providerId: IconProviderSlugSchema,
   licenseTypeId: z.string(),
   url: z.string().url(),
 })
