@@ -22,12 +22,12 @@ const QUERY_OPTIONS = {
 }
 
 const useIconQueries = () => {
-  const getIconsQuery = (q: IconQuery) => {
+  const useIconsQuery = (q: IconQuery) => {
     const options = QUERY_OPTIONS.iconsQuery(q)
     return useQuery(options)
   }
 
-  return { getIconsQuery }
+  return { useIconsQuery }
 }
 
 export { useIconQueries }
