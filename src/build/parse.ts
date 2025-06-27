@@ -3,11 +3,17 @@ import {
   ICON_PROVIDERS,
   type IconProviderId,
 } from '@/constants/index'
+import { SERVER_ENV } from '@/env/server'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { IconSchema } from '@/lib/schemas/database'
 import path from 'path'
 import type { z } from 'zod'
+
+type LocalIcon = Omit<
+  z.infer<typeof IconSchema.Insert>,
+  'provider_id' | 'created_at'
+>
 
 async function getAllIcons(outputDir: string): Promise<void> {
   await fsp.mkdir(outputDir, { recursive: true })
@@ -26,7 +32,8 @@ async function getIconsFromProvider(
   // Clone repo to tmp dir
   const start = Date.now()
   const repoDir = await cloneRepo(provider)
-  const iconsDir = path.join(repoDir, ICON_PROVIDERS[provider].git.iconsDir)
+  const { git } = ICON_PROVIDERS[provider]
+  const iconsDir = path.join(repoDir, git.iconsDir)
   if (!(await pathExists(iconsDir))) {
     throw new Error(
       `Icons directory for ${provider} does not exist: ${iconsDir}`,
@@ -40,25 +47,26 @@ async function getIconsFromProvider(
 
   // Parse svg files
   const icons = await Promise.all(
-    svgFiles.map(
-      async (filePath): Promise<z.infer<typeof IconSchema.Insert>> => {
-        const name = path.basename(filePath, '.svg')
-        const svgContent = await fsp.readFile(filePath, 'utf-8')
-        // Remove the SVG wrapper tags and get the inner content
-        const cleanedSvgContent = svgContent
-          .replace(/"/g, "'") // replace " with '
-          .trim()
+    svgFiles.map(async (filePath): Promise<LocalIcon> => {
+      const name = path.basename(filePath, '.svg')
+      const svgContent = await fsp.readFile(filePath, 'utf-8')
+      // Remove the SVG wrapper tags and get the inner content
+      const cleanedSvgContent = svgContent
+        .replace(/"/g, "'") // replace " with '
+        .trim()
 
-        return {
-          name,
-          svg: cleanedSvgContent,
-          source_url: '',
-          provider_id: 1,
-          version: '',
-          created_at: new Date().toISOString(),
-        }
-      },
-    ),
+      // Construct source URL
+      const relativePath = path.relative(repoDir, filePath)
+      const repoUrl = git.url.replace(/\.git$/, '') // Remove .git suffix if present
+      const source_url = `${repoUrl}/blob/${git.branch}/${relativePath}`
+
+      return {
+        name,
+        svg: cleanedSvgContent,
+        version: SERVER_ENV.VERSION,
+        source_url,
+      }
+    }),
   )
 
   // Log and write to file
