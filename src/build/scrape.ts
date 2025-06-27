@@ -1,11 +1,38 @@
 import { ICON_PROVIDERS, type IconProviderId } from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
+import { withTimeout } from '@/lib'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
 import path from 'path'
 
+// Timeout constants (in milliseconds)
+const GIT_OPERATION_TIMEOUT = 5 * 60 * 1000 // 5 minutes for git operations
+const SCRAPE_OPERATION_TIMEOUT = 10 * 60 * 1000 // 10 minutes for overall scraping
+const FILE_READ_TIMEOUT = 30 * 1000 // 30 seconds for file operations
+
+/**
+ * Executes a command with timeout
+ */
+async function execWithTimeout(
+  command: string,
+  timeoutMs: number = GIT_OPERATION_TIMEOUT,
+) {
+  return withTimeout(execAsync(command), timeoutMs, `Command: ${command}`)
+}
+
 async function scrapeIcons(provider: IconProviderId): Promise<ScrapedIcon[]> {
+  // Wrap the entire scraping operation with timeout
+  return withTimeout(
+    _scrapeIconsInternal(provider),
+    SCRAPE_OPERATION_TIMEOUT,
+    `Scraping icons for ${provider}`,
+  )
+}
+
+async function _scrapeIconsInternal(
+  provider: IconProviderId,
+): Promise<ScrapedIcon[]> {
   // Clone repo to tmp dir
   const repoDir = await cloneRepo(provider)
   const { git } = ICON_PROVIDERS[provider]
@@ -21,11 +48,20 @@ async function scrapeIcons(provider: IconProviderId): Promise<ScrapedIcon[]> {
   const files = filenames.map((f) => path.join(iconsDir, f))
   const svgFiles = files.filter((file) => file.endsWith('.svg'))
 
-  // Parse svg files
+  serverLogger.info(`Found ${svgFiles.length} SVG files for ${provider}`)
+
+  // Parse svg files with timeout for each file
   return await Promise.all(
     svgFiles.map(async (filePath): Promise<ScrapedIcon> => {
       const name = path.basename(filePath, '.svg')
-      const svgContent = await fsp.readFile(filePath, 'utf-8')
+
+      // Add timeout to file reading operation
+      const svgContent = await withTimeout(
+        fsp.readFile(filePath, 'utf-8'),
+        FILE_READ_TIMEOUT,
+        `Reading file: ${filePath}`,
+      )
+
       // Remove the SVG wrapper tags and get the inner content
       const cleanedSvgContent = svgContent
         .replace(/"/g, "'") // replace " with '
@@ -55,13 +91,13 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
   // Cache hit
   if (await pathExists(repoDir)) {
     try {
-      const { stdout: currentRemote } = await execAsync(
+      const { stdout: currentRemote } = await execWithTimeout(
         `cd ${repoDir} && git remote get-url origin`,
       )
       if (currentRemote.trim() === gitUrl) {
-        await execAsync(`cd ${repoDir} && git checkout ${branch}`)
-        await execAsync(`cd ${repoDir} && git pull`)
-        const { stdout: currentBranch } = await execAsync(
+        await execWithTimeout(`cd ${repoDir} && git checkout ${branch}`)
+        await execWithTimeout(`cd ${repoDir} && git pull`)
+        const { stdout: currentBranch } = await execWithTimeout(
           `cd ${repoDir} && git branch --show-current`,
         )
         serverLogger.info(`Updated ${provider} repo.`, {
@@ -71,19 +107,24 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
       } else {
         throw new Error('Invalid git repository remote')
       }
-    } catch {
+    } catch (error) {
       // If git command fails, directory might be corrupted
-      serverLogger.warn(`Invalid git repository at ${repoDir}, removing...`)
-      await execAsync(`rm -rf ${repoDir}`)
+      serverLogger.warn(`Invalid git repository at ${repoDir}, removing...`, {
+        error,
+      })
+      await execWithTimeout(`rm -rf ${repoDir}`)
     }
   }
 
   // Cache miss / invalid remote
   await fsp.mkdir(path.dirname(repoDir), { recursive: true })
-  await execAsync(`git clone ${gitUrl} ${repoDir}`)
-  await execAsync(`cd ${repoDir} && git checkout ${branch}`)
-  await execAsync(`cd ${repoDir} && git pull`)
-  const { stdout: currentBranch } = await execAsync(
+
+  serverLogger.info(`Cloning repository ${gitUrl} to ${repoDir}...`)
+  await execWithTimeout(`git clone ${gitUrl} ${repoDir}`)
+  await execWithTimeout(`cd ${repoDir} && git checkout ${branch}`)
+  await execWithTimeout(`cd ${repoDir} && git pull`)
+
+  const { stdout: currentBranch } = await execWithTimeout(
     `cd ${repoDir} && git branch --show-current`,
   )
   serverLogger.info(`Cloned repo from ${gitUrl} to ${repoDir}`, {

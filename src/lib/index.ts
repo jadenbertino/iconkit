@@ -1,6 +1,25 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+/**
+ * Wraps a promise with a timeout
+ */
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  operation: string,
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(
+        () => reject(new Error(`${operation} timed out after ${timeoutMs}ms`)),
+        timeoutMs,
+      ),
+    ),
+  ])
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(...inputs))
 }
@@ -57,4 +76,4 @@ const htmlAttributesToReact = (attrs: Record<string, string>) => {
   )
 }
 
-export { htmlAttributesToReact }
+export { htmlAttributesToReact, withTimeout }

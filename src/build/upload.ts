@@ -26,20 +26,13 @@ async function uploadIcons(icons: ScrapedIcon[], providerId: IconProviderId) {
 
   for (let i = 0; i < iconsToInsert.length; i += BATCH_SIZE) {
     const batch = iconsToInsert.slice(i, i + BATCH_SIZE)
-    const batchNum = Math.floor(i / BATCH_SIZE) + 1
-    const totalBatches = Math.ceil(iconsToInsert.length / BATCH_SIZE)
-
-    serverLogger.debug(
-      `Uploading batch ${batchNum}/${totalBatches} (${batch.length} icons)`,
-    )
-
     await limiter.schedule(async () => {
       const { error } = await supabaseAdmin.from('icon').insert(batch)
       if (error) throw error
     })
   }
   serverLogger.info(
-    `Successfully uploaded ${icons.length} icons for ${providerId}`,
+    `✅ Successfully uploaded ${icons.length} icons for ${providerId}`,
   )
 }
 
@@ -55,11 +48,11 @@ async function getProviderRecord(
       .select('*')
       .eq('git_url', git.url)
       .maybeSingle()
-  
+
   if (getProviderError) {
     throw getProviderError
   }
-  
+
   if (existingProvider) {
     return existingProvider
   }

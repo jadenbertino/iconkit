@@ -1,18 +1,19 @@
 import { ICON_PROVIDER_IDS } from '@/constants'
-import { fsp } from '@/lib/fs'
-import path from 'path'
+import { serverLogger } from '@/lib/logs/server'
 import { scrapeIcons } from './scrape'
 import { uploadIcons } from './upload'
 
-async function getAllIcons(outputDir: string): Promise<void> {
-  await fsp.mkdir(outputDir, { recursive: true })
+async function getAllIcons(): Promise<void> {
+  let count = 0
   await Promise.all(
     ICON_PROVIDER_IDS.map(async (provider) => {
       const icons = await scrapeIcons(provider)
+      count += icons.length
       await uploadIcons(icons, provider)
     }),
   )
+  serverLogger.info(`⭐ Uploaded ${count} icons`)
 }
 
-const outputDir = path.join(process.cwd(), 'icons')
-await getAllIcons(outputDir)
+await getAllIcons()
+process.exit(0) // file continues to run for some reason so we need to exit
