@@ -1,11 +1,11 @@
-import type { Icon } from '@/constants'
 import { centerClasses } from '@/constants/classes'
 import { cn, htmlAttributesToReact } from '@/lib'
+import type { Icon } from '@/lib/schemas/database'
 import type { DOMNode } from 'html-react-parser'
 import parse, { domToReact } from 'html-react-parser'
 
 const SvgThumnail = ({ icon }: { icon: Icon }) => {
-  const SvgElement = parse(icon.svgContent, {
+  const SvgElement = parse(icon.svg, {
     replace: (domNode) => {
       if (
         domNode.type === 'tag' &&

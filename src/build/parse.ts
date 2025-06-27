@@ -1,8 +1,13 @@
-import type { Icon, IconProviderId } from '@/constants/index'
-import { ICON_PROVIDER_IDS, ICON_PROVIDERS } from '@/constants/index'
+import {
+  ICON_PROVIDER_IDS,
+  ICON_PROVIDERS,
+  type IconProviderId,
+} from '@/constants/index'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
+import type { IconSchema } from '@/lib/schemas/database'
 import path from 'path'
+import type { z } from 'zod'
 
 async function getAllIcons(outputDir: string): Promise<void> {
   await fsp.mkdir(outputDir, { recursive: true })
@@ -34,23 +39,26 @@ async function getIconsFromProvider(
   const svgFiles = files.filter((file) => file.endsWith('.svg'))
 
   // Parse svg files
-  const icons: Icon[] = await Promise.all(
-    svgFiles.map(async (filePath): Promise<Icon> => {
-      const name = path.basename(filePath, '.svg')
-      const svgContent = await fsp.readFile(filePath, 'utf-8')
-      // Remove the SVG wrapper tags and get the inner content
-      const cleanedSvgContent = svgContent
-        .replace(/"/g, "'") // replace " with '
-        .trim()
+  const icons = await Promise.all(
+    svgFiles.map(
+      async (filePath): Promise<z.infer<typeof IconSchema.Insert>> => {
+        const name = path.basename(filePath, '.svg')
+        const svgContent = await fsp.readFile(filePath, 'utf-8')
+        // Remove the SVG wrapper tags and get the inner content
+        const cleanedSvgContent = svgContent
+          .replace(/"/g, "'") // replace " with '
+          .trim()
 
-      return {
-        id: crypto.randomUUID(),
-        name,
-        svgContent: cleanedSvgContent,
-        provider,
-        blobPath: path.relative(repoDir, filePath),
-      }
-    }),
+        return {
+          name,
+          svg: cleanedSvgContent,
+          source_url: '',
+          provider_id: 1,
+          version: '',
+          created_at: new Date().toISOString(),
+        }
+      },
+    ),
   )
 
   // Log and write to file

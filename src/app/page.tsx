@@ -1,8 +1,7 @@
 'use client'
 
-import type { Icon } from '@/constants'
 import { CLIENT_ENV } from '@/env/client'
-import { toGithubUrl } from '@/lib'
+import type { Icon } from '@/lib/schemas/database'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { getIcons } from './api/icons/client'
@@ -21,7 +20,7 @@ export default function Home() {
       <div className='flex flex-wrap gap-2'>
         {icons.map((icon) => (
           <a
-            href={toGithubUrl(icon)}
+            href={icon.source_url}
             target='_blank'
             rel='noopener noreferrer'
             key={icon.id}

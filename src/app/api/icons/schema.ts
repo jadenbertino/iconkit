@@ -1,8 +1,8 @@
-import { IconSchema } from '@/constants'
+import { IconSchema } from '@/lib/schemas/database'
 import { z } from 'zod'
 
 const GetResponseSchema = z.object({
-  icons: z.array(IconSchema),
+  icons: z.array(IconSchema.Row),
 })
 type GetResponse = z.infer<typeof GetResponseSchema>
 
