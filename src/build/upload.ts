@@ -54,8 +54,12 @@ async function getProviderRecord(
       .from('provider')
       .select('*')
       .eq('git_url', git.url)
-      .single()
-  if (getProviderError) throw getProviderError
+      .maybeSingle()
+  
+  if (getProviderError) {
+    throw getProviderError
+  }
+  
   if (existingProvider) {
     return existingProvider
   }
