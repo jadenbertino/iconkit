@@ -7,7 +7,7 @@ export function IconsGrid() {
   const { getIconsQuery } = useIconQueries()
   const pageSize = 100
   const skip = (search.page - 1) * pageSize
-  
+
   const {
     data: icons,
     isLoading,
@@ -22,7 +22,7 @@ export function IconsGrid() {
   if (error && !icons) return <div>Error loading icons</div>
 
   return (
-    <div className='flex flex-wrap gap-2'>
+    <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-2 justify-items-start'>
       {icons?.map((icon) => (
         <a
           href={icon.source_url}
