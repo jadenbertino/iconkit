@@ -1,36 +1,12 @@
-import {
-  ICON_PROVIDER_IDS,
-  ICON_PROVIDERS,
-  type IconProviderId,
-} from '@/constants/index'
+import { ICON_PROVIDERS, type IconProviderId } from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
-import type { IconSchema } from '@/lib/schemas/database'
+import type { ScrapedIcon } from '@/lib/schemas/database'
 import path from 'path'
-import type { z } from 'zod'
 
-type LocalIcon = Omit<
-  z.infer<typeof IconSchema.Insert>,
-  'provider_id' | 'created_at'
->
-
-async function getAllIcons(outputDir: string): Promise<void> {
-  await fsp.mkdir(outputDir, { recursive: true })
-  await Promise.all(
-    ICON_PROVIDER_IDS.map((provider) => {
-      const outputFile = path.join(outputDir, `${provider}.json`)
-      return getIconsFromProvider(provider, outputFile)
-    }),
-  )
-}
-
-async function getIconsFromProvider(
-  provider: IconProviderId,
-  outputFile: string,
-) {
+async function scrapeIcons(provider: IconProviderId): Promise<ScrapedIcon[]> {
   // Clone repo to tmp dir
-  const start = Date.now()
   const repoDir = await cloneRepo(provider)
   const { git } = ICON_PROVIDERS[provider]
   const iconsDir = path.join(repoDir, git.iconsDir)
@@ -46,8 +22,8 @@ async function getIconsFromProvider(
   const svgFiles = files.filter((file) => file.endsWith('.svg'))
 
   // Parse svg files
-  const icons = await Promise.all(
-    svgFiles.map(async (filePath): Promise<LocalIcon> => {
+  return await Promise.all(
+    svgFiles.map(async (filePath): Promise<ScrapedIcon> => {
       const name = path.basename(filePath, '.svg')
       const svgContent = await fsp.readFile(filePath, 'utf-8')
       // Remove the SVG wrapper tags and get the inner content
@@ -67,18 +43,6 @@ async function getIconsFromProvider(
         source_url,
       }
     }),
-  )
-
-  // Log and write to file
-  const stop = Date.now()
-  const seconds = (stop - start) / 1000
-  serverLogger.info(`${provider} Icons parsed`, {
-    count: icons.length,
-    seconds,
-  })
-  await fsp.writeFile(outputFile, JSON.stringify(icons, null, 2))
-  serverLogger.info(
-    `Successfully generated icon list for ${provider} with ${icons.length} icons`,
   )
 }
 
@@ -128,4 +92,4 @@ async function cloneRepo(provider: IconProviderId): Promise<string> {
   return repoDir
 }
 
-export { getAllIcons }
+export { scrapeIcons }

@@ -8,6 +8,10 @@ const IconSchema = {
   Relationships: _.iconRelationshipsSchema,
 }
 type Icon = z.infer<typeof IconSchema.Row>
+type ScrapedIcon = Omit<
+  z.infer<typeof IconSchema.Insert>,
+  'provider_id' | 'created_at'
+>
 
 const ProviderSchema = {
   Row: _.providerRowSchema,
@@ -17,4 +21,4 @@ const ProviderSchema = {
 type Provider = z.infer<typeof ProviderSchema.Row>
 
 export { IconSchema, ProviderSchema }
-export type { Icon, Provider }
+export type { Icon, Provider, ScrapedIcon }
