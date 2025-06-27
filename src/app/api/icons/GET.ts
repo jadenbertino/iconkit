@@ -1,6 +1,7 @@
 import { validateQueryParams } from '@/lib/api'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { handleErrors } from '@/lib/error'
+import { SERVER_ENV } from '@/env/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { GetRequestSchema, type GetResponse } from './schema'
 
@@ -29,6 +30,7 @@ async function getIcons({
   const { data, error } = await supabaseAdmin
     .from('icon')
     .select('*')
+    .eq('version', SERVER_ENV.VERSION)
     .ilike('name', `%${searchText}%`)
     .range(skip, skip + limit - 1)
     .order('name')
