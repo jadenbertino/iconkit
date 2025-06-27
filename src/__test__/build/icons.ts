@@ -1,8 +1,8 @@
 import { type IconProviderSlug } from '@/constants'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
-import { scrapeIcons } from '../build/scrape'
-import { uploadIcons } from '../build/upload'
+import { scrapeIcons } from '../../build/scrape'
+import { uploadIcons } from '../../build/upload'
 
 async function testUpload() {
   const TEST_PROVIDER: IconProviderSlug = 'hero_icons'

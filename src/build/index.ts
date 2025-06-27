@@ -1,4 +1,4 @@
-import { ICON_PROVIDER_IDS } from '@/constants'
+import { ICON_PROVIDER_SLUGS } from '@/constants'
 import { serverLogger } from '@/lib/logs/server'
 import { scrapeIcons } from './scrape'
 import { uploadIcons } from './upload'
@@ -6,7 +6,7 @@ import { uploadIcons } from './upload'
 async function getAllIcons(): Promise<void> {
   let count = 0
   await Promise.all(
-    ICON_PROVIDER_IDS.map(async (provider) => {
+    ICON_PROVIDER_SLUGS.map(async (provider) => {
       const icons = await scrapeIcons(provider)
       count += icons.length
       await uploadIcons(icons, provider)
