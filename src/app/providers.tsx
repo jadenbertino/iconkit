@@ -7,6 +7,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
+import { SearchProvider } from './context/SearchContext'
 
 // query client with default error handling
 const queryClient = new QueryClient({
@@ -24,7 +25,9 @@ const queryClient = new QueryClient({
 
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <SearchProvider>{children}</SearchProvider>
+    </QueryClientProvider>
   )
 }
 

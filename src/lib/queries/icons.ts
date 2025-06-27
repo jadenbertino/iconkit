@@ -16,6 +16,8 @@ const QUERY_OPTIONS = {
     createQueryOptions({
       queryKey: QUERY_KEYS.iconsQuery(q),
       queryFn: () => getIcons(q),
+      staleTime: Infinity,
+      placeholderData: (previousData) => previousData,
     }),
 }
 

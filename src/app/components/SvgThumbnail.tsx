@@ -4,7 +4,13 @@ import type { Icon } from '@/lib/schemas/database'
 import type { DOMNode } from 'html-react-parser'
 import parse, { domToReact } from 'html-react-parser'
 
-const SvgThumnail = ({ icon }: { icon: Icon }) => {
+const SvgThumnail = ({
+  icon,
+  className,
+}: {
+  icon: Icon
+  className?: string
+}) => {
   const SvgElement = parse(icon.svg, {
     replace: (domNode) => {
       if (
@@ -34,6 +40,7 @@ const SvgThumnail = ({ icon }: { icon: Icon }) => {
       className={cn(
         'w-16 h-16 p-2 bg-white rounded-lg shadow-md text-black',
         centerClasses,
+        className,
       )}
     >
       {SvgElement}
