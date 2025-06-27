@@ -6,7 +6,7 @@ export function SearchBar() {
   const { setSearch } = useSearch()
 
   const handleSearch = () => {
-    setSearch({ text: searchText })
+    setSearch({ text: searchText, page: 1 })
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

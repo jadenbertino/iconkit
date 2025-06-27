@@ -5,13 +5,16 @@ import { SvgThumnail } from './SvgThumbnail'
 export function IconsGrid() {
   const { search } = useSearch()
   const { getIconsQuery } = useIconQueries()
+  const pageSize = 100
+  const skip = (search.page - 1) * pageSize
+  
   const {
     data: icons,
     isLoading,
     error,
   } = getIconsQuery({
-    skip: 0,
-    limit: 100,
+    skip,
+    limit: pageSize,
     searchText: search.text,
   })
 
