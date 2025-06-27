@@ -1,12 +1,17 @@
 import { http } from '@/lib/clients/client'
-import { GetResponseSchema } from './schema'
+import { z } from 'zod'
+import { GetRequestSchema, GetResponseSchema } from './schema'
 
-async function getIcons() {
+type IconQuery = z.infer<typeof GetRequestSchema>
+
+async function getIcons(query: IconQuery) {
   const { icons } = await http.get({
     url: '/api/icons',
+    params: query,
     responseSchema: GetResponseSchema,
   })
   return icons
 }
 
 export { getIcons }
+export type { IconQuery }

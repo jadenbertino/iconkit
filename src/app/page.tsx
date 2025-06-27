@@ -1,24 +1,28 @@
 'use client'
 
-import { CLIENT_ENV } from '@/env/client'
-import type { Icon } from '@schemas/database'
+import { useIconQueries } from '@/lib/queries/icons'
 import type { ReactNode } from 'react'
-import { useEffect, useState } from 'react'
-import { getIcons } from './api/icons/client'
 import { SvgThumnail } from './components/SvgThumbnail'
 
 export default function Home() {
-  const [icons, setIcons] = useState<Icon[]>([])
+  const { getIconsQuery } = useIconQueries()
+  const {
+    data: icons,
+    isLoading,
+    error,
+  } = getIconsQuery({
+    skip: 0,
+    limit: 50,
+    searchText: '',
+  })
 
-  useEffect(() => {
-    console.debug({ env: CLIENT_ENV.ENVIRONMENT })
-    getIcons().then(setIcons)
-  }, [])
+  if (isLoading) return <Container>Loading...</Container>
+  if (error) return <Container>Error loading icons</Container>
 
   return (
     <Container>
       <div className='flex flex-wrap gap-2'>
-        {icons.map((icon) => (
+        {icons?.map((icon) => (
           <a
             href={icon.source_url}
             target='_blank'

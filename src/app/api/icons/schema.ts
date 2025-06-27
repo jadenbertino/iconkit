@@ -3,7 +3,7 @@ import { IconSchema } from '@/lib/schemas/database'
 import { z } from 'zod'
 
 const GetRequestSchema = PaginationSchema.extend({
-  searchText: z.string(),
+  searchText: z.string().nullable(),
 })
 
 const GetResponseSchema = z.object({
@@ -13,3 +13,4 @@ type GetResponse = z.infer<typeof GetResponseSchema>
 
 export { GetRequestSchema, GetResponseSchema }
 export type { GetResponse }
+

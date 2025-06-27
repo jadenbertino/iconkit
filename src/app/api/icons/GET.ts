@@ -1,4 +1,4 @@
-import { getRequestBody } from '@/lib/api'
+import { validateQueryParams } from '@/lib/api'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { handleErrors } from '@/lib/error'
 import { NextRequest, NextResponse } from 'next/server'
@@ -6,11 +6,11 @@ import { GetRequestSchema, type GetResponse } from './schema'
 
 const GET = handleErrors(
   async (req: NextRequest): Promise<NextResponse<GetResponse>> => {
-    const { skip, limit, searchText } = await getRequestBody(
+    const { skip, limit, searchText } = validateQueryParams(
       req,
       GetRequestSchema,
     )
-    const icons = await getIcons({ skip, limit, searchText })
+    const icons = await getIcons({ skip, limit, searchText: searchText ?? '' })
     return NextResponse.json({
       icons,
     })
