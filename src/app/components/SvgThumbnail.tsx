@@ -32,7 +32,7 @@ const SvgThumnail = ({ icon }: { icon: Icon }) => {
   return (
     <div
       className={cn(
-        'w-20 h-20 p-2 bg-white rounded-lg shadow-md text-black',
+        'w-16 h-16 p-2 bg-white rounded-lg shadow-md text-black',
         centerClasses,
       )}
     >
