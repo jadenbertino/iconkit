@@ -3,6 +3,12 @@ import { ICON_PROVIDERS } from '@/constants'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
 import type { Provider, ScrapedIcon } from '@/lib/schemas/database'
+import Bottleneck from 'bottleneck'
+
+const limiter = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 100,
+})
 
 async function uploadIcons(icons: ScrapedIcon[], providerId: IconProviderId) {
   const provider = await getProviderRecord(providerId)
@@ -27,8 +33,10 @@ async function uploadIcons(icons: ScrapedIcon[], providerId: IconProviderId) {
       `Uploading batch ${batchNum}/${totalBatches} (${batch.length} icons)`,
     )
 
-    const { error } = await supabaseAdmin.from('icon').insert(batch)
-    if (error) throw error
+    await limiter.schedule(async () => {
+      const { error } = await supabaseAdmin.from('icon').insert(batch)
+      if (error) throw error
+    })
   }
   serverLogger.info(
     `Successfully uploaded ${icons.length} icons for ${providerId}`,
