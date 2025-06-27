@@ -1,0 +1,2 @@
+- After changing any file, run `npx prettier --write <filepath> > /dev/null` to format the code silently
+- Whenver you need to use `tsx`, run it like so: `source env/.env.$ENVIRONMENT && export DOPPLER_TOKEN && doppler run -- npx tsx ...`
