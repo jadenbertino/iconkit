@@ -8,7 +8,8 @@
     "build": "bash scripts/build.sh",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write --list-different ."
+    "format": "prettier --write --list-different .",
+    "db:generate-schemas": "bash scripts/generate-schemas.sh"
   },
   "keywords": [],
   "author": "",
@@ -45,6 +46,7 @@
     "eslint": "9.29.0",
     "eslint-config-next": "15.3.3",
     "prettier": "3.5.3",
+    "supazod": "2.0.0",
     "tailwindcss": "4.1.10",
     "tsx": "4.20.3",
     "typescript": "5.8.3"

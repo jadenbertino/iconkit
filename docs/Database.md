@@ -69,3 +69,47 @@ CREATE TABLE "public"."license_type" (
     "website_obligations" text NOT NULL -- What the website must do regarding this license type
 );
 ```
+
+## Types
+
+### Auto-Generated Type System
+
+### Overview
+
+This project uses a two-tier type generation system for type safety and validation.
+
+Run `pnpm run db:generate-schemas` to create the following:
+
+1. **TypeScript Types** - Generated from Supabase database schema
+2. **Zod Schemas** - Generated from TypeScript types for runtime validation
+
+The underlying logic is stored in `scripts/generate-schemas.sh`
+
+### Create Typescript Types
+
+```bash
+supabase gen types typescript --local > src/lib/schemas/database.types.ts
+```
+
+Creates `src/lib/schemas/database.types.ts` - TypeScript interfaces for all tables
+
+### Create Zod Schemas
+
+```bash
+npx supazod -i src/lib/schemas/database.types.ts -o src/lib/schemas/_database.ts
+```
+
+Creates `src/lib/schemas/_database.ts` - Zod validation schemas
+We then import the schemas into `src/lib/schemas/database.ts` and re-export them for use in the project in a more convenient way
+
+### Usage
+
+```typescript
+import { IconSchema } from '@/lib/schemas/database'
+
+const icon = IconSchema.Row.parse({
+  id: 1,
+  name: 'icon',
+  svg: '<svg>...</svg>',
+})
+```
