@@ -3,12 +3,16 @@ import { z } from 'zod'
 function validateClientEnv() {
   const clientSchema = z.object({
     ENVIRONMENT: z.enum(['development', 'staging', 'production']),
+    SUPABASE_PROJECT_ID: z.string(),
+    SUPABASE_ANON_KEY: z.string(),
   })
 
   // Need to set process.env.KEYNAME because next.js inlines at build time
   type ClientEnvKeys = keyof z.infer<typeof clientSchema>
   const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
     ENVIRONMENT: process.env['NEXT_PUBLIC_ENVIRONMENT'],
+    SUPABASE_ANON_KEY: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
+    SUPABASE_PROJECT_ID: process.env['NEXT_PUBLIC_SUPABASE_PROJECT_ID'],
   }
 
   const clientValidation = clientSchema.safeParse(rawClientEnv)
@@ -26,7 +30,11 @@ function validateClientEnv() {
     throw new Error('Invalid client environment variables')
   }
 
-  return clientValidation.data
+  const env = clientValidation.data
+  return {
+    ...env,
+    SUPABASE_URL: `https://${env.SUPABASE_PROJECT_ID}.supabase.co`,
+  }
 }
 
 const CLIENT_ENV = validateClientEnv()

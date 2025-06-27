@@ -1,19 +1,27 @@
-import { Icon, ICON_PROVIDERS } from '@/constants'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(...inputs))
+/**
+ * Wraps a promise with a timeout
+ */
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  operation: string,
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(
+        () => reject(new Error(`${operation} timed out after ${timeoutMs}ms`)),
+        timeoutMs,
+      ),
+    ),
+  ])
 }
 
-function toGithubUrl(icon: Icon) {
-  const { git } = ICON_PROVIDERS[icon.provider]
-  const repoUrl = git.url.slice(0, -4) // remove .git
-  const blobPath = icon.blobPath
-  if (!blobPath) {
-    throw new Error(`Icon ${icon.name} has no blob path`)
-  }
-  return `${repoUrl}/blob/${git.branch}/${blobPath}`
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(...inputs))
 }
 
 const htmlAttributesToReact = (attrs: Record<string, string>) => {
@@ -68,4 +76,4 @@ const htmlAttributesToReact = (attrs: Record<string, string>) => {
   )
 }
 
-export { htmlAttributesToReact, toGithubUrl }
+export { htmlAttributesToReact, withTimeout }

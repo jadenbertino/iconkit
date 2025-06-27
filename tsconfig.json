@@ -31,6 +31,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "incremental": true,
     "plugins": [
       {
@@ -49,7 +50,8 @@
     // Paths
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@schemas/*": ["src/lib/schemas/*"]
     },
     "noEmit": true
   },

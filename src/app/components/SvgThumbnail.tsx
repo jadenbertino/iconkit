@@ -1,9 +1,17 @@
-import { centerClasses, Icon } from '@/constants'
+import { centerClasses } from '@/constants/classes'
 import { cn, htmlAttributesToReact } from '@/lib'
-import parse, { DOMNode, domToReact } from 'html-react-parser'
+import type { Icon } from '@/lib/schemas/database'
+import type { DOMNode } from 'html-react-parser'
+import parse, { domToReact } from 'html-react-parser'
 
-const SvgThumnail = ({ icon }: { icon: Icon }) => {
-  const SvgElement = parse(icon.svgContent, {
+const SvgThumnail = ({
+  icon,
+  className,
+}: {
+  icon: Icon
+  className?: string
+}) => {
+  const SvgElement = parse(icon.svg, {
     replace: (domNode) => {
       if (
         domNode.type === 'tag' &&
@@ -30,8 +38,9 @@ const SvgThumnail = ({ icon }: { icon: Icon }) => {
   return (
     <div
       className={cn(
-        'w-20 h-20 p-2 bg-white rounded-lg shadow-md text-black',
+        'w-16 h-16 p-2 bg-white rounded-lg shadow-md text-black',
         centerClasses,
+        className,
       )}
     >
       {SvgElement}

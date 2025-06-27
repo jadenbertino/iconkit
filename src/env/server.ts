@@ -6,6 +6,7 @@ import { CLIENT_ENV } from './client'
 function validateServerEnv() {
   const serverSchema = z.object({
     VERSION: z.string().default(getVersionFromChangelog()),
+    SUPABASE_SERVICE_ROLE_KEY: z.string(),
   })
 
   const serverValidation = serverSchema.safeParse(process.env)

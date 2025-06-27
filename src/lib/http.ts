@@ -1,11 +1,12 @@
-import axios, {
-  AxiosError,
+import type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
   CreateAxiosDefaults,
 } from 'axios'
-import axiosRetry, { IAxiosRetryConfig } from 'axios-retry'
+import axios, { AxiosError } from 'axios'
+import type { IAxiosRetryConfig } from 'axios-retry'
+import axiosRetry from 'axios-retry'
 import { serializeError } from 'serialize-error'
 import { z } from 'zod'
 

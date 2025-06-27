@@ -1,15 +1,46 @@
-import { Icon } from '@/constants'
+import { validateQueryParams } from '@/lib/api'
+import { supabaseAdmin } from '@/lib/clients/server'
 import { handleErrors } from '@/lib/error'
+import { SERVER_ENV } from '@/env/server'
 import { NextRequest, NextResponse } from 'next/server'
-import { GetResponse } from './schema'
-import { allIcons } from './tmp'
+import { GetRequestSchema, type GetResponse } from './schema'
 
 const GET = handleErrors(
-  async (_req: NextRequest): Promise<NextResponse<GetResponse>> => {
+  async (req: NextRequest): Promise<NextResponse<GetResponse>> => {
+    const { skip, limit, searchText } = validateQueryParams(
+      req,
+      GetRequestSchema,
+    )
+    const icons = await getIcons({ skip, limit, searchText: searchText ?? '' })
     return NextResponse.json({
-      icons: allIcons as Icon[],
+      icons,
     })
   },
 )
 
+async function getIcons({
+  skip,
+  limit,
+  searchText,
+}: {
+  skip: number
+  limit: number
+  searchText: string
+}) {
+  const { data, error } = await supabaseAdmin
+    .from('icon')
+    .select('*')
+    .eq('version', SERVER_ENV.VERSION)
+    .ilike('name', `%${searchText}%`)
+    .range(skip, skip + limit - 1)
+    .order('name')
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
 export default GET
+export { getIcons }

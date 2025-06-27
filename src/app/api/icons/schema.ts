@@ -1,10 +1,16 @@
-import { IconSchema } from '@/constants'
+import { PaginationSchema } from '@/lib/schemas'
+import { IconSchema } from '@/lib/schemas/database'
 import { z } from 'zod'
 
+const GetRequestSchema = PaginationSchema.extend({
+  searchText: z.string().nullable(),
+})
+
 const GetResponseSchema = z.object({
-  icons: z.array(IconSchema),
+  icons: z.array(IconSchema.Row),
 })
 type GetResponse = z.infer<typeof GetResponseSchema>
 
-export { GetResponseSchema }
+export { GetRequestSchema, GetResponseSchema }
 export type { GetResponse }
+

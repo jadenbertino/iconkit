@@ -1,42 +1,20 @@
 'use client'
 
-import { Icon } from '@/constants'
-import { CLIENT_ENV } from '@/env/client'
-import { toGithubUrl } from '@/lib'
-import { ReactNode, useEffect, useState } from 'react'
-import { getIcons } from './api/icons/client'
-import { SvgThumnail } from './components/SvgThumbnail'
+import { IconsGrid } from './components/IconsGrid'
+import { Container, Row } from './components/Layout'
+import { Pagination } from './components/Pagination'
+import { SearchBar } from './components/SearchBar'
 
 export default function Home() {
-  const [icons, setIcons] = useState<Icon[]>([])
-
-  useEffect(() => {
-    console.debug({ env: CLIENT_ENV.ENVIRONMENT })
-    getIcons().then(setIcons)
-  }, [])
-
   return (
     <Container>
-      <div className='flex flex-wrap gap-2'>
-        {icons.map((icon) => (
-          <a
-            href={toGithubUrl(icon)}
-            target='_blank'
-            rel='noopener noreferrer'
-            key={icon.id}
-          >
-            <SvgThumnail icon={icon} />
-          </a>
-        ))}
+      <div className='w-full space-y-6'>
+        <Row className='pt-8'>
+          <SearchBar />
+        </Row>
+        <IconsGrid />
+        <Pagination />
       </div>
     </Container>
-  )
-}
-
-const Container = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className='w-full h-full flex items-center justify-center'>
-      <div className='max-w-[1200px]'>{children}</div>
-    </div>
   )
 }
