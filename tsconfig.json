@@ -50,7 +50,8 @@
     // Paths
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@schemas/*": ["src/lib/schemas/*"]
     },
     "noEmit": true
   },

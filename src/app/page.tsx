@@ -1,7 +1,7 @@
 'use client'
 
 import { CLIENT_ENV } from '@/env/client'
-import type { Icon } from '@/lib/schemas/database'
+import type { Icon } from '@schemas/database'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { getIcons } from './api/icons/client'
