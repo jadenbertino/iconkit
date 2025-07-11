@@ -1,5 +1,7 @@
 import type { IconQuery } from '@/app/api/icons/client'
 import { getIcons } from '@/app/api/icons/client'
+import { useSearch } from '@/app/context/SearchContext'
+import { PAGE_SIZE } from '@/constants'
 import {
   queryOptions as createQueryOptions,
   useQuery,
@@ -24,16 +26,18 @@ const QUERY_OPTIONS = {
 
 const useIconQueries = () => {
   const queryClient = useQueryClient()
+  const { search } = useSearch()
 
   const useIconsQuery = (q: IconQuery) => {
     const options = QUERY_OPTIONS.iconsQuery(q)
     return useQuery(options)
   }
 
-  const prefetchNextPage = (currentQuery: IconQuery, pageSize: number) => {
+  const prefetchNextPage = () => {
     const nextPageQuery: IconQuery = {
-      ...currentQuery,
-      skip: currentQuery.skip + pageSize,
+      skip: search.page * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      searchText: search.text,
     }
 
     queryClient.prefetchQuery({

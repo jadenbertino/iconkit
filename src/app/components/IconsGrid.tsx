@@ -10,7 +10,6 @@ export function IconsGrid() {
   const { search } = useSearch()
   const { useIconsQuery } = useIconQueries()
   const skip = (search.page - 1) * PAGE_SIZE
-  const SkeletonIcons = new Array(100).fill(null)
 
   const { data: icons, error } = useIconsQuery({
     skip,
@@ -40,7 +39,7 @@ export function IconsGrid() {
               />
             </a>
           ))
-        : SkeletonIcons.map((_, index) => (
+        : new Array(PAGE_SIZE).fill(null).map((_, index) => (
             <Card key={index}>
               <Skeleton />
             </Card>
