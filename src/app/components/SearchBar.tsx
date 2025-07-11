@@ -14,9 +14,7 @@ export function SearchBar() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchText(value) // Update input immediately
-    if (value.length > 0) {
-      debouncedSetSearch(value) // Debounce the search context update
-    }
+    debouncedSetSearch(value) // Debounce the search context update
   }
 
   return (
