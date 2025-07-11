@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import type { ReactNode } from 'react'
 import { SearchProvider } from './context/SearchContext'
 
@@ -26,7 +27,10 @@ const queryClient = new QueryClient({
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <SearchProvider>{children}</SearchProvider>
+      <SearchProvider>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </SearchProvider>
     </QueryClientProvider>
   )
 }
