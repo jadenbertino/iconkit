@@ -8,9 +8,12 @@ import {
 import { useIconQueries } from '@/lib/queries/icons'
 import { useSearch } from '../context/SearchContext'
 
-function IconPagination() {
+function IconPagination({ hasMore }: { hasMore: boolean }) {
   const { search, nextPage, prevPage } = useSearch()
   const { prefetchNextPage } = useIconQueries()
+
+  const isPrevDisabled = search.page <= 1
+  const isNextDisabled = !hasMore
 
   return (
     <Pagination className='mt-6'>
@@ -20,9 +23,11 @@ function IconPagination() {
             href='#'
             onClick={(e) => {
               e.preventDefault()
-              prevPage()
+              if (!isPrevDisabled) {
+                prevPage()
+              }
             }}
-            className={search.page <= 1 ? 'pointer-events-none opacity-50' : ''}
+            disabled={isPrevDisabled}
           />
         </PaginationItem>
         <PaginationItem>
@@ -33,9 +38,12 @@ function IconPagination() {
             href='#'
             onClick={(e) => {
               e.preventDefault()
-              nextPage()
+              if (!isNextDisabled) {
+                nextPage()
+              }
             }}
-            onMouseEnter={prefetchNextPage}
+            onMouseEnter={!isNextDisabled ? prefetchNextPage : undefined}
+            disabled={isNextDisabled}
           />
         </PaginationItem>
       </PaginationContent>
