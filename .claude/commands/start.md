@@ -32,6 +32,12 @@ eza --tree --git-ignore --level=10 --no-permissions --no-user --no-time --all
 - `docs/Database.md` contains documentation on the overall database architecture
 - `src/lib/schemas/database.ts` contains the database schema
 
+### Environment Variables
+
+- `env/.env.*` stores a `DOPPLER_TOKEN` for the `doppler` CLI
+- During dev & build scripts, the `doppler` CLI is used to inject environment variables into the project
+- `src/env/*` contains Zod schemas for environment variable validation
+
 ### Code Rules
 
 Please read through `.claude/context/rules.md` for the code rules.
