@@ -1,8 +1,8 @@
 'use client'
 
+import IconPagination from './components/IconPagination'
 import { IconsGrid } from './components/IconsGrid'
 import { Container, Row } from './components/Layout'
-import { Pagination } from './components/Pagination'
 import { SearchBar } from './components/SearchBar'
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
           <SearchBar />
         </Row>
         <IconsGrid />
-        <Pagination />
+        <IconPagination />
       </div>
     </Container>
   )
