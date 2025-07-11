@@ -1,4 +1,5 @@
 import Skeleton from '@/components/ui/skeleton'
+import { PAGE_SIZE } from '@/constants'
 import { centerClasses } from '@/constants/classes'
 import { cn } from '@/lib'
 import { useIconQueries } from '@/lib/queries/icons'
@@ -8,13 +9,12 @@ import { useSearch } from '../context/SearchContext'
 export function IconsGrid() {
   const { search } = useSearch()
   const { useIconsQuery } = useIconQueries()
-  const pageSize = 100
-  const skip = (search.page - 1) * pageSize
+  const skip = (search.page - 1) * PAGE_SIZE
   const SkeletonIcons = new Array(100).fill(null)
 
   const { data: icons, error } = useIconsQuery({
     skip,
-    limit: pageSize,
+    limit: PAGE_SIZE,
     searchText: search.text,
   })
   if (error && !icons) return <div>Error loading icons</div>

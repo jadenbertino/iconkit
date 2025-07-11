@@ -3,6 +3,7 @@ import { getIcons } from '@/app/api/icons/client'
 import {
   queryOptions as createQueryOptions,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query'
 
 const QUERY_KEYS = {
@@ -22,12 +23,27 @@ const QUERY_OPTIONS = {
 }
 
 const useIconQueries = () => {
+  const queryClient = useQueryClient()
+
   const useIconsQuery = (q: IconQuery) => {
     const options = QUERY_OPTIONS.iconsQuery(q)
     return useQuery(options)
   }
 
-  return { useIconsQuery }
+  const prefetchNextPage = (currentQuery: IconQuery, pageSize: number) => {
+    const nextPageQuery: IconQuery = {
+      ...currentQuery,
+      skip: currentQuery.skip + pageSize,
+    }
+
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.iconsQuery(nextPageQuery),
+      queryFn: () => getIcons(nextPageQuery),
+      staleTime: Infinity,
+    })
+  }
+
+  return { useIconsQuery, prefetchNextPage }
 }
 
 export { useIconQueries }

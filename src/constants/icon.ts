@@ -8,4 +8,6 @@ const prettierSvgConfig: PrettierOptions = {
   useTabs: false,
 }
 
-export { prettierSvgConfig }
+const PAGE_SIZE = 100
+
+export { prettierSvgConfig, PAGE_SIZE }

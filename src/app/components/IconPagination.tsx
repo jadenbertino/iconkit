@@ -5,10 +5,22 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+import { PAGE_SIZE } from '@/constants'
+import { useIconQueries } from '@/lib/queries/icons'
 import { useSearch } from '../context/SearchContext'
 
 function IconPagination() {
   const { search, nextPage, prevPage } = useSearch()
+  const { prefetchNextPage } = useIconQueries()
+
+  const handleMouseEnter = () => {
+    const currentQuery = {
+      skip: (search.page - 1) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      searchText: search.text,
+    }
+    prefetchNextPage(currentQuery, PAGE_SIZE)
+  }
 
   return (
     <Pagination className='mt-6'>
@@ -33,6 +45,7 @@ function IconPagination() {
               e.preventDefault()
               nextPage()
             }}
+            onMouseEnter={handleMouseEnter}
           />
         </PaginationItem>
       </PaginationContent>
