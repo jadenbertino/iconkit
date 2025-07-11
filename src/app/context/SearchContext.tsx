@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { createContext, useContext, useState } from 'react'
 
 type SearchParams = {
@@ -10,7 +10,7 @@ type SearchParams = {
 
 type SearchContextType = {
   search: SearchParams
-  setSearch: (search: SearchParams) => void
+  setSearch: Dispatch<SetStateAction<SearchParams>>
   nextPage: () => void
   prevPage: () => void
 }
