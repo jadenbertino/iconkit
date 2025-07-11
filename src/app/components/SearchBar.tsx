@@ -1,18 +1,21 @@
-import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { useDebounceCallback } from 'usehooks-ts'
 import { useSearch } from '../context/SearchContext'
 
 export function SearchBar() {
-  const [searchText, setSearchText] = useState('')
-  const { setSearch } = useSearch()
+  const { setSearch, search } = useSearch()
+  const [searchText, setSearchText] = useState(search.text)
 
-  const handleSearch = () => {
-    setSearch({ text: searchText, page: 1 })
-  }
+  // Debounce the search update function
+  const debouncedSetSearch = useDebounceCallback((text: string) => {
+    setSearch((prev) => ({ ...prev, text, page: 1 }))
+  }, 500)
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch()
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchText(value) // Update input immediately
+    if (value.length > 0) {
+      debouncedSetSearch(value) // Debounce the search context update
     }
   }
 
@@ -22,16 +25,9 @@ export function SearchBar() {
         type='text'
         placeholder='Search icons...'
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-        onKeyDown={handleKeyPress}
+        onChange={handleInputChange}
         className='flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
       />
-      <Button
-        onClick={handleSearch}
-        className='bg-blue-500 hover:bg-blue-500/90'
-      >
-        Search
-      </Button>
     </div>
   )
 }
