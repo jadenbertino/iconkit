@@ -20,6 +20,8 @@ export function IconsGrid() {
 
   if (error && !icons) return <div>Error loading icons</div>
 
+  const cardClasses =
+    'relative w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden'
   return (
     <>
       <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-4 justify-items-start min-h-[544px]'>
@@ -31,8 +33,9 @@ export function IconsGrid() {
                 rel='noopener noreferrer'
                 key={icon.id}
               >
-                <Card
+                <div
                   className={cn(
+                    cardClasses,
                     'p-2 text-black [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
                     centerClasses,
                   )}
@@ -43,34 +46,15 @@ export function IconsGrid() {
               </a>
             ))
           : new Array(PAGE_SIZE).fill(null).map((_, index) => (
-              <Card key={index}>
+              <div
+                key={index}
+                className={cardClasses}
+              >
                 <Skeleton />
-              </Card>
+              </div>
             ))}
       </div>
       <IconPagination hasMore={icons?.length === PAGE_SIZE} />
     </>
-  )
-}
-
-const Card = ({
-  children,
-  className,
-  dangerouslySetInnerHTML,
-}: {
-  children?: React.ReactNode
-  className?: string
-  dangerouslySetInnerHTML?: { __html: string }
-}) => {
-  return (
-    <div
-      className={cn(
-        'relative w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden',
-        className,
-      )}
-      dangerouslySetInnerHTML={dangerouslySetInnerHTML}
-    >
-      {children}
-    </div>
   )
 }
