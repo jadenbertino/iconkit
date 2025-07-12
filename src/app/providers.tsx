@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import type { ReactNode } from 'react'
-import { SearchProvider } from './context/SearchContext'
+import { SearchProvider } from '../context/SearchContext'
 
 // query client with default error handling
 const queryClient = new QueryClient({

@@ -1,7 +1,7 @@
 import type { IconQuery } from '@/app/api/icons/client'
 import { getIcons } from '@/app/api/icons/client'
-import { useSearch } from '@/app/context/SearchContext'
 import { PAGE_SIZE } from '@/constants'
+import { useSearch } from '@/context/SearchContext'
 import {
   queryOptions as createQueryOptions,
   useQuery,

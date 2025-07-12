@@ -1,8 +1,8 @@
 'use client'
 
-import { IconsGrid } from './components/IconsGrid'
-import { Container, Row } from './components/Layout'
-import { SearchBar } from './components/SearchBar'
+import { IconsGrid } from '../components/IconsGrid'
+import { Container, Row } from '../components/Layout'
+import { SearchBar } from '../components/SearchBar'
 
 export default function Home() {
   return (
