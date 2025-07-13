@@ -1,6 +1,8 @@
 import { type IconProviderSlug } from '@/constants'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
+import * as fs from 'fs'
+import * as path from 'path'
 import { scrapeIcons } from '../../build/scrape'
 import { uploadIcons } from '../../build/upload'
 
@@ -18,6 +20,20 @@ async function testUpload() {
     // Step 2: Take only the first 10 icons for testing
     const testIcons = allIcons.slice(0, TEST_ICON_COUNT)
     serverLogger.info(`Selected ${testIcons.length} icons for testing`)
+
+    // Step 2.5: Write scraped icons to tmp file
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+    const tmpDir = path.join(process.cwd(), 'tmp')
+    const outputFile = path.join(tmpDir, `icon-upload-${timestamp}.json`)
+
+    // Ensure tmp directory exists
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir, { recursive: true })
+    }
+
+    // Write all scraped icons to file
+    fs.writeFileSync(outputFile, JSON.stringify(testIcons, null, 2))
+    serverLogger.info(`Icons data written to ${outputFile}`)
 
     // Step 3: Upload the test icons
     serverLogger.info('Uploading test icons...')

@@ -68,8 +68,8 @@ const IconModal = ({
                   <ListIconWrapper>
                     {copiedButton === 'jsx' ? <CheckmarkIcon /> : <ReactIcon />}
                   </ListIconWrapper>
-                  <span onClick={() => handleCopy(icon.svg, 'jsx')}>
-                    {copiedButton === 'jsx' ? 'TODO: Copied JSX!' : 'TODO: Copy JSX'}
+                  <span onClick={() => handleCopy(icon.jsx, 'jsx')}>
+                    {copiedButton === 'jsx' ? 'Copied JSX!' : 'Copy JSX'}
                   </span>
                 </button>
               </li>

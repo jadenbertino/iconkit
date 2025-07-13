@@ -1,9 +1,15 @@
-import { ICON_PROVIDERS, type IconProviderSlug } from '@/constants/index'
+import { isValidJsxString } from '@/__test__/jsxString'
+import {
+  ICON_PROVIDERS,
+  prettierSvgConfig,
+  type IconProviderSlug,
+} from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
-import { withTimeout } from '@/lib'
+import { htmlAttributesToReact, toPascalCase, withTimeout } from '@/lib'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
+import { transform } from '@svgr/core'
 import path from 'path'
 
 // Timeout constants (in milliseconds)
@@ -65,7 +71,42 @@ async function _scrapeIconsInternal(
       // Remove the SVG wrapper tags and get the inner content
       const cleanedSvgContent = svgContent
         .replace(/"/g, "'") // replace " with '
+        .replace(/<!--[\s\S]*?-->/g, '') // remove HTML comments
         .trim()
+
+      // Convert SVG to JSX using @svgr/core (just get the JSX elements)
+      const componentName = toPascalCase(name)
+      const svgJsx = await transform(
+        cleanedSvgContent,
+        {
+          jsxRuntime: 'automatic', // prevent React import
+          expandProps: false, // prevent props expansion
+          prettierConfig: prettierSvgConfig,
+          icon: true, // sizing
+          dimensions: false, // sizing
+        },
+        { componentName },
+      )
+
+      // Convert kebab-case attributes to camelCase
+      const camelCaseSvgJsx = htmlAttributesToReact(svgJsx)
+
+      // Create full React component with PascalCase name
+      const jsxContent = `const ${componentName} = () => (
+  ${camelCaseSvgJsx}
+)
+
+export default ${componentName}`
+
+      // Validate JSX
+      const jsxValidation = isValidJsxString(jsxContent)
+      if (!jsxValidation.isValid) {
+        serverLogger.error(`Invalid JSX for ${name}`, {
+          ...jsxValidation,
+          jsx: jsxContent,
+        })
+        throw new Error(`Invalid JSX for ${name}: ${jsxValidation.errors}`)
+      }
 
       // Construct source URL
       const relativePath = path.relative(repoDir, filePath)
@@ -77,6 +118,7 @@ async function _scrapeIconsInternal(
         svg: cleanedSvgContent,
         version: SERVER_ENV.VERSION,
         source_url,
+        jsx: jsxContent,
       }
     }),
   )
