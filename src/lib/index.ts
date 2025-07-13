@@ -28,7 +28,7 @@ const htmlAttributesToReact = (jsxContent: string): string => {
 
   return jsxContent.replace(
     jsxOpeningTagRegex,
-    (match, tagName, attributesString, closingPart) => {
+    (match, tagName, attributesString, _closingPart) => {
       // Parse the attribute string into key-value pairs
       const attributeRegex =
         /(\w+(?:-\w+)*(?::\w+)?)\s*=\s*(['"])((?:\\.|(?!\2)[^\\])*)\2/g
