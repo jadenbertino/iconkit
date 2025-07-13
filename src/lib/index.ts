@@ -1,5 +1,4 @@
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { cn } from './utils'
 
 /**
  * Wraps a promise with a timeout
@@ -18,10 +17,6 @@ function withTimeout<T>(
       ),
     ),
   ])
-}
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(...inputs))
 }
 
 const htmlAttributesToReact = (attrs: Record<string, string>) => {
@@ -76,4 +71,4 @@ const htmlAttributesToReact = (attrs: Record<string, string>) => {
   )
 }
 
-export { htmlAttributesToReact, withTimeout }
+export { cn, htmlAttributesToReact, withTimeout }

@@ -1,13 +1,16 @@
 import Skeleton from '@/components/ui/skeleton'
 import { PAGE_SIZE } from '@/constants'
-import { centerClasses } from '@/constants/classes'
-import { cn } from '@/lib'
 import { useIconQueries } from '@/lib/queries/icons'
-import DOMPurify from 'dompurify'
+import type { Icon } from '@/lib/schemas/database'
 import { useSearch } from '../context/SearchContext'
 import IconPagination from './IconPagination'
+import SvgIcon from './SvgIcon'
 
-export function IconsGrid() {
+export function IconsGrid({
+  onIconClick,
+}: {
+  onIconClick: (icon: Icon) => void
+}) {
   const { search } = useSearch()
   const { useIconsQuery } = useIconQueries()
   const skip = (search.page - 1) * PAGE_SIZE
@@ -29,17 +32,15 @@ export function IconsGrid() {
         <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-4 justify-items-start'>
           {icons
             ? icons.map((icon) => (
-                <div
+                <button
+                  onClick={() => onIconClick(icon)}
                   key={icon.id}
-                  className={cn(
-                    cardClasses,
-                    'p-2 text-black [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
-                    centerClasses,
-                  )}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(icon.svg),
-                  }}
-                />
+                >
+                  <SvgIcon
+                    icon={icon}
+                    className={cardClasses}
+                  />
+                </button>
               ))
             : new Array(PAGE_SIZE).fill(null).map((_, index) => (
                 <div
