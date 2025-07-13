@@ -1,5 +1,6 @@
 import Skeleton from '@/components/ui/skeleton'
 import { PAGE_SIZE } from '@/constants'
+import { cn } from '@/lib'
 import { useIconQueries } from '@/lib/queries/icons'
 import type { Icon } from '@/lib/schemas/database'
 import { useSearch } from '../context/SearchContext'
@@ -38,7 +39,7 @@ export function IconsGrid({
                 >
                   <SvgIcon
                     icon={icon}
-                    className={cardClasses}
+                    className={cn(cardClasses, 'p-2')}
                   />
                 </button>
               ))

@@ -1,5 +1,6 @@
 'use client'
 
+import IconModal from '@/components/IconModal'
 import type { Icon } from '@/lib/schemas/database'
 import { useState } from 'react'
 import { IconsGrid } from '../components/IconsGrid'
@@ -9,6 +10,7 @@ import { SearchBar } from '../components/SearchBar'
 
 export default function Home() {
   const [activeIcon, setActiveIcon] = useState<Icon | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <Container>
@@ -17,8 +19,18 @@ export default function Home() {
         <Row className='pt-8'>
           <SearchBar />
         </Row>
-        <IconsGrid onIconClick={(icon) => setActiveIcon(icon)} />
+        <IconsGrid
+          onIconClick={(icon) => {
+            setActiveIcon(icon)
+            setIsModalOpen(true)
+          }}
+        />
       </div>
+      <IconModal
+        icon={activeIcon}
+        isOpen={isModalOpen}
+        handleClose={() => setIsModalOpen(false)}
+      />
     </Container>
   )
 }

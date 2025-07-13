@@ -7,7 +7,7 @@ const SvgIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        'p-2 text-black [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain cursor-pointer',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
         centerClasses,
         className,
       )}
