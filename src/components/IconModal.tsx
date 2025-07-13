@@ -1,8 +1,9 @@
 import { CloseModalButton, Modal } from '@/components/Modal'
 import SvgIcon from '@/components/SvgIcon'
 import type { Icon } from '@/lib/schemas/database'
-import { toast } from 'sonner'
+import { useRef, useState } from 'react'
 import ExternalLink from './ExternalLink'
+import CheckmarkIcon from './icons/CheckmarkIcon'
 import CodeIcon from './icons/CodeIcon'
 import GithubIcon from './icons/GithubIcon'
 import ReactIcon from './icons/ReactIcon'
@@ -16,6 +17,25 @@ const IconModal = ({
   isOpen: boolean
   handleClose: () => void
 }) => {
+  const [copiedButton, setCopiedButton] = useState<'svg' | 'jsx' | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const handleCopy = (text: string, buttonType: 'svg' | 'jsx') => {
+    navigator.clipboard.writeText(text)
+    setCopiedButton(buttonType)
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    // Set new timeout
+    timeoutRef.current = setTimeout(() => {
+      setCopiedButton(null)
+      timeoutRef.current = null
+    }, 2000)
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -34,15 +54,10 @@ const IconModal = ({
               <li>
                 <button className='flex items-center'>
                   <ListIconWrapper>
-                    <CodeIcon />
+                    {copiedButton === 'svg' ? <CheckmarkIcon /> : <CodeIcon />}
                   </ListIconWrapper>
-                  <span
-                    onClick={() => {
-                      navigator.clipboard.writeText(icon.svg)
-                      toast.success('Copied SVG to clipboard')
-                    }}
-                  >
-                    Copy SVG
+                  <span onClick={() => handleCopy(icon.svg, 'svg')}>
+                    {copiedButton === 'svg' ? 'Copied SVG!' : 'Copy SVG'}
                   </span>
                 </button>
               </li>
@@ -51,9 +66,11 @@ const IconModal = ({
               <li>
                 <button className='flex items-center'>
                   <ListIconWrapper>
-                    <ReactIcon />
+                    {copiedButton === 'jsx' ? <CheckmarkIcon /> : <ReactIcon />}
                   </ListIconWrapper>
-                  <span>TODO: Copy JSX</span>
+                  <span onClick={() => handleCopy(icon.svg, 'jsx')}>
+                    {copiedButton === 'jsx' ? 'Copied JSX!' : 'Copy JSX'}
+                  </span>
                 </button>
               </li>
 
