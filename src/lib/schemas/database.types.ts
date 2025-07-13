@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
-          extensions?: Json
           operationName?: string
-          query?: string
+          extensions?: Json
           variables?: Json
+          query?: string
         }
         Returns: Json
       }
@@ -38,6 +38,7 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          jsx: string
           name: string
           provider_id: number
           source_url: string
@@ -47,6 +48,7 @@ export type Database = {
         Insert: {
           created_at: string
           id?: number
+          jsx: string
           name: string
           provider_id: number
           source_url: string
@@ -56,6 +58,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: number
+          jsx?: string
           name?: string
           provider_id?: number
           source_url?: string

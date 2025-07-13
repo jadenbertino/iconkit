@@ -22,6 +22,7 @@ export const jsonSchema: z.ZodSchema<Json> = z.lazy(() =>
 export const iconRowSchema = z.object({
   created_at: z.string(),
   id: z.number(),
+  jsx: z.string(),
   name: z.string(),
   provider_id: z.number(),
   source_url: z.string(),
@@ -32,6 +33,7 @@ export const iconRowSchema = z.object({
 export const iconInsertSchema = z.object({
   created_at: z.string(),
   id: z.number().optional(),
+  jsx: z.string(),
   name: z.string(),
   provider_id: z.number(),
   source_url: z.string(),
@@ -42,6 +44,7 @@ export const iconInsertSchema = z.object({
 export const iconUpdateSchema = z.object({
   created_at: z.string().optional(),
   id: z.number().optional(),
+  jsx: z.string().optional(),
   name: z.string().optional(),
   provider_id: z.number().optional(),
   source_url: z.string().optional(),
