@@ -1,9 +1,14 @@
-import { ICON_PROVIDERS, type IconProviderSlug } from '@/constants/index'
+import {
+  ICON_PROVIDERS,
+  prettierSvgConfig,
+  type IconProviderSlug,
+} from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
 import { withTimeout } from '@/lib'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
+import { transform } from '@svgr/core'
 import path from 'path'
 
 // Timeout constants (in milliseconds)
@@ -67,6 +72,19 @@ async function _scrapeIconsInternal(
         .replace(/"/g, "'") // replace " with '
         .trim()
 
+      // Convert SVG to JSX using @svgr/core
+      const jsxContent = await transform(
+        cleanedSvgContent,
+        {
+          jsxRuntime: 'automatic', // prevent React import
+          expandProps: false, // prevent props expansion
+          prettierConfig: prettierSvgConfig,
+          icon: true, // sizing
+          dimensions: false, // sizing
+        },
+        { componentName: name },
+      )
+
       // Construct source URL
       const relativePath = path.relative(repoDir, filePath)
       const repoUrl = git.url.replace(/\.git$/, '') // Remove .git suffix if present
@@ -77,6 +95,7 @@ async function _scrapeIconsInternal(
         svg: cleanedSvgContent,
         version: SERVER_ENV.VERSION,
         source_url,
+        jsx: jsxContent,
       }
     }),
   )
