@@ -70,6 +70,7 @@ async function _scrapeIconsInternal(
       // Remove the SVG wrapper tags and get the inner content
       const cleanedSvgContent = svgContent
         .replace(/"/g, "'") // replace " with '
+        .replace(/<!--[\s\S]*?-->/g, '') // remove HTML comments
         .trim()
 
       // Convert SVG to JSX using @svgr/core (just get the JSX elements)
