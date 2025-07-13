@@ -3,12 +3,5 @@
     "allow": ["Bash(eza:*)", "Bash(ls:*)", "context7:*"],
     "deny": []
   },
-  "mcpServers": {
-    "context7": {
-      "transport": {
-        "type": "http",
-        "url": "https://mcp.context7.com/mcp"
-      }
-    }
-  }
+  "enableAllProjectMcpServers": true
 }

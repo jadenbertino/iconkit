@@ -5,6 +5,7 @@
 !package.json
 !tsconfig.json
 !.claude/settings.json
+!mcp.json
 
 # dependencies
 /node_modules
