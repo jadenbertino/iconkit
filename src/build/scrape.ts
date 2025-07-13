@@ -97,9 +97,14 @@ async function _scrapeIconsInternal(
 )
 
 export default ${componentName}`
+
+      // Validate JSX
       const jsxValidation = isValidJsxString(jsxContent)
       if (!jsxValidation.isValid) {
-        serverLogger.error(`Invalid JSX for ${name}: ${jsxValidation.errors}`)
+        serverLogger.error(`Invalid JSX for ${name}`, {
+          ...jsxValidation,
+          jsx: jsxContent,
+        })
         throw new Error(`Invalid JSX for ${name}: ${jsxValidation.errors}`)
       }
 
