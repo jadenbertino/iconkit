@@ -4,7 +4,7 @@ import {
   type IconProviderSlug,
 } from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
-import { withTimeout } from '@/lib'
+import { htmlAttributesToReact, toPascalCase, withTimeout } from '@/lib'
 import { execAsync, fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
@@ -72,8 +72,9 @@ async function _scrapeIconsInternal(
         .replace(/"/g, "'") // replace " with '
         .trim()
 
-      // Convert SVG to JSX using @svgr/core
-      const jsxContent = await transform(
+      // Convert SVG to JSX using @svgr/core (just get the JSX elements)
+      const componentName = toPascalCase(name)
+      const svgJsx = await transform(
         cleanedSvgContent,
         {
           jsxRuntime: 'automatic', // prevent React import
@@ -82,8 +83,18 @@ async function _scrapeIconsInternal(
           icon: true, // sizing
           dimensions: false, // sizing
         },
-        { componentName: name },
+        { componentName },
       )
+
+      // Convert kebab-case attributes to camelCase
+      const camelCaseSvgJsx = htmlAttributesToReact(svgJsx)
+
+      // Create full React component with PascalCase name
+      const jsxContent = `const ${componentName} = () => (
+  ${camelCaseSvgJsx}
+)
+
+export default ${componentName}`
 
       // Construct source URL
       const relativePath = path.relative(repoDir, filePath)
