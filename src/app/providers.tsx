@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import type { ReactNode } from 'react'
+import { Toaster } from 'sonner' // https://github.com/emilkowalski/sonner
 import { SearchProvider } from '../context/SearchContext'
 
 // query client with default error handling
@@ -30,6 +31,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
       <SearchProvider>
         {children}
         <ReactQueryDevtools initialIsOpen={false} />
+        <Toaster />
       </SearchProvider>
     </QueryClientProvider>
   )
