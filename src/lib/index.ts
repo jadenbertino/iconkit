@@ -19,59 +19,76 @@ function withTimeout<T>(
   ])
 }
 
-const htmlAttributesToReact = (attributeString: string): string => {
-  if (!attributeString.trim()) return ''
+const htmlAttributesToReact = (jsxContent: string): string => {
+  if (!jsxContent.trim()) return ''
 
-  // Parse the attribute string into key-value pairs
-  const attributeRegex =
-    /(\w+(?:-\w+)*(?::\w+)?)\s*=\s*(['"])((?:\\.|(?!\2)[^\\])*)\2/g
-  const attributes: Array<[string, string]> = []
-  let match
+  // Regex to match JSX opening tags with attributes
+  const jsxOpeningTagRegex =
+    /<([a-zA-Z][a-zA-Z0-9]*(?:\.[a-zA-Z][a-zA-Z0-9]*)*)\s+([^>]*?)(?:\s*\/?>)/g
 
-  while ((match = attributeRegex.exec(attributeString)) !== null) {
-    const [, key, , value] = match
-    if (key && value !== undefined) {
-      attributes.push([key, value])
-    }
-  }
+  return jsxContent.replace(
+    jsxOpeningTagRegex,
+    (match, tagName, attributesString, closingPart) => {
+      // Parse the attribute string into key-value pairs
+      const attributeRegex =
+        /(\w+(?:-\w+)*(?::\w+)?)\s*=\s*(['"])((?:\\.|(?!\2)[^\\])*)\2/g
+      const attributes: Array<[string, string]> = []
+      let attributeMatch
 
-  // Convert each attribute to React format
-  const reactAttributes = attributes.map(([key, value]) => {
-    let reactKey = key
-
-    // Special handling for ARIA attributes - they should be lowercase
-    if (key.startsWith('aria-')) {
-      reactKey = key
-    }
-    // Special handling for data attributes - keep original form
-    else if (key.startsWith('data-')) {
-      reactKey = key
-    }
-    // Handle class attribute - convert to className
-    else if (key === 'class') {
-      reactKey = 'className'
-    }
-    // Handle for attribute - convert to htmlFor
-    else if (key === 'for') {
-      reactKey = 'htmlFor'
-    }
-    // Handle XML namespace attributes and other special cases
-    else if (key.includes(':')) {
-      const parts = key.split(':')
-      if (parts.length === 2) {
-        const [prefix, suffix] = parts as [string, string]
-        reactKey = `${prefix}${suffix.charAt(0).toUpperCase()}${suffix.slice(1)}`
+      while (
+        (attributeMatch = attributeRegex.exec(attributesString)) !== null
+      ) {
+        const [, key, , value] = attributeMatch
+        if (key && value !== undefined) {
+          attributes.push([key, value])
+        }
       }
-    }
-    // Convert kebab-case to camelCase for other attributes
-    else {
-      reactKey = key.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
-    }
 
-    return `${reactKey}="${value}"`
-  })
+      // Convert each attribute to React format
+      const reactAttributes = attributes.map(([key, value]) => {
+        let reactKey = key
 
-  return reactAttributes.join(' ')
+        // Special handling for ARIA attributes - they should be lowercase
+        if (key.startsWith('aria-')) {
+          reactKey = key
+        }
+        // Special handling for data attributes - keep original form
+        else if (key.startsWith('data-')) {
+          reactKey = key
+        }
+        // Handle class attribute - convert to className
+        else if (key === 'class') {
+          reactKey = 'className'
+        }
+        // Handle for attribute - convert to htmlFor
+        else if (key === 'for') {
+          reactKey = 'htmlFor'
+        }
+        // Handle XML namespace attributes and other special cases
+        else if (key.includes(':')) {
+          const parts = key.split(':')
+          if (parts.length === 2) {
+            const [prefix, suffix] = parts as [string, string]
+            reactKey = `${prefix}${suffix.charAt(0).toUpperCase()}${suffix.slice(1)}`
+          }
+        }
+        // Convert kebab-case to camelCase for other attributes
+        else {
+          reactKey = key.replace(/-([a-z])/g, (_, letter) =>
+            letter.toUpperCase(),
+          )
+        }
+
+        return `${reactKey}="${value}"`
+      })
+
+      // Reconstruct the opening tag with converted attributes
+      const attributesStr =
+        reactAttributes.length > 0 ? ` ${reactAttributes.join(' ')}` : ''
+      const closing = match.endsWith('/>') ? ' />' : '>'
+      return `<${tagName}${attributesStr}${closing}`
+    },
+  )
 }
 
 /**
