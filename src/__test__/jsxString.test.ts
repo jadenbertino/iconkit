@@ -1,4 +1,4 @@
-import { isValidJsx, isValidJsxString } from './jsxString'
+import { isValidJsxString } from './jsxString'
 
 // Test examples to demonstrate the validation function
 
@@ -79,5 +79,7 @@ invalidExamples.forEach((example, index) => {
 
 // Quick validation examples
 console.log('=== Quick Validation (boolean only) ===')
-console.log(`Valid JSX: ${isValidJsx('<div>Hello</div>')}`)
-console.log(`Invalid JSX: ${isValidJsx('<div class="test">Hello</div>')}`)
+console.log(`Valid JSX: ${isValidJsxString('<div>Hello</div>').isValid}`)
+console.log(
+  `Invalid JSX: ${isValidJsxString('<div class="test">Hello</div>').isValid}`,
+)

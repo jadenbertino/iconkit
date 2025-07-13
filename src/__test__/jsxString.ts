@@ -417,8 +417,3 @@ function isValidStyleValue(styleValue: string): boolean {
 
   return false
 }
-
-// Helper function for quick validation without detailed errors
-export function isValidJsx(jsxString: string): boolean {
-  return isValidJsxString(jsxString).isValid
-}
