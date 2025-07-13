@@ -47,6 +47,7 @@ const htmlAttributesToReact = (jsxContent: string): string => {
       // Convert each attribute to React format
       const reactAttributes = attributes.map(([key, value]) => {
         let reactKey = key
+        let reactValue = value
 
         // Special handling for ARIA attributes - they should be lowercase
         if (key.startsWith('aria-')) {
@@ -64,6 +65,11 @@ const htmlAttributesToReact = (jsxContent: string): string => {
         else if (key === 'for') {
           reactKey = 'htmlFor'
         }
+        // Handle style attribute - convert CSS string to React object
+        else if (key === 'style') {
+          reactKey = 'style'
+          reactValue = convertCssStringToReactStyle(value)
+        }
         // Handle XML namespace attributes and other special cases
         else if (key.includes(':')) {
           const parts = key.split(':')
@@ -79,7 +85,12 @@ const htmlAttributesToReact = (jsxContent: string): string => {
           )
         }
 
-        return `${reactKey}="${value}"`
+        // For style attributes, value is already formatted with {{}}
+        if (key === 'style') {
+          return `${reactKey}=${reactValue}`
+        }
+        // For other attributes, wrap in quotes
+        return `${reactKey}="${reactValue}"`
       })
 
       // Reconstruct the opening tag with converted attributes
@@ -89,6 +100,35 @@ const htmlAttributesToReact = (jsxContent: string): string => {
       return `<${tagName}${attributesStr}${closing}`
     },
   )
+}
+
+/**
+ * Converts CSS string to React style object format
+ * Example: "fill:none;stroke:#000" -> "{{fill:'none',stroke:'#000'}}"
+ */
+const convertCssStringToReactStyle = (cssString: string): string => {
+  if (!cssString.trim()) return '""'
+
+  // Parse CSS declarations
+  const declarations = cssString
+    .split(';')
+    .filter((decl) => decl.trim())
+    .map((decl) => {
+      const [property, value] = decl.split(':').map((s) => s.trim())
+      if (!property || !value) return null
+
+      // Convert kebab-case CSS properties to camelCase
+      const camelCaseProperty = property.replace(/-([a-z])/g, (_, letter) =>
+        letter.toUpperCase(),
+      )
+
+      return `${camelCaseProperty}:'${value}'`
+    })
+    .filter(Boolean)
+
+  if (declarations.length === 0) return '""'
+
+  return `{{${declarations.join(',')}}}`
 }
 
 /**
