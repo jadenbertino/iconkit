@@ -1,3 +1,4 @@
+import { isValidJsxString } from '@/__test__/jsxString'
 import {
   ICON_PROVIDERS,
   prettierSvgConfig,
@@ -96,6 +97,11 @@ async function _scrapeIconsInternal(
 )
 
 export default ${componentName}`
+      const jsxValidation = isValidJsxString(jsxContent)
+      if (!jsxValidation.isValid) {
+        serverLogger.error(`Invalid JSX for ${name}: ${jsxValidation.errors}`)
+        throw new Error(`Invalid JSX for ${name}: ${jsxValidation.errors}`)
+      }
 
       // Construct source URL
       const relativePath = path.relative(repoDir, filePath)
