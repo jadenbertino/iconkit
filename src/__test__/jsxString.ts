@@ -138,7 +138,7 @@ function validateJsxStructure(jsxString: string): string[] {
     /<([a-zA-Z][a-zA-Z0-9]*(?:\.[a-zA-Z][a-zA-Z0-9]*)*)\s*[^>]*?\/\s*>/g
 
   // Remove self-closing tags first
-  let tempString = jsxString.replace(selfClosingTagRegex, '')
+  const tempString = jsxString.replace(selfClosingTagRegex, '')
 
   // Process opening and closing tags
   const allMatches: Array<{
