@@ -22,18 +22,15 @@ export function IconsGrid() {
 
   const cardClasses =
     'relative w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden'
+
   return (
     <>
-      <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-4 justify-items-start min-h-[544px]'>
-        {icons
-          ? icons.map((icon) => (
-              <a
-                href={icon.source_url}
-                target='_blank'
-                rel='noopener noreferrer'
-                key={icon.id}
-              >
+      <div className='min-h-[544px]'>
+        <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-4 justify-items-start'>
+          {icons
+            ? icons.map((icon) => (
                 <div
+                  key={icon.id}
                   className={cn(
                     cardClasses,
                     'p-2 text-black [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
@@ -43,16 +40,16 @@ export function IconsGrid() {
                     __html: DOMPurify.sanitize(icon.svg),
                   }}
                 />
-              </a>
-            ))
-          : new Array(PAGE_SIZE).fill(null).map((_, index) => (
-              <div
-                key={index}
-                className={cardClasses}
-              >
-                <Skeleton />
-              </div>
-            ))}
+              ))
+            : new Array(PAGE_SIZE).fill(null).map((_, index) => (
+                <div
+                  key={index}
+                  className={cardClasses}
+                >
+                  <Skeleton />
+                </div>
+              ))}
+        </div>
       </div>
       <IconPagination hasMore={icons?.length === PAGE_SIZE} />
     </>
