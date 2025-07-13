@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import ExternalLink from './ExternalLink'
 import CodeIcon from './icons/CodeIcon'
 import GithubIcon from './icons/GithubIcon'
+import ReactIcon from './icons/ReactIcon'
 
 const IconModal = ({
   icon,
@@ -46,6 +47,16 @@ const IconModal = ({
                 </button>
               </li>
 
+              {/* Copy JSX */}
+              <li>
+                <button className='flex items-center'>
+                  <ListIconWrapper>
+                    <ReactIcon />
+                  </ListIconWrapper>
+                  <span>TODO: Copy JSX</span>
+                </button>
+              </li>
+
               {/* Source */}
               <li>
                 <ExternalLink
@@ -69,7 +80,9 @@ const IconModal = ({
 }
 
 const ListIconWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className='min-w-[25px]'>{children}</div>
+  <div className='min-w-[32px] flex items-center justify-center'>
+    {children}
+  </div>
 )
 
 export default IconModal

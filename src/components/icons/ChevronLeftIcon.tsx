@@ -8,7 +8,7 @@ const ChevronLeftIcon = () => (
     stroke='currentColor'
     strokeWidth='2'
     strokeLinecap='round'
-    stroke-linejoin='round'
+    strokeLinejoin='round'
     className='lucide lucide-chevron-left-icon lucide-chevron-left'
   >
     <path d='m15 18-6-6 6-6' />
