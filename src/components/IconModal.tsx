@@ -52,7 +52,7 @@ const IconModal = ({
           <div className='w-2/5 p-4 flex flex-col justify-center'>
             <SvgIcon icon={icon} />
           </div>
-          <div className='flex-grow flex flex-col text-center'>
+          <div className='flex-grow flex flex-col text-center pt-4'>
             {/* Details */}
             <h1 className='text-2xl font-bold'>{icon.name}</h1>
             <div className='text-sm text-gray-500 flex flex-col p-2 pt-1 -ml-2 *:p-1'>
