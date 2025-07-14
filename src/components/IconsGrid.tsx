@@ -6,8 +6,8 @@ import type { Icon } from '@/lib/schemas/database'
 import { motion } from 'motion/react'
 import { useSearch } from '../context/SearchContext'
 import IconPagination from './IconPagination'
-import SvgIcon from './SvgIcon'
 import './Icons.css'
+import SvgIcon from './SvgIcon'
 
 export function IconsGrid({
   onIconClick,
@@ -39,7 +39,8 @@ export function IconsGrid({
                   onClick={() => onIconClick(icon)}
                   key={icon.id}
                   whileHover={{ scale: 1.05 }}
-                  transition={{ type: 'spring', stiffness: 600, damping: 25 }}
+                  whileTap={{ scale: 0.98, y: 1 }}
+                  transition={{ type: 'spring', stiffness: 800, damping: 30 }}
                 >
                   <SvgIcon
                     icon={icon}
