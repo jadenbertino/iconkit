@@ -3,9 +3,11 @@ import { PAGE_SIZE } from '@/constants'
 import { cn } from '@/lib'
 import { useIconQueries } from '@/lib/queries/icons'
 import type { Icon } from '@/lib/schemas/database'
+import { motion } from 'motion/react'
 import { useSearch } from '../context/SearchContext'
 import IconPagination from './IconPagination'
 import SvgIcon from './SvgIcon'
+import './Icons.css'
 
 export function IconsGrid({
   onIconClick,
@@ -33,18 +35,17 @@ export function IconsGrid({
         <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-4 justify-items-start'>
           {icons
             ? icons.map((icon) => (
-                <button
+                <motion.button
                   onClick={() => onIconClick(icon)}
                   key={icon.id}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: 'spring', stiffness: 600, damping: 25 }}
                 >
                   <SvgIcon
                     icon={icon}
-                    className={cn(
-                      cardClasses,
-                      'p-2 hover:scale-105 hover:bg-gradient-to-br hover:from-gray-50 hover:to-gray-200 transition-all duration-200',
-                    )}
+                    className={cn(cardClasses, 'p-2 icon-gradient')}
                   />
-                </button>
+                </motion.button>
               ))
             : new Array(PAGE_SIZE).fill(null).map((_, index) => (
                 <div

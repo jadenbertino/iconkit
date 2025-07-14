@@ -1,0 +1,29 @@
+/* Custom properties for gradient animation */
+@property --gradient-color-1 {
+  syntax: '<color>';
+  initial-value: #ffffff;
+  inherits: false;
+}
+
+@property --gradient-color-2 {
+  syntax: '<color>';
+  initial-value: #f9fafb;
+  inherits: false;
+}
+
+/* Icon gradient animation class */
+.icon-gradient {
+  background: linear-gradient(
+    to bottom right,
+    var(--gradient-color-1),
+    var(--gradient-color-2)
+  );
+  transition:
+    --gradient-color-1 200ms ease-in-out,
+    --gradient-color-2 200ms ease-in-out;
+}
+
+.icon-gradient:hover {
+  --gradient-color-1: #f9fafb;
+  --gradient-color-2: #e5e7eb;
+}
