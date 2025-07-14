@@ -52,15 +52,13 @@ const IconModal = ({
           <div className='w-1/3 p-4 flex flex-col justify-center'>
             <SvgIcon icon={icon} />
           </div>
-          <div className='w-2/3'>
-            <div className='pl-1'>
-              <h1 className='text-2xl font-bold'>{icon.name}</h1>
-              <ExternalLink
-                className='text-sm text-gray-500 p-2 -ml-2'
-                href={icon.source_url}
-              >
+          <div className='w-2/3 flex flex-col justify-between text-center'>
+            <h1 className='text-2xl font-bold'>{icon.name}</h1>
+            <div className='text-sm text-gray-500 flex flex-col p-2 pt-1 -ml-2 *:p-1'>
+              <ExternalLink href={icon.source_url}>
                 by {provider?.name}
               </ExternalLink>
+              <ExternalLink href='#'>License: TODO</ExternalLink>
             </div>
             <div className='text-md flex flex-col gap-2 pt-2'>
               {/* Copy SVG */}
