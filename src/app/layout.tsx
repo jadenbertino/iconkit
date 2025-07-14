@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn(...fonts, 'antialiased')}>
+      <body className={cn(...fonts, 'antialiased', 'font-sans')}>
         <Providers>{children}</Providers>
       </body>
     </html>
