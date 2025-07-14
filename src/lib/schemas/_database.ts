@@ -62,6 +62,40 @@ export const iconRelationshipsSchema = z.tuple([
   }),
 ]);
 
+export const licenseRowSchema = z.object({
+  created_at: z.string(),
+  id: z.number(),
+  provider_id: z.number(),
+  type: z.string(),
+  url: z.string(),
+});
+
+export const licenseInsertSchema = z.object({
+  created_at: z.string().optional(),
+  id: z.number().optional(),
+  provider_id: z.number(),
+  type: z.string(),
+  url: z.string(),
+});
+
+export const licenseUpdateSchema = z.object({
+  created_at: z.string().optional(),
+  id: z.number().optional(),
+  provider_id: z.number().optional(),
+  type: z.string().optional(),
+  url: z.string().optional(),
+});
+
+export const licenseRelationshipsSchema = z.tuple([
+  z.object({
+    foreignKeyName: z.literal("license_provider_id_fkey"),
+    columns: z.tuple([z.literal("provider_id")]),
+    isOneToOne: z.literal(false),
+    referencedRelation: z.literal("provider"),
+    referencedColumns: z.tuple([z.literal("id")]),
+  }),
+]);
+
 export const providerRowSchema = z.object({
   created_at: z.string(),
   git_branch: z.string(),

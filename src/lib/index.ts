@@ -1,24 +1,5 @@
 import { cn } from './utils'
 
-/**
- * Wraps a promise with a timeout
- */
-function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  operation: string,
-): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<never>((_, reject) =>
-      setTimeout(
-        () => reject(new Error(`${operation} timed out after ${timeoutMs}ms`)),
-        timeoutMs,
-      ),
-    ),
-  ])
-}
-
 const htmlAttributesToReact = (jsxContent: string): string => {
   if (!jsxContent.trim()) return ''
 
@@ -143,4 +124,4 @@ function toPascalCase(str: string): string {
     .replace(/[^a-zA-Z0-9]/g, '') // Remove any non-alphanumeric characters
 }
 
-export { cn, htmlAttributesToReact, toPascalCase, withTimeout }
+export { cn, htmlAttributesToReact, toPascalCase }

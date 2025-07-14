@@ -1,10 +1,10 @@
 import type { IconProviderSlug } from '@/constants'
-import { ICON_PROVIDERS } from '@/constants'
 import { SERVER_ENV } from '@/env/server'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
-import type { Provider, ScrapedIcon } from '@/lib/schemas/database'
+import type { ScrapedIcon } from '@/lib/schemas/database'
 import Bottleneck from 'bottleneck'
+import { getProviderRecord } from '../providers'
 
 const limiter = new Bottleneck({
   maxConcurrent: 1,
@@ -85,46 +85,6 @@ async function uploadIcons(
   serverLogger.info(
     `✅ Successfully uploaded ${icons.length} icons for ${providerSlug}`,
   )
-}
-
-async function getProviderRecord(
-  providerSlug: IconProviderSlug,
-): Promise<Provider> {
-  const { name, git } = ICON_PROVIDERS[providerSlug]
-
-  // Check if provider already exists
-  const { data: existingProvider, error: getProviderError } =
-    await supabaseAdmin
-      .from('provider')
-      .select('*')
-      .eq('git_url', git.url)
-      .maybeSingle()
-
-  if (getProviderError) {
-    throw getProviderError
-  }
-
-  if (existingProvider) {
-    return existingProvider
-  }
-
-  // Create provider if it doesn't exist
-  const { data: newProvider, error: createProviderError } = await supabaseAdmin
-    .from('provider')
-    .insert({
-      name,
-      git_url: git.url,
-      git_branch: git.branch,
-      git_icons_dir: git.iconsDir,
-    })
-    .select()
-    .single()
-  if (createProviderError) throw createProviderError
-  // Keep this log, we want to know if a new provider is created, it's probably a mistake.
-  serverLogger.info(`🚀 Created new provider: ${newProvider.id}`, {
-    providerSlug,
-  })
-  return newProvider
 }
 
 export { uploadIcons }

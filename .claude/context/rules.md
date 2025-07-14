@@ -1,5 +1,5 @@
 - After changing any file, run `npx prettier --write <filepath> > /dev/null` to format the code silently
 - Whenver you need to use `tsx`, run it like so: `source env/.env.$ENVIRONMENT && export DOPPLER_TOKEN && doppler run -- npx tsx ...`
 - Avoid inline exports; exports should be defined at the bottom of the file.
-- Avoid writing to `.claude/settings.local.json` files; write to `.claude/settings.json` instead.
+- Prefer "fail fast" behavior: throw errors instead of returning null/undefined/"unknown" values
 - I'm using `pnpm` as my package manager.

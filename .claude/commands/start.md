@@ -38,6 +38,15 @@ eza --tree --git-ignore --level=10 --no-permissions --no-user --no-time --all
 - During dev & build scripts, the `doppler` CLI is used to inject environment variables into the project
 - `src/env/*` contains Zod schemas for environment variable validation
 
+### API Routes
+
+- `src/app/api/` contains the API routes
+- Each API route contains the following files:
+  - `schema.ts` contains the Zod schema for the request & response bodies
+  - `route.ts` imports the relevant `GET`, `POST`, `PUT`, `DELETE` functions and re-exports them
+  - `GET.ts`, `POST.ts`, `PUT.ts`, `DELETE.ts` contain the actual logic for the API route(s)
+  - `client.ts` contains client-side abstractions to interact with the API route(s)
+
 ### Code Rules
 
 Please read through `.claude/context/rules.md` for the code rules.
