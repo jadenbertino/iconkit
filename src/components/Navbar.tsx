@@ -6,6 +6,7 @@ export function Navbar() {
     <nav className='w-full bg-background'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={'/logo.png'}
             alt='IconKit'

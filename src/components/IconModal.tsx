@@ -1,7 +1,6 @@
 import { CloseModalButton, Modal } from '@/components/Modal'
 import SvgIcon from '@/components/SvgIcon'
 import { centerClasses } from '@/constants/classes'
-import { cn } from '@/lib'
 import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
 import { useRef, useState } from 'react'
