@@ -1,4 +1,4 @@
-import { scrapeLicenses } from '@/build/scrapeLicenses'
+import { scrapeLicenses } from '@/build/licenses/scrape'
 import { serverLogger } from '@/lib/logs/server'
 import * as fs from 'fs'
 import * as path from 'path'

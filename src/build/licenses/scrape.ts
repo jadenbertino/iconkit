@@ -1,11 +1,11 @@
-import { getProviders } from '@/app/api/providers/GET'
-import { ICON_PROVIDERS } from '@/constants'
+import { ICON_PROVIDER_SLUGS, type IconProviderSlug } from '@/constants'
 import { withTimeout } from '@/lib'
 import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { Provider, ScrapedLicense } from '@/lib/schemas/database'
 import path from 'path'
-import { cloneRepo } from './utils'
+import { getProviderRecord } from '../providers'
+import { cloneRepo } from '../utils'
 
 // Timeout constants (in milliseconds)
 const SCRAPE_OPERATION_TIMEOUT = 10 * 60 * 1000 // 10 minutes for overall scraping
@@ -21,26 +21,22 @@ async function scrapeLicenses(): Promise<ScrapedLicense[]> {
 }
 
 async function _scrapeLicensesInternal(): Promise<ScrapedLicense[]> {
-  const providers = await getProviders()
   serverLogger.info(
-    `Found ${providers.length} providers to scrape licenses for`,
+    `Found ${ICON_PROVIDER_SLUGS.length} providers to scrape licenses for`,
   )
-  return await Promise.all(providers.map(scrapeLicenseForProvider))
+  return await Promise.all(
+    ICON_PROVIDER_SLUGS.map(async (providerSlug) => {
+      const provider = await getProviderRecord(providerSlug)
+      return scrapeLicenseForProvider(provider, providerSlug)
+    }),
+  )
 }
 
 async function scrapeLicenseForProvider(
   provider: Provider,
+  providerSlug: IconProviderSlug,
 ): Promise<ScrapedLicense> {
-  // Clone repo
-  const providerSlug = Object.keys(ICON_PROVIDERS).find((slug) => {
-    const iconProvider = ICON_PROVIDERS[slug as keyof typeof ICON_PROVIDERS]
-    return iconProvider.git.url === provider.git_url
-  }) as keyof typeof ICON_PROVIDERS | undefined
-  if (!providerSlug) {
-    throw new Error(
-      `Could not find provider slug for provider: ${provider.name}`,
-    )
-  }
+  // Clone repo using the provided slug
   const repoDir = await cloneRepo(providerSlug)
 
   // Get license URL

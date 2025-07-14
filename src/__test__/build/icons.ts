@@ -3,8 +3,8 @@ import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
 import * as fs from 'fs'
 import * as path from 'path'
-import { scrapeIcons } from '../../build/scrapeIcons'
-import { uploadIcons } from '../../build/upload'
+import { scrapeIcons } from '../../build/icons/scrape'
+import { uploadIcons } from '../../build/icons/upload'
 
 async function testUpload() {
   const TEST_PROVIDER: IconProviderSlug = 'hero_icons'

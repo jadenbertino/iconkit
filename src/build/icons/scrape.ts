@@ -11,7 +11,7 @@ import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
 import { transform } from '@svgr/core'
 import path from 'path'
-import { cloneRepo } from './utils'
+import { cloneRepo } from '../utils'
 
 // Timeout constants (in milliseconds)
 const SCRAPE_OPERATION_TIMEOUT = 10 * 60 * 1000 // 10 minutes for overall scraping
