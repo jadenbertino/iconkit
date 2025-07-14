@@ -4,10 +4,21 @@ import * as fse from 'fs-extra'
 import tmp from 'tmp'
 import { promisify } from 'util'
 import { z } from 'zod'
+import { withTimeout } from './error'
 import { serialize } from './logs/utils'
 
 const execAsync = promisify(exec)
 tmp.setGracefulCleanup()
+
+/**
+ * Executes a command with timeout
+ */
+async function execWithTimeout(
+  command: string,
+  timeoutMs: number = 60 * 1000, // 60 seconds
+) {
+  return withTimeout(execAsync(command), timeoutMs, `Command: ${command}`)
+}
 
 /**
  * Helper function to check if a path exists
@@ -46,4 +57,13 @@ async function readJsonFile<T>(
   return validation.data
 }
 
-export { execAsync, fs, fse, fsp, pathExists, readJsonFile, tmp }
+export {
+  execAsync,
+  execWithTimeout,
+  fs,
+  fse,
+  fsp,
+  pathExists,
+  readJsonFile,
+  tmp,
+}

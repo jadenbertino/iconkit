@@ -1,23 +1,5 @@
+import { withTimeout } from './error'
 import { cn } from './utils'
-
-/**
- * Wraps a promise with a timeout
- */
-function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  operation: string,
-): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<never>((_, reject) =>
-      setTimeout(
-        () => reject(new Error(`${operation} timed out after ${timeoutMs}ms`)),
-        timeoutMs,
-      ),
-    ),
-  ])
-}
 
 const htmlAttributesToReact = (jsxContent: string): string => {
   if (!jsxContent.trim()) return ''

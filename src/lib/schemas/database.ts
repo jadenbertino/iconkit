@@ -26,6 +26,10 @@ const LicenseSchema = {
   Update: _.licenseUpdateSchema,
 }
 type License = z.infer<typeof LicenseSchema.Row>
+type ScrapedLicense = Omit<
+  z.infer<typeof LicenseSchema.Insert>,
+  'id' | 'created_at'
+>
 
 export { IconSchema, LicenseSchema, ProviderSchema }
-export type { Icon, License, Provider, ScrapedIcon }
+export type { Icon, License, Provider, ScrapedIcon, ScrapedLicense }

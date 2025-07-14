@@ -6,26 +6,16 @@ import {
 } from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
 import { htmlAttributesToReact, toPascalCase, withTimeout } from '@/lib'
-import { execAsync, fsp, pathExists } from '@/lib/fs'
+import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
 import { transform } from '@svgr/core'
 import path from 'path'
+import { cloneRepo } from './utils'
 
 // Timeout constants (in milliseconds)
-const GIT_OPERATION_TIMEOUT = 5 * 60 * 1000 // 5 minutes for git operations
 const SCRAPE_OPERATION_TIMEOUT = 10 * 60 * 1000 // 10 minutes for overall scraping
 const FILE_READ_TIMEOUT = 30 * 1000 // 30 seconds for file operations
-
-/**
- * Executes a command with timeout
- */
-async function execWithTimeout(
-  command: string,
-  timeoutMs: number = GIT_OPERATION_TIMEOUT,
-) {
-  return withTimeout(execAsync(command), timeoutMs, `Command: ${command}`)
-}
 
 async function scrapeIcons(provider: IconProviderSlug): Promise<ScrapedIcon[]> {
   // Wrap the entire scraping operation with timeout
@@ -53,7 +43,6 @@ async function _scrapeIconsInternal(
   const filenames = await fsp.readdir(iconsDir, { recursive: true })
   const files = filenames.map((f) => path.join(iconsDir, f))
   const svgFiles = files.filter((file) => file.endsWith('.svg'))
-
   serverLogger.info(`Found ${svgFiles.length} SVG files for ${provider}`)
 
   // Parse svg files with timeout for each file
@@ -122,57 +111,6 @@ export default ${componentName}`
       }
     }),
   )
-}
-
-async function cloneRepo(provider: IconProviderSlug): Promise<string> {
-  const { git } = ICON_PROVIDERS[provider]
-  const { url: gitUrl, branch } = git
-  const randomId = 'dd000030-8ae8-4fda-adf8-c2d5416318af' as const // to avoid collisions
-  const repoDir = path.join(`/tmp/iconProviders-${randomId}`, provider)
-
-  // Cache hit
-  if (await pathExists(repoDir)) {
-    try {
-      const { stdout: currentRemote } = await execWithTimeout(
-        `cd ${repoDir} && git remote get-url origin`,
-      )
-      if (currentRemote.trim() === gitUrl) {
-        await execWithTimeout(`cd ${repoDir} && git checkout ${branch}`)
-        await execWithTimeout(`cd ${repoDir} && git pull`)
-        const { stdout: currentBranch } = await execWithTimeout(
-          `cd ${repoDir} && git branch --show-current`,
-        )
-        serverLogger.info(`Updated ${provider} repo.`, {
-          branch: currentBranch.trim(),
-        })
-        return repoDir
-      } else {
-        throw new Error('Invalid git repository remote')
-      }
-    } catch (error) {
-      // If git command fails, directory might be corrupted
-      serverLogger.warn(`Invalid git repository at ${repoDir}, removing...`, {
-        error,
-      })
-      await execWithTimeout(`rm -rf ${repoDir}`)
-    }
-  }
-
-  // Cache miss / invalid remote
-  await fsp.mkdir(path.dirname(repoDir), { recursive: true })
-
-  serverLogger.info(`Cloning repository ${gitUrl} to ${repoDir}...`)
-  await execWithTimeout(`git clone ${gitUrl} ${repoDir}`)
-  await execWithTimeout(`cd ${repoDir} && git checkout ${branch}`)
-  await execWithTimeout(`cd ${repoDir} && git pull`)
-
-  const { stdout: currentBranch } = await execWithTimeout(
-    `cd ${repoDir} && git branch --show-current`,
-  )
-  serverLogger.info(`Cloned repo from ${gitUrl} to ${repoDir}`, {
-    branch: currentBranch.trim(),
-  })
-  return repoDir
 }
 
 export { scrapeIcons }

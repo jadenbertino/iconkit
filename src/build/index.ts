@@ -1,6 +1,6 @@
 import { ICON_PROVIDER_SLUGS } from '@/constants'
 import { serverLogger } from '@/lib/logs/server'
-import { scrapeIcons } from './scrape'
+import { scrapeIcons } from './scrapeIcons'
 import { uploadIcons } from './upload'
 
 async function getAllIcons(): Promise<void> {

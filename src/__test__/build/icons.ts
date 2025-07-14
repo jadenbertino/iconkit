@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
 import * as fs from 'fs'
 import * as path from 'path'
-import { scrapeIcons } from '../../build/scrape'
+import { scrapeIcons } from '../../build/scrapeIcons'
 import { uploadIcons } from '../../build/upload'
 
 async function testUpload() {
