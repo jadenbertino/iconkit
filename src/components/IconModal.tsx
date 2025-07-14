@@ -48,7 +48,7 @@ const IconModal = ({
             <SvgIcon icon={icon} />
           </div>
           <div className='w-2/3'>
-            <h1 className='text-2xl font-bold'>{icon.name}</h1>
+            <h1 className='text-2xl font-bold pl-1'>{icon.name}</h1>
             <ul className='text-md flex flex-col *:pt-2'>
               {/* Copy SVG */}
               <li>
