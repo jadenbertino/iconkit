@@ -41,7 +41,7 @@ export function IconsGrid({
                     icon={icon}
                     className={cn(
                       cardClasses,
-                      'p-2 hover:scale-105 hover:bg-gray-100 transition-all duration-200',
+                      'p-2 hover:scale-105 hover:bg-gradient-to-br hover:from-gray-50 hover:to-gray-200 transition-all duration-200',
                     )}
                   />
                 </button>
