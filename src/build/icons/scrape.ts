@@ -5,7 +5,8 @@ import {
   type IconProviderSlug,
 } from '@/constants/index'
 import { SERVER_ENV } from '@/env/server'
-import { htmlAttributesToReact, toPascalCase, withTimeout } from '@/lib'
+import { htmlAttributesToReact, toPascalCase } from '@/lib'
+import { withTimeout } from '@/lib/error'
 import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'

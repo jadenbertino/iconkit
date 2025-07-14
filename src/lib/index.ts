@@ -1,4 +1,3 @@
-import { withTimeout } from './error'
 import { cn } from './utils'
 
 const htmlAttributesToReact = (jsxContent: string): string => {
@@ -125,4 +124,4 @@ function toPascalCase(str: string): string {
     .replace(/[^a-zA-Z0-9]/g, '') // Remove any non-alphanumeric characters
 }
 
-export { cn, htmlAttributesToReact, toPascalCase, withTimeout }
+export { cn, htmlAttributesToReact, toPascalCase }

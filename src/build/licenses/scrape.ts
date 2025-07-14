@@ -1,5 +1,5 @@
 import { ICON_PROVIDER_SLUGS, type IconProviderSlug } from '@/constants'
-import { withTimeout } from '@/lib'
+import { withTimeout } from '@/lib/error'
 import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { Provider, ScrapedLicense } from '@/lib/schemas/database'
