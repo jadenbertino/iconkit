@@ -16,7 +16,7 @@ export default function Home() {
     <Container>
       <Navbar />
       <div className='w-full space-y-6'>
-        <Row className='pt-8'>
+        <Row className='pt-4'>
           <SearchBar />
         </Row>
         <IconsGrid

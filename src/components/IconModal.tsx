@@ -1,13 +1,15 @@
 import { CloseModalButton, Modal } from '@/components/Modal'
 import SvgIcon from '@/components/SvgIcon'
+import { centerClasses } from '@/constants/classes'
+import { cn } from '@/lib'
 import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
 import { useRef, useState } from 'react'
 import ExternalLink from './ExternalLink'
 import CheckmarkIcon from './icons/CheckmarkIcon'
 import CodeIcon from './icons/CodeIcon'
-import GithubIcon from './icons/GithubIcon'
 import ReactIcon from './icons/ReactIcon'
+import { Button } from './ui/button'
 
 const IconModal = ({
   icon,
@@ -53,48 +55,50 @@ const IconModal = ({
           <div className='w-2/3'>
             <div className='pl-1'>
               <h1 className='text-2xl font-bold'>{icon.name}</h1>
-              <p className='text-sm text-gray-500 pt-1'>by {provider?.name}</p>
+              <ExternalLink
+                className='text-sm text-gray-500 p-2 -ml-2'
+                href={icon.source_url}
+              >
+                by {provider?.name}
+              </ExternalLink>
             </div>
-            <ul className='text-md flex flex-col *:pt-2 pt-2'>
+            <div className='text-md flex flex-col gap-2 pt-2'>
               {/* Copy SVG */}
-              <li>
-                <button className='flex items-center'>
-                  <ListIconWrapper>
-                    {copiedButton === 'svg' ? <CheckmarkIcon /> : <CodeIcon />}
-                  </ListIconWrapper>
-                  <span onClick={() => handleCopy(icon.svg, 'svg')}>
-                    {copiedButton === 'svg' ? 'Copied SVG!' : 'Copy SVG'}
-                  </span>
-                </button>
-              </li>
+              <Button
+                className={centerClasses}
+                onClick={() => handleCopy(icon.svg, 'svg')}
+              >
+                <ListIconWrapper>
+                  {copiedButton === 'svg' ? (
+                    <CheckmarkIcon className='text-white' />
+                  ) : (
+                    <CodeIcon />
+                  )}
+                </ListIconWrapper>
+                <span>
+                  {copiedButton === 'svg' ? 'Copied SVG!' : 'Copy SVG'}
+                </span>
+              </Button>
 
               {/* Copy JSX */}
-              <li>
-                <button className='flex items-center'>
-                  <ListIconWrapper>
-                    {copiedButton === 'jsx' ? <CheckmarkIcon /> : <ReactIcon />}
-                  </ListIconWrapper>
-                  <span onClick={() => handleCopy(icon.jsx, 'jsx')}>
-                    {copiedButton === 'jsx' ? 'Copied JSX!' : 'Copy JSX'}
-                  </span>
-                </button>
-              </li>
-
-              {/* Source */}
-              <li>
-                <ExternalLink
-                  className='flex items-center'
-                  href={icon.source_url}
-                >
-                  <ListIconWrapper>
-                    <GithubIcon />
-                  </ListIconWrapper>
-                  <span>View Source</span>
-                </ExternalLink>
-              </li>
+              <Button
+                className={centerClasses}
+                onClick={() => handleCopy(icon.jsx, 'jsx')}
+              >
+                <ListIconWrapper>
+                  {copiedButton === 'jsx' ? (
+                    <CheckmarkIcon className='text-white' />
+                  ) : (
+                    <ReactIcon />
+                  )}
+                </ListIconWrapper>
+                <span>
+                  {copiedButton === 'jsx' ? 'Copied JSX!' : 'Copy JSX'}
+                </span>
+              </Button>
 
               {/* License */}
-            </ul>
+            </div>
           </div>
         </div>
       )}
