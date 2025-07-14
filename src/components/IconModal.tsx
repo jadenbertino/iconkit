@@ -49,10 +49,11 @@ const IconModal = ({
       <CloseModalButton handleClose={handleClose} />
       {!icon ? null : (
         <div className='flex'>
-          <div className='w-1/3 p-4 flex flex-col justify-center'>
+          <div className='w-2/5 p-4 flex flex-col justify-center'>
             <SvgIcon icon={icon} />
           </div>
-          <div className='w-2/3 flex flex-col justify-between text-center'>
+          <div className='flex-grow flex flex-col text-center'>
+            {/* Details */}
             <h1 className='text-2xl font-bold'>{icon.name}</h1>
             <div className='text-sm text-gray-500 flex flex-col p-2 pt-1 -ml-2 *:p-1'>
               <ExternalLink href={icon.source_url}>
@@ -60,6 +61,8 @@ const IconModal = ({
               </ExternalLink>
               <ExternalLink href='#'>License: TODO</ExternalLink>
             </div>
+
+            {/* Copy Buttons */}
             <div className='text-md flex flex-col gap-2 pt-2'>
               {/* Copy SVG */}
               <Button
@@ -73,7 +76,7 @@ const IconModal = ({
                     <CodeIcon />
                   )}
                 </ListIconWrapper>
-                <span>
+                <span className='min-w-[80px]'>
                   {copiedButton === 'svg' ? 'Copied SVG!' : 'Copy SVG'}
                 </span>
               </Button>
@@ -90,7 +93,7 @@ const IconModal = ({
                     <ReactIcon />
                   )}
                 </ListIconWrapper>
-                <span>
+                <span className='min-w-[80px]'>
                   {copiedButton === 'jsx' ? 'Copied JSX!' : 'Copy JSX'}
                 </span>
               </Button>

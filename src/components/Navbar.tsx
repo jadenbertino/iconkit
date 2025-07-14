@@ -1,18 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import BoxIcon, { BoxFillIcon } from './icons/BoxIcon'
-import BoxOpen from './icons/BoxOpenIcon'
-import MoonIcon from './icons/MoonIcon'
-import SunIcon from './icons/SunIcon'
-import { Button } from './ui/button'
+import { BoxFillIcon } from './icons/BoxIcon'
 
 export function Navbar() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
-
-  const handleThemeToggle = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
-  }
+  // const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
   return (
     <nav className='w-full bg-background'>
