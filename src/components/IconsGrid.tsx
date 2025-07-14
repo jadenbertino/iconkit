@@ -39,7 +39,10 @@ export function IconsGrid({
                 >
                   <SvgIcon
                     icon={icon}
-                    className={cn(cardClasses, 'p-2')}
+                    className={cn(
+                      cardClasses,
+                      'p-2 hover:scale-105 hover:bg-gray-100 transition-all duration-200',
+                    )}
                   />
                 </button>
               ))
