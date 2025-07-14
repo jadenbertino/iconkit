@@ -35,7 +35,10 @@ async function cloneRepo(provider: IconProviderSlug): Promise<string> {
   // Cache miss / invalid remote
   serverLogger.info(`Cloning repository ${gitUrl} to ${repoDir}...`)
   await fsp.mkdir(path.dirname(repoDir), { recursive: true })
-  await execWithTimeout(`git clone ${gitUrl} ${repoDir}`)
+  await execWithTimeout(
+    `git clone ${gitUrl} ${repoDir}`,
+    3 * 60 * 1000, // tabler takes a while to clone
+  )
   await updateRepo(repoDir, branch)
   return repoDir
 }
