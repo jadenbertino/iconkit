@@ -12,7 +12,7 @@ export function Navbar() {
             alt='IconKit'
             className='size-8'
           />
-          <h1 className='text-2xl font-semibold text-foreground pointer-events-none select-none pb-1'>
+          <h1 className='text-2xl font-semibold text-foreground pointer-events-none select-none font-mono'>
             IconKit
           </h1>
         </div>
