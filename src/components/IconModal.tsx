@@ -1,5 +1,6 @@
 import { CloseModalButton, Modal } from '@/components/Modal'
 import SvgIcon from '@/components/SvgIcon'
+import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
 import { useRef, useState } from 'react'
 import ExternalLink from './ExternalLink'
@@ -19,6 +20,8 @@ const IconModal = ({
 }) => {
   const [copiedButton, setCopiedButton] = useState<'svg' | 'jsx' | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const { data: providers } = useProviders()
+  const provider = providers?.find((p) => p.id === icon?.provider_id)
 
   const handleCopy = (text: string, buttonType: 'svg' | 'jsx') => {
     navigator.clipboard.writeText(text)
@@ -44,12 +47,15 @@ const IconModal = ({
       <CloseModalButton handleClose={handleClose} />
       {!icon ? null : (
         <div className='flex'>
-          <div className='w-1/3 p-4'>
+          <div className='w-1/3 p-4 flex flex-col justify-center'>
             <SvgIcon icon={icon} />
           </div>
           <div className='w-2/3'>
-            <h1 className='text-2xl font-bold pl-1'>{icon.name}</h1>
-            <ul className='text-md flex flex-col *:pt-2'>
+            <div className='pl-1'>
+              <h1 className='text-2xl font-bold'>{icon.name}</h1>
+              <p className='text-sm text-gray-500 pt-1'>by {provider?.name}</p>
+            </div>
+            <ul className='text-md flex flex-col *:pt-2 pt-2'>
               {/* Copy SVG */}
               <li>
                 <button className='flex items-center'>
