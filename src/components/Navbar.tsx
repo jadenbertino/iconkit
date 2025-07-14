@@ -1,6 +1,5 @@
 'use client'
 
-import OpenBox from '@/components/icons/OpenBox.png'
 
 export function Navbar() {
   return (
@@ -8,7 +7,7 @@ export function Navbar() {
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <img
-            src={OpenBox.src}
+            src={'/logo.png'}
             alt='IconKit'
             className='size-8'
           />
