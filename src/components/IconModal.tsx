@@ -78,7 +78,7 @@ const IconModal = ({
                   href={license.url}
                   className='px-3 text-gray-500 hover:underline underline-offset-4'
                 >
-                  License: {license.type}
+                  {license.type} License
                 </ExternalLink>
               )}
             </div>
