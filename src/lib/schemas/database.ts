@@ -20,5 +20,12 @@ const ProviderSchema = {
 }
 type Provider = z.infer<typeof ProviderSchema.Row>
 
-export { IconSchema, ProviderSchema }
-export type { Icon, Provider, ScrapedIcon }
+const LicenseSchema = {
+  Row: _.licenseRowSchema,
+  Insert: _.licenseInsertSchema,
+  Update: _.licenseUpdateSchema,
+}
+type License = z.infer<typeof LicenseSchema.Row>
+
+export { IconSchema, LicenseSchema, ProviderSchema }
+export type { Icon, License, Provider, ScrapedIcon }

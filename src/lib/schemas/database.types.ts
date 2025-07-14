@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
-          operationName?: string
           extensions?: Json
-          variables?: Json
+          operationName?: string
           query?: string
+          variables?: Json
         }
         Returns: Json
       }
@@ -68,6 +68,38 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "icon_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license: {
+        Row: {
+          created_at: string
+          id: number
+          provider_id: number
+          type: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          provider_id: number
+          type: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          provider_id?: number
+          type?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_provider_id_fkey"
             columns: ["provider_id"]
             isOneToOne: false
             referencedRelation: "provider"

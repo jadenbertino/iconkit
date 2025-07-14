@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write --list-different .",
-    "db:generate-schemas": "bash scripts/generate-schemas.sh"
+    "db:update-schemas": "bash scripts/generate-schemas.sh"
   },
   "keywords": [],
   "author": "",
