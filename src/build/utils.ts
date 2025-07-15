@@ -56,16 +56,18 @@ async function cloneRepoWithSparseCheckout(
 ): Promise<void> {
   // Clone without checking out files, single branch, depth 1, filtered
   await execWithTimeout(
-    `git clone
-      --no-checkout
-      --filter=blob:none
-      --depth=1
-      --single-branch
-      --branch=${branch}
-      ${gitUrl}
-      ${repoDir}
-    `.replace(/\s+/g, ' '),
-    3 * 60 * 1000, // tabler takes a while to clone
+    [
+      'git',
+      'clone',
+      '--no-checkout',
+      '--filter=blob:none',
+      '--depth=1',
+      '--single-branch',
+      `--branch=${branch}`,
+      gitUrl,
+      repoDir,
+    ],
+    3 * 60 * 1000,
   )
 
   // Setup sparse-checkout for this repo
