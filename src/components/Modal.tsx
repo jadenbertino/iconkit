@@ -3,7 +3,7 @@
 import { cn } from '@/lib'
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 import type { ReactNode } from 'react'
-import CloseIcon from './icons/CloseIcon'
+import { CloseIcon } from './icons'
 
 function Modal({
   isOpen,

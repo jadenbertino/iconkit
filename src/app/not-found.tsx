@@ -1,7 +1,9 @@
 import ExternalLink from '@/components/ExternalLink'
+import { ExpandableChevronIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { CONTACT_EMAIL } from '@/constants'
 import Link from 'next/link'
+// const colors = ['f5f5f5', '9fb3ba', '2c2d3f']
 
 export default function NotFound() {
   return (
@@ -12,7 +14,7 @@ export default function NotFound() {
           Page not found
         </h1>
         <p className='mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8'>
-          Sorry, we couldn't find the page you're looking for.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <div className='mt-10 flex items-center justify-center gap-x-6'>
           <Button asChild>
@@ -26,10 +28,11 @@ export default function NotFound() {
           <Button
             asChild
             variant='ghost'
-            className='text-sm font-semibold text-gray-900'
+            className='group text-sm font-semibold text-gray-900'
           >
             <ExternalLink href={`mailto:${CONTACT_EMAIL}`}>
-              Contact support <span aria-hidden='true'>&rarr;</span>
+              Contact support
+              <ExpandableChevronIcon />
             </ExternalLink>
           </Button>
         </div>
@@ -37,5 +40,3 @@ export default function NotFound() {
     </main>
   )
 }
-
-const colors = ['f5f5f5', '9fb3ba', '2c2d3f']

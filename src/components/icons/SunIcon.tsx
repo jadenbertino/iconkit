@@ -11,4 +11,4 @@ const SunIcon = () => (
   </svg>
 )
 
-export default SunIcon
+export { SunIcon }

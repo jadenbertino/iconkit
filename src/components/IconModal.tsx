@@ -7,9 +7,7 @@ import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
 import { useEffect, useRef, useState } from 'react'
 import ExternalLink from './ExternalLink'
-import CheckmarkIcon from './icons/CheckmarkIcon'
-import CodeIcon from './icons/CodeIcon'
-import ReactIcon from './icons/ReactIcon'
+import { CheckmarkIcon, CodeIcon, ReactIcon } from './icons'
 import { Button } from './ui/button'
 
 const IconModal = ({

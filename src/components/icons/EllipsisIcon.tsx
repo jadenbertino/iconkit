@@ -31,4 +31,4 @@ const EllipsisIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default EllipsisIcon
+export { EllipsisIcon }
