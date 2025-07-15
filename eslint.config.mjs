@@ -21,6 +21,7 @@ const eslintConfig = [
       'custom/require-handle-errors': 'error',
       'custom/no-axios-in-api-routes': 'error',
       'custom/no-import-custom-error': 'error',
+      'custom/require-named-exports-in-icons': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

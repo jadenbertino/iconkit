@@ -7,8 +7,14 @@
       "Bash(mkdir:*)",
       "Bash(npm run dev:*)",
       "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
       "Bash(npx tsc:*)",
-      "Bash(npx prettier:*)"
+      "Bash(npx prettier:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx eslint:*)",
+      "Bash(find:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs"
     ],
     "deny": []
   },

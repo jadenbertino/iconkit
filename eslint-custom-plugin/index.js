@@ -7,6 +7,7 @@ const plugin = {
     'require-handle-errors': require('./api-routes/require-handle-errors.cjs'),
     'no-axios-in-api-routes': require('./api-routes/no-axios-in-api-routes.cjs'),
     'no-import-custom-error': require('./api-routes/no-import-custom-error.cjs'),
+    'require-named-exports-in-icons': require('./icons.cjs'),
   },
 }
 
