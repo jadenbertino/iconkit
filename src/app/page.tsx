@@ -1,14 +1,14 @@
 'use client'
 
 import IconModal from '@/components/IconModal'
+import { IconsGrid } from '@/components/IconsGrid'
+import { Container, Row } from '@/components/Layout'
+import { Navbar } from '@/components/Navbar'
+import { SearchBar } from '@/components/SearchBar'
 import type { Icon } from '@/lib/schemas/database'
 import { useState } from 'react'
-import { IconsGrid } from '../components/IconsGrid'
-import { Container, Row } from '../components/Layout'
-import { Navbar } from '../components/Navbar'
-import { SearchBar } from '../components/SearchBar'
 
-export default function Home() {
+export default function SearchPage() {
   const [activeIcon, setActiveIcon] = useState<Icon | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
