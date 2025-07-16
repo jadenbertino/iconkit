@@ -10,6 +10,12 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 })
 
+// Option 1: Auto-generate rules for all custom plugin rules
+const customRules = Object.keys(customPlugin.rules).reduce((acc, ruleName) => {
+  acc[`custom/${ruleName}`] = 'error'
+  return acc
+}, {})
+
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
@@ -17,11 +23,7 @@ const eslintConfig = [
       custom: customPlugin,
     },
     rules: {
-      'custom/no-restricted-route-imports': 'error',
-      'custom/require-handle-errors': 'error',
-      'custom/no-axios-in-api-routes': 'error',
-      'custom/no-import-custom-error': 'error',
-      'custom/no-supabase-admin-outside-allowed-dirs': 'error',
+      ...customRules, // Auto-enable all custom rules
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
