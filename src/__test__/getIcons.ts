@@ -125,16 +125,16 @@ async function testGetIcons() {
     }
     const invalidIcons7 = icons7.filter(
       (icon) =>
-        !icon.name.toLowerCase().includes('user') ||
+        !icon.name.toLowerCase().includes('user') &&
         !icon.name.toLowerCase().includes('profile'),
     )
     if (invalidIcons7.length > 0) {
       throw new Error(
-        `Test 7 failed: Found ${invalidIcons7.length} icons that don't contain both 'user' and 'profile' in name`,
+        `Test 7 failed: Found ${invalidIcons7.length} icons that don't contain either 'user' or 'profile' in name`,
       )
     }
     console.log(
-      `✓ Test 7 passed: Found ${icons7.length} icons with both 'user' and 'profile' in name`,
+      `✓ Test 7 passed: Found ${icons7.length} icons with 'user' or 'profile' in name`,
     )
 
     // Test 8: Multi-word search with underscores
@@ -150,16 +150,16 @@ async function testGetIcons() {
     }
     const invalidIcons8 = icons8.filter(
       (icon) =>
-        !icon.name.toLowerCase().includes('icon') ||
+        !icon.name.toLowerCase().includes('icon') &&
         !icon.name.toLowerCase().includes('home'),
     )
     if (invalidIcons8.length > 0) {
       throw new Error(
-        `Test 8 failed: Found ${invalidIcons8.length} icons that don't contain both 'icon' and 'home' in name`,
+        `Test 8 failed: Found ${invalidIcons8.length} icons that don't contain either 'icon' or 'home' in name`,
       )
     }
     console.log(
-      `✓ Test 8 passed: Found ${icons8.length} icons with both 'icon' and 'home' in name`,
+      `✓ Test 8 passed: Found ${icons8.length} icons with 'icon' or 'home' in name`,
     )
 
     // Test 9: Multi-word search with mixed delimiters
@@ -175,17 +175,17 @@ async function testGetIcons() {
     }
     const invalidIcons9 = icons9.filter(
       (icon) =>
-        !icon.name.toLowerCase().includes('arrow') ||
-        !icon.name.toLowerCase().includes('left') ||
+        !icon.name.toLowerCase().includes('arrow') &&
+        !icon.name.toLowerCase().includes('left') &&
         !icon.name.toLowerCase().includes('icon'),
     )
     if (invalidIcons9.length > 0) {
       throw new Error(
-        `Test 9 failed: Found ${invalidIcons9.length} icons that don't contain all terms 'arrow', 'left', and 'icon' in name`,
+        `Test 9 failed: Found ${invalidIcons9.length} icons that don't contain any of the terms 'arrow', 'left', or 'icon' in name`,
       )
     }
     console.log(
-      `✓ Test 9 passed: Found ${icons9.length} icons with all terms 'arrow', 'left', and 'icon' in name`,
+      `✓ Test 9 passed: Found ${icons9.length} icons with at least one of 'arrow', 'left', or 'icon' in name`,
     )
 
     // Test 10: Empty terms filtering
@@ -209,6 +209,64 @@ async function testGetIcons() {
     }
     console.log(
       `✓ Test 10 passed: Found ${icons10.length} icons with 'home' in name (trailing spaces handled)`,
+    )
+
+    // Test 11: No duplicates in combined AND/OR results
+    const icons11 = await getIcons({
+      skip: 0,
+      limit: 50,
+      searchText: 'icon home', // Should trigger both AND and OR logic
+    })
+    if (icons11.length > 50) {
+      throw new Error(
+        `Test 11 failed: Expected at most 50 icons, got ${icons11.length}`,
+      )
+    }
+    const uniqueIds = new Set(icons11.map((icon) => icon.id))
+    if (uniqueIds.size !== icons11.length) {
+      throw new Error(
+        `Test 11 failed: Found ${icons11.length} icons but only ${uniqueIds.size} unique IDs - duplicates detected`,
+      )
+    }
+    console.log(
+      `✓ Test 11 passed: Found ${icons11.length} unique icons with no duplicates`,
+    )
+
+    // Test 12: Verify AND results come before OR results
+    const icons12 = await getIcons({
+      skip: 0,
+      limit: 20,
+      searchText: 'arrow left', // Should have some AND matches and potentially OR matches
+    })
+    if (icons12.length > 20) {
+      throw new Error(
+        `Test 12 failed: Expected at most 20 icons, got ${icons12.length}`,
+      )
+    }
+    // Check that all icons contain both terms (AND logic) or are properly ordered
+    let andResultsEnded = false
+    for (const icon of icons12) {
+      const hasArrow = icon.name.toLowerCase().includes('arrow')
+      const hasLeft = icon.name.toLowerCase().includes('left')
+      const isAndResult = hasArrow && hasLeft
+      const isOrResult = hasArrow || hasLeft
+
+      if (!isAndResult && !andResultsEnded) {
+        andResultsEnded = true
+      }
+      if (isAndResult && andResultsEnded) {
+        throw new Error(
+          `Test 12 failed: Found AND result '${icon.name}' after OR results started`,
+        )
+      }
+      if (!isOrResult) {
+        throw new Error(
+          `Test 12 failed: Found icon '${icon.name}' that doesn't match either AND or OR logic`,
+        )
+      }
+    }
+    console.log(
+      `✓ Test 12 passed: Found ${icons12.length} icons with proper AND/OR ordering`,
     )
 
     console.log('All tests passed!')

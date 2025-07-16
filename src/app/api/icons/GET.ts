@@ -69,26 +69,64 @@ async function getIcons({
     return data
   }
 
-  // Build query with AND logic for all terms
-  let query = supabaseAdmin
+  // First try AND logic for exact matches
+  let andQuery = supabaseAdmin
     .from('icon')
     .select('*')
     .eq('version', SERVER_ENV.VERSION)
 
   // Apply each term as an AND condition
   terms.forEach((term) => {
-    query = query.ilike('name', `%${term}%`)
+    andQuery = andQuery.ilike('name', `%${term}%`)
   })
 
-  const { data, error } = await query
+  const { data: andResults, error: andError } = await andQuery
     .range(skip, skip + limit - 1)
     .order('name')
 
-  if (error) {
-    throw error
+  if (andError) {
+    throw andError
   }
 
-  return data
+  // If we have enough results from AND query, return them
+  if (andResults.length >= limit) {
+    return andResults
+  }
+
+  // If we need more results, do OR query excluding AND results
+  const foundIds = andResults.map((icon) => icon.id)
+  const remainingLimit = limit - andResults.length
+  const remainingSkip = Math.max(0, skip - andResults.length)
+
+  // Build OR query with individual terms, excluding already found icons
+  let orQuery = supabaseAdmin
+    .from('icon')
+    .select('*')
+    .eq('version', SERVER_ENV.VERSION)
+
+  if (foundIds.length > 0) {
+    orQuery = orQuery.not('id', 'in', `(${foundIds.join(',')})`)
+  }
+
+  // Create OR conditions for individual terms
+  if (terms.length > 1) {
+    const orConditions = terms.map((term) => `name.ilike.%${term}%`).join(',')
+    orQuery = orQuery.or(orConditions)
+  } else {
+    // Single term fallback (shouldn't happen but just in case)
+    orQuery = orQuery.ilike('name', `%${terms[0]}%`)
+  }
+
+  const { data: orResults, error: orError } = await orQuery
+    .range(remainingSkip, remainingSkip + remainingLimit - 1)
+    .order('name')
+
+  if (orError) {
+    throw orError
+  }
+
+  // Combine results (AND results first, then OR results)
+  return [...andResults, ...orResults]
 }
 
 export default GET
