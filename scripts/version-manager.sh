@@ -5,7 +5,6 @@ set -e
 # Handles version validation, conflict checking, and Doppler updates
 
 get_version_from_changelog() {
-  echo "📝 Getting version from changelog..."
   if ! VERSION=$(npx tsx scripts/get-version.mjs); then
     echo "❌ Error: Failed to get version from changelog"
     exit 1
@@ -15,8 +14,6 @@ get_version_from_changelog() {
     echo "❌ Error: Version is empty"
     exit 1
   fi
-
-  echo "📝 Got version from changelog: $VERSION"
   echo "$VERSION"
 }
 
@@ -26,6 +23,11 @@ check_prod_version_conflicts() {
   # Only check conflicts in production
   if [ "$NEXT_PUBLIC_ENVIRONMENT" = "production" ]; then
     echo "🔍 Checking for version conflicts in production..."
+
+    if [ -z "$DOPPLER_TOKEN" ]; then
+      echo "❌ Error: DOPPLER_TOKEN is not set"
+      exit 1
+    fi
     
     if ! CURRENT_VERSION=$(doppler secrets get NEXT_PUBLIC_VERSION --plain 2>/dev/null); then
       echo "❌ Error: Failed to fetch current version from Doppler"
@@ -44,8 +46,17 @@ check_prod_version_conflicts() {
 
 update_doppler_version() {
   local version="$1"
-  
-  echo "🔧 Setting NEXT_PUBLIC_VERSION in Doppler..."
+
+  if [ -z "$version" ]; then
+    echo "❌ Error: Version is empty"
+    exit 1
+  fi
+
+  if [ -z "$DOPPLER_TOKEN" ]; then
+    echo "❌ Error: DOPPLER_TOKEN is not set"
+    exit 1
+  fi
+
   if ! doppler secrets set NEXT_PUBLIC_VERSION="$version"; then
     echo "❌ Error: Failed to set NEXT_PUBLIC_VERSION in Doppler"
     exit 1
@@ -55,9 +66,7 @@ update_doppler_version() {
 }
 
 # If script is executed directly, run the validation
-if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
-  local version
-  version=$(get_version_from_changelog)
-  check_prod_version_conflicts "$version"
-  update_doppler_version "$version"
-fi
+version=$(get_version_from_changelog)
+echo "📝 Got version from changelog: '$version'"
+check_prod_version_conflicts "$version"
+update_doppler_version "$version"
