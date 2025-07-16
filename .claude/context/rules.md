@@ -3,3 +3,4 @@
 - Avoid inline exports; exports should be defined at the bottom of the file.
 - Prefer "fail fast" behavior: throw errors instead of returning null/undefined/"unknown" values
 - I'm using `pnpm` as my package manager.
+- Order functions from highest to lowest abstraction level
