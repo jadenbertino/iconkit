@@ -1,5 +1,5 @@
 import { validateQueryParams } from '@/lib/api'
-import { supabaseAdmin } from '@/lib/clients/server'
+import { supabase } from '@/lib/clients/client'
 import { handleErrors } from '@/lib/error'
 import { SERVER_ENV } from '@/env/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -36,7 +36,7 @@ async function getIcons({
 }) {
   if (!searchText.trim()) {
     // If no search text, return all icons
-    const { data } = await supabaseAdmin
+    const { data } = await supabase
       .from('icon')
       .select('*')
       .eq('version', SERVER_ENV.VERSION)
@@ -52,7 +52,7 @@ async function getIcons({
 
   if (terms.length === 0) {
     // If no valid terms after parsing, return all icons
-    const { data } = await supabaseAdmin
+    const { data } = await supabase
       .from('icon')
       .select('*')
       .eq('version', SERVER_ENV.VERSION)
@@ -64,7 +64,7 @@ async function getIcons({
   }
 
   // First try AND logic for exact matches
-  let andQuery = supabaseAdmin
+  let andQuery = supabase
     .from('icon')
     .select('*')
     .eq('version', SERVER_ENV.VERSION)
@@ -90,7 +90,7 @@ async function getIcons({
   const remainingSkip = Math.max(0, skip - andResults.length)
 
   // Build OR query with individual terms, excluding already found icons
-  let orQuery = supabaseAdmin
+  let orQuery = supabase
     .from('icon')
     .select('*')
     .eq('version', SERVER_ENV.VERSION)

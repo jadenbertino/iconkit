@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/lib/clients/server'
+import { supabase } from '@/lib/clients/client'
 import { handleErrors } from '@/lib/error'
 import { NextRequest, NextResponse } from 'next/server'
 import { type GetResponse } from './schema'
@@ -13,7 +13,7 @@ const GET = handleErrors(
 )
 
 async function getProviders() {
-  const { data } = await supabaseAdmin
+  const { data } = await supabase
     .from('provider')
     .select('*')
     .order('name')
