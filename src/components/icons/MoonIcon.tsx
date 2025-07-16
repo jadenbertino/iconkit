@@ -15,4 +15,4 @@ const MoonIcon = () => (
   </svg>
 )
 
-export default MoonIcon
+export { MoonIcon }

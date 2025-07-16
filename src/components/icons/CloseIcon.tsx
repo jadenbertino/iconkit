@@ -31,4 +31,4 @@ const CloseIcon = () => (
   </svg>
 )
 
-export default CloseIcon
+export { CloseIcon }

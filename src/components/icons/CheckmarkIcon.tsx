@@ -10,4 +10,4 @@ const CheckmarkIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default CheckmarkIcon
+export { CheckmarkIcon }

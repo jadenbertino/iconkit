@@ -22,5 +22,4 @@ const BoxFillIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default BoxIcon
-export { BoxFillIcon }
+export { BoxIcon, BoxFillIcon }

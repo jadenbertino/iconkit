@@ -15,4 +15,4 @@ const ChevronRightIcon = () => (
   </svg>
 )
 
-export default ChevronRightIcon
+export { ChevronRightIcon }

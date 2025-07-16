@@ -1,9 +1,7 @@
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
-import ChevronLeftIcon from '../icons/ChevronLeftIcon'
-import ChevronRightIcon from '../icons/ChevronRightIcon'
-import EllipsisIcon from '../icons/EllipsisIcon'
+import { ChevronLeftIcon, ChevronRightIcon, EllipsisIcon } from '../icons'
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (

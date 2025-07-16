@@ -14,10 +14,11 @@ tmp.setGracefulCleanup()
  * Executes a command with timeout
  */
 async function execWithTimeout(
-  command: string,
+  command: string | string[],
   timeoutMs: number = 60 * 1000, // 60 seconds
 ) {
-  return withTimeout(execAsync(command), timeoutMs, `Command: ${command}`)
+  const commandString = Array.isArray(command) ? command.join(' ') : command
+  return withTimeout(execAsync(commandString), timeoutMs, `Command: ${command}`)
 }
 
 /**

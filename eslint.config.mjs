@@ -10,7 +10,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 })
 
-// Option 1: Auto-generate rules for all custom plugin rules
+// Auto-generate rules for all custom plugin rules
 const customRules = Object.keys(customPlugin.rules).reduce((acc, ruleName) => {
   acc[`custom/${ruleName}`] = 'error'
   return acc
