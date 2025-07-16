@@ -32,10 +32,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en'>
-      <body className={cn(...fonts, 'antialiased', 'font-sans')}>
+    <html
+      lang='en'
+      className='h-full'
+    >
+      <body className={cn(...fonts, 'antialiased font-sans h-full')}>
         <Providers>{children}</Providers>
       </body>
     </html>
   )
 }
+

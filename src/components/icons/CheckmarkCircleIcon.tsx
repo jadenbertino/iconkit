@@ -37,4 +37,4 @@ const CheckmarkCircleIcon = () => (
   </svg>
 )
 
-export default CheckmarkCircleIcon
+export { CheckmarkCircleIcon }

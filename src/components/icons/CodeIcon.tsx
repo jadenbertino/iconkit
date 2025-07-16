@@ -15,4 +15,4 @@ const CodeIcon = () => (
   </svg>
 )
 
-export default CodeIcon
+export { CodeIcon }

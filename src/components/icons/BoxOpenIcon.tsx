@@ -12,4 +12,4 @@ const BoxOpen = ({
   </svg>
 )
 
-export default BoxOpen
+export { BoxOpen }
