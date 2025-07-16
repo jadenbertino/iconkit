@@ -1,7 +1,7 @@
+import { CLIENT_ENV } from '@/env/client'
 import { validateQueryParams } from '@/lib/api'
 import { supabase } from '@/lib/clients/client'
 import { handleErrors } from '@/lib/error'
-import { SERVER_ENV } from '@/env/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { GetRequestSchema, type GetResponse } from './schema'
 
@@ -39,7 +39,7 @@ async function getIcons({
     const { data } = await supabase
       .from('icon')
       .select('*')
-      .eq('version', SERVER_ENV.VERSION)
+      .eq('version', CLIENT_ENV.VERSION)
       .range(skip, skip + limit - 1)
       .order('name')
       .throwOnError()
@@ -55,7 +55,7 @@ async function getIcons({
     const { data } = await supabase
       .from('icon')
       .select('*')
-      .eq('version', SERVER_ENV.VERSION)
+      .eq('version', CLIENT_ENV.VERSION)
       .range(skip, skip + limit - 1)
       .order('name')
       .throwOnError()
@@ -67,7 +67,7 @@ async function getIcons({
   let andQuery = supabase
     .from('icon')
     .select('*')
-    .eq('version', SERVER_ENV.VERSION)
+    .eq('version', CLIENT_ENV.VERSION)
 
   // Apply each term as an AND condition
   terms.forEach((term) => {
@@ -93,7 +93,7 @@ async function getIcons({
   let orQuery = supabase
     .from('icon')
     .select('*')
-    .eq('version', SERVER_ENV.VERSION)
+    .eq('version', CLIENT_ENV.VERSION)
 
   if (foundIds.length > 0) {
     orQuery = orQuery.not('id', 'in', `(${foundIds.join(',')})`)
