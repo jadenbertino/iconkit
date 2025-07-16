@@ -14,7 +14,7 @@ function validateClientEnv() {
     ENVIRONMENT: process.env['NEXT_PUBLIC_ENVIRONMENT'],
     SUPABASE_ANON_KEY: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
     SUPABASE_PROJECT_ID: process.env['NEXT_PUBLIC_SUPABASE_PROJECT_ID'],
-    VERSION: process.env['NEXT_PUBLIC_VERSION'],
+    VERSION: '0.0.1', // during build we validate that changelog matches this
   }
 
   const clientValidation = clientSchema.safeParse(rawClientEnv)

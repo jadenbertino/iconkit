@@ -5,7 +5,7 @@ set -e
 # doppler run -- ./scripts/build.sh
 
 # Source and run version management
-source scripts/version-manager.sh
+npx tsx scripts/validate-version.mjs
 
 echo "🔍 Running ESLint..."
 npm run lint
