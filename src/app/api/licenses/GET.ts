@@ -13,11 +13,10 @@ const GET = handleErrors(
 )
 
 async function getLicenses() {
-  const { data, error } = await supabaseAdmin.from('license').select('*')
-
-  if (error) {
-    throw error
-  }
+  const { data } = await supabaseAdmin
+    .from('license')
+    .select('*')
+    .throwOnError()
 
   return data
 }

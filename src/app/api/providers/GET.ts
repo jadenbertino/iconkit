@@ -13,14 +13,11 @@ const GET = handleErrors(
 )
 
 async function getProviders() {
-  const { data, error } = await supabaseAdmin
+  const { data } = await supabaseAdmin
     .from('provider')
     .select('*')
     .order('name')
-
-  if (error) {
-    throw error
-  }
+    .throwOnError()
 
   return data
 }

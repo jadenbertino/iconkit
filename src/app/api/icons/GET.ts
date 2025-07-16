@@ -36,16 +36,13 @@ async function getIcons({
 }) {
   if (!searchText.trim()) {
     // If no search text, return all icons
-    const { data, error } = await supabaseAdmin
+    const { data } = await supabaseAdmin
       .from('icon')
       .select('*')
       .eq('version', SERVER_ENV.VERSION)
       .range(skip, skip + limit - 1)
       .order('name')
-
-    if (error) {
-      throw error
-    }
+      .throwOnError()
 
     return data
   }
@@ -55,16 +52,13 @@ async function getIcons({
 
   if (terms.length === 0) {
     // If no valid terms after parsing, return all icons
-    const { data, error } = await supabaseAdmin
+    const { data } = await supabaseAdmin
       .from('icon')
       .select('*')
       .eq('version', SERVER_ENV.VERSION)
       .range(skip, skip + limit - 1)
       .order('name')
-
-    if (error) {
-      throw error
-    }
+      .throwOnError()
 
     return data
   }
@@ -80,13 +74,10 @@ async function getIcons({
     andQuery = andQuery.ilike('name', `%${term}%`)
   })
 
-  const { data: andResults, error: andError } = await andQuery
+  const { data: andResults } = await andQuery
     .range(skip, skip + limit - 1)
     .order('name')
-
-  if (andError) {
-    throw andError
-  }
+    .throwOnError()
 
   // If we have enough results from AND query, return them
   if (andResults.length >= limit) {
@@ -117,13 +108,10 @@ async function getIcons({
     orQuery = orQuery.ilike('name', `%${terms[0]}%`)
   }
 
-  const { data: orResults, error: orError } = await orQuery
+  const { data: orResults } = await orQuery
     .range(remainingSkip, remainingSkip + remainingLimit - 1)
     .order('name')
-
-  if (orError) {
-    throw orError
-  }
+    .throwOnError()
 
   // Combine results (AND results first, then OR results)
   return [...andResults, ...orResults]
