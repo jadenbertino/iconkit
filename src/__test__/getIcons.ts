@@ -87,6 +87,130 @@ async function testGetIcons() {
       `✓ Test 5 passed: Found exactly ${icons5.length} icons for non-existent search`,
     )
 
+    // Test 6: Multi-word search with spaces
+    const icons6 = await getIcons({
+      skip: 0,
+      limit: 10,
+      searchText: 'arrow left',
+    })
+    if (icons6.length > 10) {
+      throw new Error(
+        `Test 6 failed: Expected at most 10 icons, got ${icons6.length}`,
+      )
+    }
+    const invalidIcons6 = icons6.filter(
+      (icon) =>
+        !icon.name.toLowerCase().includes('arrow') ||
+        !icon.name.toLowerCase().includes('left'),
+    )
+    if (invalidIcons6.length > 0) {
+      throw new Error(
+        `Test 6 failed: Found ${invalidIcons6.length} icons that don't contain both 'arrow' and 'left' in name`,
+      )
+    }
+    console.log(
+      `✓ Test 6 passed: Found ${icons6.length} icons with both 'arrow' and 'left' in name`,
+    )
+
+    // Test 7: Multi-word search with hyphens
+    const icons7 = await getIcons({
+      skip: 0,
+      limit: 10,
+      searchText: 'user-profile',
+    })
+    if (icons7.length > 10) {
+      throw new Error(
+        `Test 7 failed: Expected at most 10 icons, got ${icons7.length}`,
+      )
+    }
+    const invalidIcons7 = icons7.filter(
+      (icon) =>
+        !icon.name.toLowerCase().includes('user') ||
+        !icon.name.toLowerCase().includes('profile'),
+    )
+    if (invalidIcons7.length > 0) {
+      throw new Error(
+        `Test 7 failed: Found ${invalidIcons7.length} icons that don't contain both 'user' and 'profile' in name`,
+      )
+    }
+    console.log(
+      `✓ Test 7 passed: Found ${icons7.length} icons with both 'user' and 'profile' in name`,
+    )
+
+    // Test 8: Multi-word search with underscores
+    const icons8 = await getIcons({
+      skip: 0,
+      limit: 10,
+      searchText: 'icon_home',
+    })
+    if (icons8.length > 10) {
+      throw new Error(
+        `Test 8 failed: Expected at most 10 icons, got ${icons8.length}`,
+      )
+    }
+    const invalidIcons8 = icons8.filter(
+      (icon) =>
+        !icon.name.toLowerCase().includes('icon') ||
+        !icon.name.toLowerCase().includes('home'),
+    )
+    if (invalidIcons8.length > 0) {
+      throw new Error(
+        `Test 8 failed: Found ${invalidIcons8.length} icons that don't contain both 'icon' and 'home' in name`,
+      )
+    }
+    console.log(
+      `✓ Test 8 passed: Found ${icons8.length} icons with both 'icon' and 'home' in name`,
+    )
+
+    // Test 9: Multi-word search with mixed delimiters
+    const icons9 = await getIcons({
+      skip: 0,
+      limit: 10,
+      searchText: 'arrow-left icon',
+    })
+    if (icons9.length > 10) {
+      throw new Error(
+        `Test 9 failed: Expected at most 10 icons, got ${icons9.length}`,
+      )
+    }
+    const invalidIcons9 = icons9.filter(
+      (icon) =>
+        !icon.name.toLowerCase().includes('arrow') ||
+        !icon.name.toLowerCase().includes('left') ||
+        !icon.name.toLowerCase().includes('icon'),
+    )
+    if (invalidIcons9.length > 0) {
+      throw new Error(
+        `Test 9 failed: Found ${invalidIcons9.length} icons that don't contain all terms 'arrow', 'left', and 'icon' in name`,
+      )
+    }
+    console.log(
+      `✓ Test 9 passed: Found ${icons9.length} icons with all terms 'arrow', 'left', and 'icon' in name`,
+    )
+
+    // Test 10: Empty terms filtering
+    const icons10 = await getIcons({
+      skip: 0,
+      limit: 10,
+      searchText: 'home   ',
+    })
+    if (icons10.length > 10) {
+      throw new Error(
+        `Test 10 failed: Expected at most 10 icons, got ${icons10.length}`,
+      )
+    }
+    const invalidIcons10 = icons10.filter(
+      (icon) => !icon.name.toLowerCase().includes('home'),
+    )
+    if (invalidIcons10.length > 0) {
+      throw new Error(
+        `Test 10 failed: Found ${invalidIcons10.length} icons that don't contain 'home' in name`,
+      )
+    }
+    console.log(
+      `✓ Test 10 passed: Found ${icons10.length} icons with 'home' in name (trailing spaces handled)`,
+    )
+
     console.log('All tests passed!')
   } catch (error) {
     console.error('Test failed:', error)
