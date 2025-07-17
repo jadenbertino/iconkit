@@ -10,16 +10,11 @@ async function validateProviderRecords() {
   for (const providerSlug of ICON_PROVIDER_SLUGS) {
     const { git } = ICON_PROVIDERS[providerSlug]
 
-    const { data: providers, error } = await supabaseAdmin
+    const { data: providers } = await supabaseAdmin
       .from('provider')
       .select('*')
       .eq('git_url', git.url)
-
-    if (error) {
-      serverLogger.error(`Error querying provider ${providerSlug}:`, error)
-      allValid = false
-      continue
-    }
+      .throwOnError()
 
     if (!providers || providers.length === 0) {
       serverLogger.error(

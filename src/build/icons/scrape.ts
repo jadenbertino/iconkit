@@ -4,7 +4,7 @@ import {
   prettierSvgConfig,
   type IconProviderSlug,
 } from '@/constants/index'
-import { SERVER_ENV } from '@/env/server'
+import { CLIENT_ENV } from '@/env/client'
 import { htmlAttributesToReact, toPascalCase } from '@/lib'
 import { withTimeout } from '@/lib/error'
 import { fsp, pathExists } from '@/lib/fs'
@@ -106,7 +106,7 @@ export default ${componentName}`
       return {
         name,
         svg: cleanedSvgContent,
-        version: SERVER_ENV.VERSION,
+        version: CLIENT_ENV.VERSION,
         source_url,
         jsx: jsxContent,
       }

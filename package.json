@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "bash scripts/dev.sh",
     "build": "bash scripts/build.sh",
+    "build:quick": "npm run lint && npx tsc --noEmit && npx next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write --list-different .",

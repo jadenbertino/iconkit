@@ -1,12 +1,12 @@
-import { http } from '@/lib/clients/client'
-import { GetResponseSchema } from './schema'
+import { supabase } from '@/lib/clients/client'
 
 async function getLicenses() {
-  const { licenses } = await http.get({
-    url: '/api/licenses',
-    responseSchema: GetResponseSchema,
-  })
-  return licenses
+  const { data } = await supabase
+    .from('license')
+    .select('*')
+    .throwOnError()
+
+  return data
 }
 
 export { getLicenses }

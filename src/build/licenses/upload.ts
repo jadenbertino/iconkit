@@ -9,21 +9,16 @@ async function uploadLicenses(licenses: ScrapedLicense[]): Promise<License[]> {
 
 async function upsertLicense(scrapedLicense: ScrapedLicense): Promise<License> {
   // Check if license already exists for this provider
-  const { data: existingLicense, error: getError } = await supabaseAdmin
+  const { data: existingLicense } = await supabaseAdmin
     .from('license')
     .select('*')
     .eq('provider_id', scrapedLicense.provider_id)
     .maybeSingle()
-
-  if (getError) {
-    throw new Error(
-      `Failed to check existing license for provider ${scrapedLicense.provider_id}: ${getError.message}`,
-    )
-  }
+    .throwOnError()
 
   if (existingLicense) {
     // Update existing license
-    const { data: updatedLicense, error: updateError } = await supabaseAdmin
+    const { data: updatedLicense } = await supabaseAdmin
       .from('license')
       .update({
         type: scrapedLicense.type,
@@ -32,12 +27,7 @@ async function upsertLicense(scrapedLicense: ScrapedLicense): Promise<License> {
       .eq('id', existingLicense.id)
       .select()
       .single()
-
-    if (updateError) {
-      throw new Error(
-        `Failed to update license for provider ${scrapedLicense.provider_id}: ${updateError.message}`,
-      )
-    }
+      .throwOnError()
 
     serverLogger.debug(
       `Updated license for provider ${scrapedLicense.provider_id}`,
@@ -45,7 +35,7 @@ async function upsertLicense(scrapedLicense: ScrapedLicense): Promise<License> {
     return updatedLicense
   } else {
     // Create new license
-    const { data: newLicense, error: createError } = await supabaseAdmin
+    const { data: newLicense } = await supabaseAdmin
       .from('license')
       .insert({
         type: scrapedLicense.type,
@@ -54,12 +44,7 @@ async function upsertLicense(scrapedLicense: ScrapedLicense): Promise<License> {
       })
       .select()
       .single()
-
-    if (createError) {
-      throw new Error(
-        `Failed to create license for provider ${scrapedLicense.provider_id}: ${createError.message}`,
-      )
-    }
+      .throwOnError()
 
     serverLogger.debug(
       `Created new license for provider ${scrapedLicense.provider_id}`,
