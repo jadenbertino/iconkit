@@ -10,7 +10,7 @@ export function SearchBar() {
   // Debounce the search update function
   const debouncedSetSearch = useDebounceCallback((text: string) => {
     setSearch((prev) => ({ ...prev, text, page: 1 }))
-  }, 500)
+  }, 300)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
