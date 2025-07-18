@@ -8,7 +8,7 @@ const SvgIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square',
         centerClasses,
         className,
       )}
@@ -27,7 +27,7 @@ const JsxIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square',
         centerClasses,
         className,
       )}
