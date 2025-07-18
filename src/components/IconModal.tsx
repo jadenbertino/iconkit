@@ -62,7 +62,7 @@ const IconModal = ({
           <div className='flex-grow flex flex-col text-center pt-4'>
             {/* Details */}
             <h1 className='text-2xl font-bold'>{icon.name}</h1>
-            <div className='text-sm flex p-2 -ml-2 *:p-1 flex-wrap justify-center gap-x-2 pt-1'>
+            <div className='text-sm flex p-2 -ml-2 *:p-1 flex-wrap justify-center pt-1'>
               {!provider ? null : (
                 <ExternalLink
                   href={icon.source_url}
@@ -76,7 +76,7 @@ const IconModal = ({
                   href={license.url}
                   className='px-3 text-gray-500 hover:underline underline-offset-4'
                 >
-                  {license.type} License
+                  ({license.type} License)
                 </ExternalLink>
               )}
             </div>
