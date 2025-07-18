@@ -40,7 +40,7 @@ async function testUpload() {
     await uploadIcons(testIcons, TEST_PROVIDER)
 
     // Step 4: Verify upload by querying the database
-    const { data: uploadedIcons, error: queryError } = await supabaseAdmin
+    const { data: uploadedIcons } = await supabaseAdmin
       .from('icon')
       .select('id, name, provider_id')
       .in(
@@ -49,10 +49,7 @@ async function testUpload() {
       )
       .order('created_at', { ascending: false })
       .limit(TEST_ICON_COUNT)
-
-    if (queryError) {
-      throw new Error(`Failed to query uploaded icons: ${queryError.message}`)
-    }
+      .throwOnError()
 
     serverLogger.info(
       `Successfully verified ${uploadedIcons?.length || 0} uploaded icons`,
@@ -63,14 +60,11 @@ async function testUpload() {
       serverLogger.info('Cleaning up test icons...')
       const iconIds = uploadedIcons.map((icon) => icon.id)
 
-      const { error: deleteError } = await supabaseAdmin
+      await supabaseAdmin
         .from('icon')
         .delete()
         .in('id', iconIds)
-
-      if (deleteError) {
-        throw new Error(`Failed to delete test icons: ${deleteError.message}`)
-      }
+        .throwOnError()
 
       serverLogger.info(`Successfully deleted ${iconIds.length} test icons`)
     }

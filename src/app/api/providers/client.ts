@@ -1,12 +1,13 @@
-import { http } from '@/lib/clients/client'
-import { GetResponseSchema } from './schema'
+import { supabase } from '@/lib/clients/client'
 
 async function getProviders() {
-  const { providers } = await http.get({
-    url: '/api/providers',
-    responseSchema: GetResponseSchema,
-  })
-  return providers
+  const { data } = await supabase
+    .from('provider')
+    .select('*')
+    .order('name')
+    .throwOnError()
+
+  return data
 }
 
 export { getProviders }

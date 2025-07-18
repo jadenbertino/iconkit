@@ -15,23 +15,19 @@ async function getProviderRecord(
   const { name, git } = ICON_PROVIDERS[providerSlug]
 
   // Check if provider already exists
-  const { data: existingProvider, error: getProviderError } =
-    await supabaseAdmin
-      .from('provider')
-      .select('*')
-      .eq('git_url', git.url)
-      .maybeSingle()
-
-  if (getProviderError) {
-    throw getProviderError
-  }
+  const { data: existingProvider } = await supabaseAdmin
+    .from('provider')
+    .select('*')
+    .eq('git_url', git.url)
+    .maybeSingle()
+    .throwOnError()
 
   if (existingProvider) {
     return existingProvider
   }
 
   // Create provider if it doesn't exist
-  const { data: newProvider, error: createProviderError } = await supabaseAdmin
+  const { data: newProvider } = await supabaseAdmin
     .from('provider')
     .insert({
       name,
@@ -41,7 +37,7 @@ async function getProviderRecord(
     })
     .select()
     .single()
-  if (createProviderError) throw createProviderError
+    .throwOnError()
   // Keep this log, we want to know if a new provider is created, it's probably a mistake.
   serverLogger.info(`🚀 Created new provider: ${newProvider.id}`, {
     providerSlug,
