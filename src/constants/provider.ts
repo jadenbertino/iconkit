@@ -14,6 +14,9 @@ const ICON_PROVIDER_SLUGS = [
   // 'typicons', // - causing issues
   'tabler_icons',
 ] as const
+
+const ICON_LIBRARY_COUNT = ICON_PROVIDER_SLUGS.length
+
 const IconProviderSlugSchema = z.enum(ICON_PROVIDER_SLUGS)
 type IconProviderSlug = z.infer<typeof IconProviderSlugSchema>
 
@@ -124,6 +127,7 @@ const ICON_PROVIDERS = {
 } as const satisfies Record<IconProviderSlug, Omit<IconProvider, 'id'>>
 
 export {
+  ICON_LIBRARY_COUNT,
   ICON_PROVIDER_SLUGS,
   ICON_PROVIDERS,
   IconProviderSchema,
