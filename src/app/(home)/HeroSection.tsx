@@ -1,43 +1,9 @@
-'use client'
-
+import { SearchBox } from '@/components/SearchBox'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { PAGE_SIZE } from '@/constants'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
-import { useSearch } from '@/context/SearchContext'
 import { CLIENT_ENV } from '@/env/client'
-import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
-import { useIconQueries } from '@/lib/queries/icons'
-import { Search } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useCallback, useRef } from 'react'
 
 const HeroSection = () => {
-  const router = useRouter()
-  const { prefetchPage, useIconsQuery } = useIconQueries()
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { search } = useSearch()
-  useIconsQuery({
-    // functions as prefetching
-    skip: 0,
-    limit: PAGE_SIZE,
-    searchText: search.text,
-  })
-
-  const handleSearch = useCallback(() => {
-    router.push('/search')
-  }, [router])
-
-  const { searchText, setSearchText, onSubmit } = useDebouncedSearch(
-    300,
-    handleSearch,
-  )
-
-  const prefetchSearch = useCallback(() => {
-    if (searchText.trim().length) {
-      prefetchPage(1, searchText.trim())
-    }
-  }, [searchText, prefetchPage])
 
   return (
     <section className='container mx-auto px-4 pt-24 pb-16 text-center'>
@@ -71,29 +37,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className='max-w-2xl mx-auto mb-8'>
-          <form
-            onSubmit={onSubmit}
-            className='relative'
-          >
-            <input
-              ref={inputRef}
-              type='text'
-              placeholder='search icons...'
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className='w-full h-14 text-lg pl-6 pr-32 rounded-full border-2 border-slate-200 focus:border-slate-400 shadow-lg focus:outline-none'
-            />
-            <Button
-              type='submit'
-              onMouseEnter={prefetchSearch}
-              className='absolute right-2 top-2 h-10 px-6 rounded-full bg-slate-900 hover:bg-slate-800 flex items-center'
-            >
-              <Search className='h-4 w-4 mr-2' />
-              <span className='-mt-0.5'>search</span>
-            </Button>
-          </form>
-        </div>
+        <SearchBox />
 
         <p className='text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed'>
           Find any icon from Hero Icons, Lucide, Font Awesome, Simple Icons, and

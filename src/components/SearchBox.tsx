@@ -1,0 +1,156 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import { PAGE_SIZE } from '@/constants'
+import { useSearch } from '@/context/SearchContext'
+import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
+import { useIconQueries } from '@/lib/queries/icons'
+import { Search } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useCallback, useRef, useState } from 'react'
+import { TypeAnimation } from 'react-type-animation'
+
+export function SearchBox() {
+  const router = useRouter()
+  const { prefetchPage, useIconsQuery } = useIconQueries()
+  const { search } = useSearch()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [isFocused, setIsFocused] = useState(false)
+  const [animationKey, setAnimationKey] = useState(0)
+
+  // Prefetch icons for performance
+  useIconsQuery({
+    skip: 0,
+    limit: PAGE_SIZE,
+    searchText: search.text,
+  })
+
+  const handleSearch = useCallback(() => {
+    router.push('/search')
+  }, [router])
+
+  const { searchText, setSearchText, onSubmit } = useDebouncedSearch(
+    300,
+    handleSearch,
+  )
+
+  const handlePrefetch = useCallback(() => {
+    if (searchText.trim().length) {
+      prefetchPage(1, searchText.trim())
+    }
+  }, [searchText, prefetchPage])
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false)
+    // Force re-render of TypeAnimation with new key to start from random position
+    setAnimationKey((prev) => prev + 1)
+  }, [])
+
+  const getRandomizedSequence = useCallback(() => {
+    const randomStartIndex = Math.floor(
+      Math.random() * exampleSearchTerms.length,
+    )
+    const reorderedTerms = [
+      ...exampleSearchTerms.slice(randomStartIndex),
+      ...exampleSearchTerms.slice(0, randomStartIndex),
+    ]
+    return reorderedTerms.flatMap((term) => [term, TYPING_DELAY_MS])
+  }, [])
+
+  return (
+    <div className='max-w-2xl mx-auto mb-8'>
+      <form
+        onSubmit={onSubmit}
+        className='flex items-center gap-3 p-2 rounded-full border-2 border-slate-200 focus-within:border-slate-400 shadow-lg'
+      >
+        <div className='flex-1 relative'>
+          <input
+            ref={inputRef}
+            type='text'
+            placeholder={isFocused || searchText ? 'Search for icons...' : ''}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={handleBlur}
+            className='w-full h-10 text-lg pl-4 pr-2 bg-transparent rounded-full focus:outline-none'
+          />
+          {!searchText && !isFocused && (
+            <div className='absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-lg text-slate-400'>
+              <TypeAnimation
+                key={animationKey}
+                sequence={getRandomizedSequence()}
+                wrapper='span'
+                speed={50}
+                repeat={Infinity}
+                cursor={true}
+              />
+            </div>
+          )}
+        </div>
+        <Button
+          type='submit'
+          onMouseEnter={handlePrefetch}
+          className='h-10 px-6 rounded-full bg-slate-900 hover:bg-slate-800 flex items-center flex-shrink-0'
+        >
+          <Search className='h-4 w-4' />
+          <span className='pl-1 -mt-0.5'>search icons</span>
+        </Button>
+      </form>
+    </div>
+  )
+}
+
+const exampleSearchTerms = [
+  'user',
+  'arrow',
+  'heart',
+  'home',
+  'search',
+  'settings',
+  'bell',
+  'star',
+  'lock',
+  'play',
+  'download',
+  'share',
+  'email',
+  'phone',
+  'camera',
+  'calendar',
+  'clock',
+  'edit',
+  'trash',
+  'check',
+  'close',
+  'menu',
+  'plus',
+  'minus',
+  'eye',
+  'location',
+  'map',
+  'bookmark',
+  'folder',
+  'file',
+  'image',
+  'video',
+  'music',
+  'mic',
+  'speaker',
+  'wifi',
+  'battery',
+  'shopping',
+  'cart',
+  'credit card',
+  'money',
+  'notification',
+  'message',
+  'chat',
+  'cloud',
+  'upload',
+  'refresh',
+  'filter',
+  'sort',
+  'grid',
+]
+
+const TYPING_DELAY_MS = 2000
