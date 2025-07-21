@@ -9,7 +9,7 @@ const BenefitsSection = () => {
         <p className='text-lg text-foreground'>
           IconKit searches every major open-source library at once, so you find
           what you need in seconds. No more bookmarking 6 different icon sites
-          or settling for "close enough" icons.
+          or settling for &ldquo;close enough&rdquo; icons.
         </p>
 
         <div className='space-y-4'>
