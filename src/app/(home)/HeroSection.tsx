@@ -2,27 +2,24 @@
 
 import { Button } from '@/components/ui/button'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
-import { useSearch } from '@/context/SearchContext'
 import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
 import { useIconQueries } from '@/lib/queries/icons'
 import { useRouter } from 'next/navigation'
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 
 const HeroSection = () => {
   const router = useRouter()
-  const { setSearch } = useSearch()
-  const { searchText, setSearchText } = useDebouncedSearch(300)
   const { prefetchPage } = useIconQueries()
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleSearch = () => {
-    if (!searchText.trim().length) {
-      inputRef.current?.focus()
-      return
-    }
-    setSearch((prev) => ({ ...prev, text: searchText.trim(), page: 1 }))
+  const handleSearch = useCallback(() => {
     router.push('/search')
-  }
+  }, [router])
+
+  const { searchText, setSearchText, onSubmit } = useDebouncedSearch(
+    300,
+    handleSearch,
+  )
 
   const handleButtonHover = () => {
     if (searchText.trim().length) {
@@ -46,24 +43,26 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className='max-w-lg flex gap-2'>
+      <form
+        onSubmit={onSubmit}
+        className='max-w-lg flex gap-2'
+      >
         <input
           ref={inputRef}
           type='text'
           placeholder='search icons...'
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           className='flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent'
         />
         <Button
-          onClick={handleSearch}
+          type='submit'
           onMouseEnter={handleButtonHover}
           className='px-6 h-auto'
         >
           search
         </Button>
-      </div>
+      </form>
 
       <p className='text-lg text-muted-foreground max-w-2xl'>
         Find any icon from Hero Icons, Lucide, Font Awesome, Simple Icons, and 8
