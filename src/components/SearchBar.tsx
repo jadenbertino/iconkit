@@ -1,20 +1,23 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDebounceCallback } from 'usehooks-ts'
 import { useSearch } from '../context/SearchContext'
 import { MagnifyingGlassHero } from './icons/MagnifyingGlass'
 
 export function SearchBar() {
   const { setSearch, search } = useSearch()
-  const [searchText, setSearchText] = useState(search.text)
+  const [searchInputText, setSearchInputText] = useState(search.text) // must track separately for debounce
 
-  // Debounce the search update function
-  const debouncedSetSearch = useDebounceCallback((text: string) => {
-    setSearch((prev) => ({ ...prev, text, page: 1 }))
-  }, 300)
+  const updateSearch = useCallback(
+    (text: string) => {
+      setSearch((prev) => ({ ...prev, text, page: 1 }))
+    },
+    [setSearch],
+  )
+  const debouncedSetSearch = useDebounceCallback(updateSearch, 300)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    setSearchText(value) // Update input immediately
+    setSearchInputText(value) // Update input immediately
     debouncedSetSearch(value) // Debounce the search context update
   }
 
@@ -26,7 +29,7 @@ export function SearchBar() {
       <input
         type='text'
         placeholder='Search icons...'
-        value={searchText}
+        value={searchInputText}
         onChange={handleInputChange}
         className='flex-1 pr-4 pl-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500 focus:border-transparent'
       />
