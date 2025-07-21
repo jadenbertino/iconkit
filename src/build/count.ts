@@ -36,14 +36,17 @@ async function updateIconCountSecret(
       project: 'iconkit',
       config: envSlug,
       secrets: {
-        ICON_COUNT: count.toString(),
+        NEXT_PUBLIC_ICON_COUNT: count.toString(),
       },
     })
 
-    console.log(`✅ Updated ICON_COUNT in ${envSlug} to ${count}`)
+    console.log(`✅ Updated NEXT_PUBLIC_ICON_COUNT in ${envSlug} to ${count}`)
     return count
   } catch (error) {
-    console.error(`❌ Failed to update ICON_COUNT in Doppler:`, error)
+    console.error(
+      `❌ Failed to update NEXT_PUBLIC_ICON_COUNT in Doppler:`,
+      error,
+    )
     throw error
   }
 }
