@@ -1,7 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { PAGE_SIZE } from '@/constants'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
+import { useSearch } from '@/context/SearchContext'
 import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
 import { useIconQueries } from '@/lib/queries/icons'
 import { useRouter } from 'next/navigation'
@@ -9,8 +11,15 @@ import { useCallback, useRef } from 'react'
 
 const HeroSection = () => {
   const router = useRouter()
-  const { prefetchPage } = useIconQueries()
+  const { prefetchPage, useIconsQuery } = useIconQueries()
   const inputRef = useRef<HTMLInputElement>(null)
+  const { search } = useSearch()
+  useIconsQuery({
+    // functions as prefetching
+    skip: 0,
+    limit: PAGE_SIZE,
+    searchText: search.text,
+  })
 
   const handleSearch = useCallback(() => {
     router.push('/search')
@@ -21,11 +30,11 @@ const HeroSection = () => {
     handleSearch,
   )
 
-  const handleButtonHover = () => {
+  const prefetchSearch = useCallback(() => {
     if (searchText.trim().length) {
       prefetchPage(1, searchText.trim())
     }
-  }
+  }, [searchText, prefetchPage])
 
   return (
     <div className='space-y-8 py-16'>
@@ -57,7 +66,7 @@ const HeroSection = () => {
         />
         <Button
           type='submit'
-          onMouseEnter={handleButtonHover}
+          onMouseEnter={prefetchSearch}
           className='px-6 h-auto'
         >
           search

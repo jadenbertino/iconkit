@@ -38,15 +38,13 @@ export function useDebouncedSearch(
   const { setSearch, search } = useSearch()
   const [searchText, setSearchText] = useState(search.text)
 
-  const debouncedSetSearch = useDebounceCallback(
-    useCallback(
-      (text: string) => {
-        setSearch((prev) => ({ ...prev, text, page: 1 }))
-      },
-      [setSearch],
-    ),
-    delayMs,
+  const handleSetSearch = useCallback(
+    (text: string) => {
+      setSearch((prev) => ({ ...prev, text, page: 1 }))
+    },
+    [setSearch],
   )
+  const debouncedSetSearch = useDebounceCallback(handleSetSearch, delayMs)
 
   useEffect(() => {
     debouncedSetSearch(searchText)
