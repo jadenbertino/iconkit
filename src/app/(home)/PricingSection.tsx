@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { CLIENT_ENV } from '@/env/client'
 import { useRouter } from 'next/navigation'
 
 const PricingSection = () => {
@@ -30,7 +31,7 @@ const PricingSection = () => {
           size='lg'
           className='text-lg px-8 py-4'
         >
-          Search 40,000+ Icons Now
+          Search {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ Icons Now
         </Button>
       </div>
     </div>

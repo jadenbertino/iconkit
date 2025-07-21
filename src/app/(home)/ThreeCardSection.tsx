@@ -1,7 +1,9 @@
+import { CLIENT_ENV } from '@/env/client'
+
 const ThreeCardSection = () => {
   const cards = [
     {
-      title: '40,000+ Icons. 1 Search Bar',
+      title: `${CLIENT_ENV.ICON_COUNT.toLocaleString()}+ Icons. 1 Search Bar`,
       description:
         'Browse icons from Hero Icons, Lucide, Simple Icons, Font Awesome, Feather, Remix Icon, and 5 more popular libraries—all in one search.',
       icon: '🔍',

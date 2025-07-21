@@ -1,3 +1,5 @@
+import { CLIENT_ENV } from '@/env/client'
+
 const BenefitsSection = () => {
   return (
     <div className='py-16 space-y-8'>
@@ -21,7 +23,7 @@ const BenefitsSection = () => {
               • Find the perfect icon instantly
             </li>
             <li className='text-lg text-foreground'>
-              • Browse 40,000+ icons from top libraries
+              • Browse {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ icons from top libraries
             </li>
             <li className='text-lg text-foreground'>
               • Copy as SVG or JSX with one click

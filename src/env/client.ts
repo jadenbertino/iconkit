@@ -6,6 +6,7 @@ function validateClientEnv() {
     SUPABASE_PROJECT_ID: z.string(),
     SUPABASE_ANON_KEY: z.string(),
     VERSION: z.string(),
+    ICON_COUNT: z.coerce.number().int().positive(),
   })
 
   // Need to set process.env.KEYNAME because next.js inlines at build time
@@ -15,6 +16,7 @@ function validateClientEnv() {
     SUPABASE_ANON_KEY: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
     SUPABASE_PROJECT_ID: process.env['NEXT_PUBLIC_SUPABASE_PROJECT_ID'],
     VERSION: '0.0.1', // during build we validate that changelog matches this
+    ICON_COUNT: process.env['NEXT_PUBLIC_ICON_COUNT'],
   }
 
   const clientValidation = clientSchema.safeParse(rawClientEnv)

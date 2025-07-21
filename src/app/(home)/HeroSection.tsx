@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { PAGE_SIZE } from '@/constants'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
 import { useSearch } from '@/context/SearchContext'
+import { CLIENT_ENV } from '@/env/client'
 import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
 import { useIconQueries } from '@/lib/queries/icons'
 import { useRouter } from 'next/navigation'
@@ -41,7 +42,7 @@ const HeroSection = () => {
       <div className='space-y-4'>
         <div className='space-y-2'>
           <div className='text-3xl font-semibold text-foreground'>
-            40,000+ icons
+            {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ icons
           </div>
           <div className='text-3xl font-semibold text-foreground'>
             {ICON_LIBRARY_COUNT}+ libraries
