@@ -3,37 +3,25 @@
 import { Button } from '@/components/ui/button'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
 import { useSearch } from '@/context/SearchContext'
+import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
 import { useIconQueries } from '@/lib/queries/icons'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
-import { useDebounceCallback } from 'usehooks-ts'
+import { useRef } from 'react'
 
 const HeroSection = () => {
   const router = useRouter()
-  const { search, setSearch } = useSearch()
+  const { setSearch } = useSearch()
+  const { searchText, setSearchText } = useDebouncedSearch(300)
   const { prefetchPage } = useIconQueries()
   const inputRef = useRef<HTMLInputElement>(null)
-  const [searchText, setSearchText] = useState(search.text)
 
   const handleSearch = () => {
     if (!searchText.trim().length) {
       inputRef.current?.focus()
       return
     }
-    setSearch({ ...search, text: searchText.trim(), page: 1 })
+    setSearch((prev) => ({ ...prev, text: searchText.trim(), page: 1 }))
     router.push('/search')
-  }
-
-  const debouncedPrefetch = useDebounceCallback((text: string) => {
-    if (text.trim().length) {
-      prefetchPage(1, text.trim())
-    }
-  }, 1000)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSearchText(value)
-    debouncedPrefetch(value)
   }
 
   const handleButtonHover = () => {
@@ -64,7 +52,7 @@ const HeroSection = () => {
           type='text'
           placeholder='search icons...'
           value={searchText}
-          onChange={handleInputChange}
+          onChange={(e) => setSearchText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           className='flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent'
         />
