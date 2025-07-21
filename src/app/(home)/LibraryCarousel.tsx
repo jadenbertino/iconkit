@@ -1,16 +1,18 @@
+'use client'
+
 import { ICON_PROVIDERS } from '@/constants/provider'
 import Marquee from 'react-fast-marquee'
 
-const LibraryCarousel = () => {
-  const libraryNames = Object.values(ICON_PROVIDERS).map(
-    (provider) => provider.name,
-  )
-  const numVisibleLibraries = libraryNames.length // in case we want to hide libraries
-  const visibleLibraries = libraryNames.slice(0, numVisibleLibraries)
-  const remainingCount = libraryNames.length - visibleLibraries.length
+const libraryNames = Object.values(ICON_PROVIDERS).map(
+  (provider) => provider.name,
+)
+const numVisibleLibraries = libraryNames.length // in case we want to hide libraries
+const visibleLibraries = libraryNames.slice(0, numVisibleLibraries)
+const remainingCount = libraryNames.length - visibleLibraries.length
 
+const LibraryCarousel = () => {
   return (
-    <section className='container mx-auto px-4 mb-16'>
+    <section className='container mx-auto px-4 mb-16 min-h-[40px]'>
       <Marquee
         speed={30}
         gradient={true}
@@ -25,9 +27,7 @@ const LibraryCarousel = () => {
           </div>
         ))}
         {remainingCount > 0 && (
-          <div
-            className='rounded-full border border-input px-4 py-2 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-colors mx-2 select-none'
-          >
+          <div className='rounded-full border border-input px-4 py-2 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-colors mx-2 select-none'>
             {remainingCount}+ more
           </div>
         )}

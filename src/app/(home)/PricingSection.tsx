@@ -1,16 +1,8 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { CLIENT_ENV } from '@/env/client'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const PricingSection = () => {
-  const router = useRouter()
-
-  const handleCTAClick = () => {
-    router.push('/search')
-  }
-
   return (
     <section className='bg-slate-900 text-white py-20'>
       <div className='container mx-auto px-4 text-center'>
@@ -24,11 +16,13 @@ const PricingSection = () => {
         </p>
 
         <Button
-          onClick={handleCTAClick}
+          asChild
           size='lg'
           className='bg-white text-slate-900 hover:bg-slate-100 text-lg px-8 py-4 rounded-full font-semibold'
         >
-          Search {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ Icons Now
+          <Link href={'/search'}>
+            Search {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ Icons Now
+          </Link>
         </Button>
       </div>
     </section>
