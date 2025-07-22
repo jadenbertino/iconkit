@@ -5,18 +5,22 @@ import { PAGE_SIZE } from '@/constants'
 import { useSearch } from '@/context/SearchContext'
 import { useDebouncedSearch } from '@/hooks/useDebouncedSearch'
 import { useIconQueries } from '@/lib/queries/icons'
-import { Search } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
+import { useWindowSize } from 'usehooks-ts'
+import { MagnifyingGlassHero } from './icons'
 
 export function SearchBox() {
   const router = useRouter()
   const { prefetchPage, useIconsQuery } = useIconQueries()
   const { search } = useSearch()
+  const { width = 0 } = useWindowSize()
   const inputRef = useRef<HTMLInputElement>(null)
   const [isFocused, setIsFocused] = useState(false)
   const [animationKey, setAnimationKey] = useState(0)
+
+  const isMobile = width < 640 // sm breakpoint
 
   // Prefetch icons for performance
   useIconsQuery({
@@ -67,15 +71,23 @@ export function SearchBox() {
           <input
             ref={inputRef}
             type='text'
-            placeholder={isFocused || searchText ? 'Search for icons...' : ''}
+            placeholder={
+              searchText
+                ? 'Search for icons...'
+                : isFocused && isMobile
+                  ? ''
+                  : isFocused
+                    ? 'Search for icons...'
+                    : ''
+            }
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={handleBlur}
-            className='w-full h-10 text-lg pl-4 pr-2 bg-transparent rounded-full focus:outline-none'
+            className='w-full h-10 text-base sm:text-lg pl-4 pr-2 bg-transparent rounded-full focus:outline-none'
           />
           {!searchText && !isFocused && (
-            <div className='absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-lg text-slate-400'>
+            <div className='absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-base sm:text-lg text-slate-400'>
               <TypeAnimation
                 key={animationKey}
                 sequence={getRandomizedSequence()}
@@ -90,10 +102,12 @@ export function SearchBox() {
         <Button
           type='submit'
           onMouseEnter={handlePrefetch}
-          className='h-10 px-6 rounded-full bg-slate-900 hover:bg-slate-800 flex items-center flex-shrink-0'
+          className='h-10 px-4 sm:px-6 rounded-full bg-slate-900 hover:bg-slate-800 flex items-center flex-shrink-0'
         >
-          <Search className='h-4 w-4' />
-          <span className='pl-1 -mt-0.5'>search icons</span>
+          <MagnifyingGlassHero className='size-5' />
+          <span className='-mt-0.5'>
+            search <span className='hidden sm:inline '>icons</span>
+          </span>
         </Button>
       </form>
     </div>
