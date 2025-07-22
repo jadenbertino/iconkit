@@ -28,15 +28,21 @@ const BenefitsSection = () => {
             <ul className='space-y-2 sm:space-y-3 text-slate-700'>
               <li className='flex items-center gap-3'>
                 <Zap className='h-4 w-4 sm:h-5 sm:w-5 text-emerald-500 flex-shrink-0' />
-                <span className='text-sm sm:text-base'>Search {iconCount}+ icons from {libraryCount}+ libraries</span>
+                <span className='text-sm sm:text-base'>
+                  Search {iconCount}+ icons from {libraryCount}+ libraries
+                </span>
               </li>
               <li className='flex items-center gap-3'>
                 <Zap className='h-4 w-4 sm:h-5 sm:w-5 text-emerald-500 flex-shrink-0' />
-                <span className='text-sm sm:text-base'>Find the perfect icon in seconds</span>
+                <span className='text-sm sm:text-base'>
+                  Find the perfect icon in seconds
+                </span>
               </li>
               <li className='flex items-center gap-3'>
                 <Zap className='h-4 w-4 sm:h-5 sm:w-5 text-emerald-500 flex-shrink-0' />
-                <span className='text-sm sm:text-base'>Copy as SVG or JSX with one click</span>
+                <span className='text-sm sm:text-base'>
+                  Copy as SVG or JSX with one click
+                </span>
               </li>
             </ul>
           </div>

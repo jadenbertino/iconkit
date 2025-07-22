@@ -43,7 +43,9 @@ const ThreeCardSection = () => {
               <div
                 className={`w-12 h-12 sm:w-16 sm:h-16 ${card.bgColor} rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6`}
               >
-                <IconComponent className={`h-6 w-6 sm:h-8 sm:w-8 ${card.iconColor}`} />
+                <IconComponent
+                  className={`h-6 w-6 sm:h-8 sm:w-8 ${card.iconColor}`}
+                />
               </div>
               <h3 className='text-lg sm:text-xl font-bold text-slate-900 mb-3 sm:mb-4'>
                 {card.title}
