@@ -2,6 +2,7 @@
 
 import { ICON_PROVIDERS } from '@/constants/provider'
 import Marquee from 'react-fast-marquee'
+import { useWindowSize } from 'usehooks-ts'
 
 const libraryNames = Object.values(ICON_PROVIDERS).map(
   (provider) => provider.name,
@@ -11,11 +12,15 @@ const visibleLibraries = libraryNames.slice(0, numVisibleLibraries)
 const remainingCount = libraryNames.length - visibleLibraries.length
 
 const LibraryCarousel = () => {
+  const { width = 0 } = useWindowSize()
+  const gradientWidth = width < 768 ? 50 : 200
+
   return (
     <section className='container mx-auto px-4 mb-16 min-h-[40px]'>
       <Marquee
         speed={30}
         gradient={true}
+        gradientWidth={gradientWidth}
         autoFill={true}
       >
         {visibleLibraries.map((name, index) => (
