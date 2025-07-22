@@ -4,7 +4,6 @@ import { ICON_LIBRARY_COUNT } from '@/constants/provider'
 import { CLIENT_ENV } from '@/env/client'
 
 const HeroSection = () => {
-
   return (
     <section className='container mx-auto px-4 pt-24 pb-16 text-center'>
       <div className='max-w-4xl mx-auto'>
@@ -39,9 +38,9 @@ const HeroSection = () => {
 
         <SearchBox />
 
-        <p className='text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed'>
-          Find any icon from Hero Icons, Lucide, Font Awesome, Simple Icons, and
-          8 more libraries—all in one search.
+        <p className='text-slate-600 text-lg max-w-xl mx-auto leading-relaxed'>
+          Find any icon from Font Awesome, Lucide, Hero Icons, and{' '}
+          {ICON_LIBRARY_COUNT - 3} more of your favorite libraries.
         </p>
       </div>
     </section>
