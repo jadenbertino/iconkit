@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
 import { CLIENT_ENV } from '@/env/client'
 
+// Note: could use https://www.npmjs.com/package/react-countup to animate the numbers
 const HeroSection = () => {
   return (
     <section className='container mx-auto px-4 pt-24 pb-16 text-center'>
