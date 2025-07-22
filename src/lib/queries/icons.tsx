@@ -33,21 +33,25 @@ const useIconQueries = () => {
     return useQuery(options)
   }
 
-  const prefetchNextPage = () => {
-    const nextPageQuery: IconQuery = {
-      skip: search.page * PAGE_SIZE,
+  const prefetchPage = (page: number, searchText: string) => {
+    const pageQuery: IconQuery = {
+      skip: (page - 1) * PAGE_SIZE,
       limit: PAGE_SIZE,
-      searchText: search.text,
+      searchText,
     }
 
     queryClient.prefetchQuery({
-      queryKey: QUERY_KEYS.iconsQuery(nextPageQuery),
-      queryFn: () => getIcons(nextPageQuery),
+      queryKey: QUERY_KEYS.iconsQuery(pageQuery),
+      queryFn: () => getIcons(pageQuery),
       staleTime: Infinity,
     })
   }
 
-  return { useIconsQuery, prefetchNextPage }
+  const prefetchNextPage = () => {
+    prefetchPage(search.page + 1, search.text)
+  }
+
+  return { useIconsQuery, prefetchNextPage, prefetchPage }
 }
 
 export { useIconQueries }
