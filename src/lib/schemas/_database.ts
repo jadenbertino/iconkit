@@ -27,6 +27,7 @@ export const iconRowSchema = z.object({
   provider_id: z.number(),
   source_url: z.string(),
   svg: z.string(),
+  tags: z.array(z.string()).nullable(),
   version: z.string(),
 });
 
@@ -38,6 +39,7 @@ export const iconInsertSchema = z.object({
   provider_id: z.number(),
   source_url: z.string(),
   svg: z.string(),
+  tags: z.array(z.string()).optional().nullable(),
   version: z.string(),
 });
 
@@ -49,6 +51,7 @@ export const iconUpdateSchema = z.object({
   provider_id: z.number().optional(),
   source_url: z.string().optional(),
   svg: z.string().optional(),
+  tags: z.array(z.string()).optional().nullable(),
   version: z.string().optional(),
 });
 
@@ -98,8 +101,6 @@ export const licenseRelationshipsSchema = z.tuple([
 
 export const providerRowSchema = z.object({
   created_at: z.string(),
-  git_branch: z.string(),
-  git_icons_dir: z.string(),
   git_url: z.string(),
   id: z.number(),
   name: z.string(),
@@ -107,8 +108,6 @@ export const providerRowSchema = z.object({
 
 export const providerInsertSchema = z.object({
   created_at: z.string().optional(),
-  git_branch: z.string(),
-  git_icons_dir: z.string(),
   git_url: z.string(),
   id: z.number().optional(),
   name: z.string(),
@@ -116,8 +115,6 @@ export const providerInsertSchema = z.object({
 
 export const providerUpdateSchema = z.object({
   created_at: z.string().optional(),
-  git_branch: z.string().optional(),
-  git_icons_dir: z.string().optional(),
   git_url: z.string().optional(),
   id: z.number().optional(),
   name: z.string().optional(),

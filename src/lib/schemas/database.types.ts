@@ -43,6 +43,7 @@ export type Database = {
           provider_id: number
           source_url: string
           svg: string
+          tags: string[] | null
           version: string
         }
         Insert: {
@@ -53,6 +54,7 @@ export type Database = {
           provider_id: number
           source_url: string
           svg: string
+          tags?: string[] | null
           version: string
         }
         Update: {
@@ -63,6 +65,7 @@ export type Database = {
           provider_id?: number
           source_url?: string
           svg?: string
+          tags?: string[] | null
           version?: string
         }
         Relationships: [
@@ -110,24 +113,18 @@ export type Database = {
       provider: {
         Row: {
           created_at: string
-          git_branch: string
-          git_icons_dir: string
           git_url: string
           id: number
           name: string
         }
         Insert: {
           created_at?: string
-          git_branch: string
-          git_icons_dir: string
           git_url: string
           id?: number
           name: string
         }
         Update: {
           created_at?: string
-          git_branch?: string
-          git_icons_dir?: string
           git_url?: string
           id?: number
           name?: string
