@@ -17,9 +17,9 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
-          extensions?: Json
-          operationName?: string
           query?: string
+          operationName?: string
+          extensions?: Json
           variables?: Json
         }
         Returns: Json
@@ -113,18 +113,24 @@ export type Database = {
       provider: {
         Row: {
           created_at: string
+          git_branch: string
+          git_icons_dir: string
           git_url: string
           id: number
           name: string
         }
         Insert: {
           created_at?: string
+          git_branch: string
+          git_icons_dir: string
           git_url: string
           id?: number
           name: string
         }
         Update: {
           created_at?: string
+          git_branch?: string
+          git_icons_dir?: string
           git_url?: string
           id?: number
           name?: string

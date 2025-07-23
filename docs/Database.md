@@ -44,6 +44,8 @@ CREATE TABLE "public"."provider" (
     "created_at" timestamp with time zone NOT NULL DEFAULT now(), -- Timestamp when the provider was created
     "name" text NOT NULL, -- Human-readable provider name (e.g., 'Hero Icons', 'Lucide')
     "git_url" text NOT NULL -- Repository URL for the icon provider (e.g., 'https://github.com/heroicons/heroicons.git')
+    "git_branch" text NOT NULL, -- Git branch for the icon provider (e.g., 'main')
+    "git_icons_dir" text NOT NULL, -- Git directory for the icon provider (e.g., 'icons')
 );
 ```
 

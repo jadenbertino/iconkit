@@ -101,6 +101,8 @@ export const licenseRelationshipsSchema = z.tuple([
 
 export const providerRowSchema = z.object({
   created_at: z.string(),
+  git_branch: z.string(),
+  git_icons_dir: z.string(),
   git_url: z.string(),
   id: z.number(),
   name: z.string(),
@@ -108,6 +110,8 @@ export const providerRowSchema = z.object({
 
 export const providerInsertSchema = z.object({
   created_at: z.string().optional(),
+  git_branch: z.string(),
+  git_icons_dir: z.string(),
   git_url: z.string(),
   id: z.number().optional(),
   name: z.string(),
@@ -115,6 +119,8 @@ export const providerInsertSchema = z.object({
 
 export const providerUpdateSchema = z.object({
   created_at: z.string().optional(),
+  git_branch: z.string().optional(),
+  git_icons_dir: z.string().optional(),
   git_url: z.string().optional(),
   id: z.number().optional(),
   name: z.string().optional(),
