@@ -479,7 +479,7 @@ async function scrapeIonicons(
   const repoDir = await cloneRepo('ionicons')
   const dataPath = path.join(repoDir, 'src', 'data.json')
 
-  let iconsLookup: Record<string, string[]> = {}
+  const iconsLookup: Record<string, string[]> = {}
   try {
     const dataContent = await withTimeout(
       fsp.readFile(dataPath, 'utf-8'),
