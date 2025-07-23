@@ -5,19 +5,14 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
 ## Provider List
 
 1. **Hero Icons** (`hero_icons`)
+
    - Git: https://github.com/tailwindlabs/heroicons.git
    - Branch: master
    - Icons Directory: optimized
-   - Metadata: **None** (SVG files only with different sizes: 16px, 20px, 24px and styles: outline, solid)
-   - ❌ Tags
-   - ❌ Categories
-   - ❌ Contributors
-   - ❌ Aliases
-   - ❌ Colors
-   - ❌ Licenses
-   - **Generated Tags**: Extract from icon filename only (e.g., "academic-cap" → ["academic", "cap"])
+   - **Generated Tags**: Extract style from icon filepath (e.g. `optimized/20/solid/academic-cap.svg` → ["solid"])
 
 2. **Lucide** (`lucide`)
+
    - Git: https://github.com/lucide-icons/lucide.git
    - Branch: main
    - Icons Directory: icons
@@ -25,9 +20,6 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
    - ✅ Tags - Access: `icons/accessibility.json` → `tags` array
    - ✅ Categories - Access: `icons/accessibility.json` → `categories` array
    - ✅ Contributors - Access: `icons/accessibility.json` → `contributors` array
-   - ❌ Aliases
-   - ❌ Colors
-   - ❌ Licenses
    - **Generated Tags**: Combine `tags` + `categories` + `contributors` arrays (e.g., ["disability", "disabled", "dda", "wheelchair", "accessibility", "medical", "karsa-mistmere", "jguddas"])
    - Example metadata (`accessibility.json`):
      ```json
@@ -40,17 +32,13 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 3. **Simple Icons** (`simple_icons`)
+
    - Git: https://github.com/simple-icons/simple-icons.git
    - Branch: master
    - Icons Directory: icons
    - Metadata: **Brand information** - Central JSON file at `data/simple-icons.json`
-   - ❌ Tags
-   - ❌ Categories
-   - ❌ Contributors
    - ✅ Aliases - Access: `data/simple-icons.json` → find by `title` → `aliases.aka` array (some icons only)
-   - ✅ Colors - Access: `data/simple-icons.json` → find by `title` → `hex` property
-   - ✅ Licenses - Access: `data/simple-icons.json` → find by `title` → `license.type` property (some icons only)
-   - **Generated Tags**: Combine `title` + `aliases.aka` + `license.type` + split filename (e.g., for ".ENV": [".ENV", "Dotenv", "env"])
+   - **Generated Tags**: Use `aliases.aka` if it exists
    - Example metadata (from `data/simple-icons.json`):
      ```json
      {
@@ -64,16 +52,12 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 4. **Feather Icons** (`feather_icons`)
+
    - Git: https://github.com/feathericons/feather.git
    - Branch: main
    - Icons Directory: icons
    - Metadata: **Tags only** - Central JSON file at `src/tags.json` mapping icon names to search tags
    - ✅ Tags - Access: `src/tags.json` → `[icon-name]` array
-   - ❌ Categories
-   - ❌ Contributors
-   - ❌ Aliases
-   - ❌ Colors
-   - ❌ Licenses
    - **Generated Tags**: Use `tags` array directly + split filename (e.g., for "activity": ["pulse", "health", "action", "motion", "activity"])
    - Example metadata (from `src/tags.json`):
      ```json
@@ -86,16 +70,12 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 5. **Font Awesome Free** (`font_awesome_free`)
+
    - Git: https://github.com/FortAwesome/Font-Awesome.git
    - Branch: 6.x
    - Icons Directory: svgs
    - Metadata: **Extensive** - Central JSON file at `metadata/icons.json`
    - ✅ Tags - Access: `metadata/icons.json` → `[icon-name].search.terms` array
-   - ❌ Categories
-   - ❌ Contributors
-   - ❌ Aliases
-   - ❌ Colors
-   - ❌ Licenses
    - **Generated Tags**: Use `search.terms` array + `label` + split filename (e.g., for "0": ["0", "zero", "Digit Zero", "nada", "none", "zilch"])
    - Example metadata (from `metadata/icons.json`):
      ```json
@@ -120,17 +100,13 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 6. **Remix Icon** (`remix_icon`)
+
    - Git: https://github.com/Remix-Design/remixicon.git
    - Branch: master
    - Icons Directory: icons
    - Metadata: **Categorized tags** - Central JSON file at `tags.json` organized by categories with multilingual support
-   - ❌ Tags
    - ✅ Categories - Access: `tags.json` → category keys (e.g., "System", "Business", etc.)
-   - ❌ Contributors
-   - ❌ Aliases
-   - ❌ Colors
-   - ❌ Licenses
-   - **Generated Tags**: Find icon in category + use category name + split filename (e.g., for "add-box-fill": ["System", "系统", "add", "box", "fill"])
+   - **Generated Tags**: Find icon in category then use category name (e.g., for "add-box-fill": ["System"])
    - Example metadata (from `tags.json`):
      ```json
      {
@@ -148,6 +124,7 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 7. **Octicons** (`octicons`)
+
    - Git: https://github.com/primer/octicons.git
    - Branch: main
    - Icons Directory: icons
@@ -156,13 +133,13 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      - Multiple sizes (12px, 16px, 24px) with width, SVG path strings, and complete AST structure
      - Full SVG element tree with attributes and nested children
      - Keywords: GitHub branding, development tools
-   - **Generated Tags**: Use `keywords` array + `name` + split filename (e.g., for "accessibility": ["accessibility", "accessibility"])
+   - **Generated Tags**: Use `keywords` array (e.g., for "accessibility": ["wheelchair", "disability"])
    - Example `lib/build/data.json`:
      ```json
      {
        "accessibility": {
          "name": "accessibility",
-         "keywords": [],
+         "keywords": ["wheelchair", "disability"],
          "heights": {
            "16": {
              "width": 16,
@@ -196,46 +173,21 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 8. **Boxicons** (`boxicons`)
+
    - Git: https://github.com/atisawd/boxicons.git
    - Branch: master
    - Icons Directory: svg
    - Metadata: **Package-based** - Only package.json metadata available
-   - ❌ Tags
-   - ❌ Categories
-   - ❌ Contributors
-   - ❌ Aliases
-   - ❌ Colors
-   - ✅ Licenses - Access: `package.json` → `license` property
-   - **Generated Tags**: Split filename + directory structure + license info (e.g., for "bx-home.svg": ["bx", "home", "regular", "CC-BY-4.0", "OFL-1.1", "MIT"])
-   - Example metadata (from `package.json`):
-     ```json
-     {
-       "name": "boxicons",
-       "description": "High Quality Web Icons",
-       "license": "CC-BY-4.0 OR OFL-1.1 OR MIT",
-       "keywords": [
-         "icons",
-         "iconpack",
-         "svg icons",
-         "web icons",
-         "premium icons",
-         "open source icons"
-       ]
-     }
-     ```
+   - **Generated Tags**: Split filepath (e.g., for "svg/regular/bx-home.svg": ["regular"])
 
 9. **Ionicons** (`ionicons`)
+
    - Git: https://github.com/ionic-team/ionicons.git
    - Branch: main
    - Icons Directory: src/svg
    - Metadata: **Build-generated** - Central JSON file at `src/data.json`
    - ✅ Tags - Access: `src/data.json` → `icons[].tags` array
-   - ❌ Categories
-   - ❌ Contributors
-   - ❌ Aliases
-   - ❌ Colors
-   - ❌ Licenses
-   - **Generated Tags**: Use `tags` array + `name` + split filename (e.g., for "airplane": ["flight", "plane", "travel", "transportation", "airplane"])
+   - **Generated Tags**: Use `tags` array (e.g., for "airplane": ["flight", "plane", "travel", "transportation"])
    - Example metadata (from `src/data.json`):
      ```json
      {
@@ -253,17 +205,12 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
      ```
 
 10. **Eva Icons** (`eva_icons`)
+
     - Git: https://github.com/akveo/eva-icons.git
     - Branch: master
     - Icons Directory: package/icons
     - Metadata: **None** - Only SVG files organized by fill/outline styles
-    - ❌ Tags
-    - ❌ Categories
-    - ❌ Contributors
-    - ❌ Aliases
-    - ❌ Colors
-    - ❌ Licenses
-    - **Generated Tags**: Split filename + directory structure (e.g., for "activity.svg": ["activity", "fill"] or ["activity", "outline"])
+    - **Generated Tags**: Use filepath (e.g., for "package/icons/outline/activity.svg": ["outline"])
 
 11. **Tabler Icons** (`tabler_icons`)
     - Git: https://github.com/tabler/tabler-icons.git
@@ -271,38 +218,34 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
     - Icons Directory: icons
     - Metadata: **Tags only** - Central JSON file at `aliases.json`
     - ✅ Tags - Access: `aliases.json` → `[icon-name]` array
-    - ❌ Categories
-    - ❌ Contributors
-    - ❌ Aliases
-    - ❌ Colors
-    - ❌ Licenses
-    - **Generated Tags**: Use tags array + split filename (e.g., for "2fa": ["login", "safe", "secure", "security", "two-factor", "authentication", "2fa"])
+    - **Generated Tags**: Use tags array (e.g., for "2fa": ["login", "safe", "secure", "security", "two-factor", "authentication"])
     - Example metadata (from `aliases.json`):
-     ```json
-     {
-       "2fa": [
-         "login",
-         "safe",
-         "secure",
-         "security",
-         "two-factor",
-         "authentication"
-       ],
-       "a-b": [
-         "letters",
-         "alphabet",
-         "test",
-         "testing",
-         "text",
-         "type",
-         "typography"
-       ]
-     }
-     ```
+    ```json
+    {
+      "2fa": [
+        "login",
+        "safe",
+        "secure",
+        "security",
+        "two-factor",
+        "authentication"
+      ],
+      "a-b": [
+        "letters",
+        "alphabet",
+        "test",
+        "testing",
+        "text",
+        "type",
+        "typography"
+      ]
+    }
+    ```
 
 ## Cloning Instructions
 
 Example to clone a repository to the correct location:
+
 ```bash
 git clone --depth 1 --branch master https://github.com/tailwindlabs/heroicons.git tmp/repos/hero_icons
 ```
