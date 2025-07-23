@@ -27,6 +27,7 @@ const IconProviderSchema = z.object({
     iconsDir: z.string().optional(),
     url: z.string().url().startsWith('https://'),
     branch: z.string(),
+    checkout: z.array(z.string()),
   }),
 })
 type IconProvider = z.infer<typeof IconProviderSchema>
@@ -38,6 +39,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'optimized',
       url: 'https://github.com/tailwindlabs/heroicons.git',
       branch: 'master',
+      checkout: ['optimized/*'],
     },
   },
   lucide: {
@@ -46,6 +48,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'icons',
       url: 'https://github.com/lucide-icons/lucide.git',
       branch: 'main',
+      checkout: ['icons/*'],
     },
   },
   simple_icons: {
@@ -54,6 +57,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'icons',
       url: 'https://github.com/simple-icons/simple-icons.git',
       branch: 'master',
+      checkout: ['icons/*', 'data/simple-icons.json'],
     },
   },
   feather_icons: {
@@ -62,6 +66,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'icons',
       url: 'https://github.com/feathericons/feather.git',
       branch: 'main',
+      checkout: ['icons/*', 'src/tags.json'],
     },
   },
   font_awesome_free: {
@@ -70,6 +75,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'svgs',
       url: 'https://github.com/FortAwesome/Font-Awesome.git',
       branch: '6.x',
+      checkout: ['svgs/*', 'metadata/icons.json'],
     },
   },
   remix_icon: {
@@ -78,6 +84,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'icons',
       url: 'https://github.com/Remix-Design/remixicon.git',
       branch: 'master',
+      checkout: ['icons/*', 'tags.json'],
     },
   },
   octicons: {
@@ -86,6 +93,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'icons',
       url: 'https://github.com/primer/octicons.git',
       branch: 'main',
+      checkout: ['icons/*', 'keywords.json'],
     },
   },
   boxicons: {
@@ -94,6 +102,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'svg',
       url: 'https://github.com/atisawd/boxicons.git',
       branch: 'master',
+      checkout: ['svg/*'],
     },
   },
   ionicons: {
@@ -102,6 +111,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'src/svg',
       url: 'https://github.com/ionic-team/ionicons.git',
       branch: 'main',
+      checkout: ['src/svg/*', 'src/data.json'],
     },
   },
   eva_icons: {
@@ -110,6 +120,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'package/icons',
       url: 'https://github.com/akveo/eva-icons.git',
       branch: 'master',
+      checkout: ['package/icons/*'],
     },
   },
   // typicons: {
@@ -122,6 +133,7 @@ const ICON_PROVIDERS = {
       iconsDir: 'icons',
       url: 'https://github.com/tabler/tabler-icons.git',
       branch: 'main',
+      checkout: ['icons/*', 'aliases.json'],
     },
   },
 } as const satisfies Record<IconProviderSlug, Omit<IconProvider, 'id'>>

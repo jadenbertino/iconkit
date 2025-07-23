@@ -128,47 +128,14 @@ This document lists all icon providers configured in `ICON_PROVIDERS` from `/src
    - Git: https://github.com/primer/octicons.git
    - Branch: main
    - Icons Directory: icons
-   - Metadata: **Comprehensive build-generated** - Build script generates `lib/build/data.json` with:
-     - Icon name and keywords array
-     - Multiple sizes (12px, 16px, 24px) with width, SVG path strings, and complete AST structure
-     - Full SVG element tree with attributes and nested children
-     - Keywords: GitHub branding, development tools
-   - **Generated Tags**: Use `keywords` array (e.g., for "accessibility": ["wheelchair", "disability"])
-   - Example `lib/build/data.json`:
+   - **Generated Tags**: Use `keywords.json` file. Structure is { [icon-name]: [keyword1, keyword2, ...] }. (e.g., for "accessibility": ["wheelchair", "disability"])
+   - Example `keywords.json`:
      ```json
      {
-       "accessibility": {
-         "name": "accessibility",
-         "keywords": ["wheelchair", "disability"],
-         "heights": {
-           "16": {
-             "width": 16,
-             "path": "<path d=\"M9.923 5.302c.063.063.122.129.178.198H14A.75.75 0 0 1 14 7h-3.3l.578 5.163.362 2.997a.75.75 0 0 1-1.49.18L9.868 13H6.132l-.282 2.34a.75.75 0 0 1-1.49-.18l.362-2.997L5.3 7H2a.75.75 0 0 1 0-1.5h3.9a2.54 2.54 0 0 1 .176-.198 3 3 0 1 1 3.847 0ZM9.2 7.073h-.001a1.206 1.206 0 0 0-2.398 0L6.305 11.5h3.39ZM9.5 3a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 3Z\"></path>",
-             "ast": {
-               "name": "svg",
-               "type": "element",
-               "value": "",
-               "attributes": {
-                 "xmlns": "http://www.w3.org/2000/svg",
-                 "width": "16",
-                 "height": "16",
-                 "viewBox": "0 0 16 16"
-               },
-               "children": [
-                 {
-                   "name": "path",
-                   "type": "element",
-                   "value": "",
-                   "attributes": {
-                     "d": "M9.923 5.302c.063.063.122.129.178.198H14A.75.75 0 0 1 14 7h-3.3l.578 5.163.362 2.997a.75.75 0 0 1-1.49.18L9.868 13H6.132l-.282 2.34a.75.75 0 0 1-1.49-.18l.362-2.997L5.3 7H2a.75.75 0 0 1 0-1.5h3.9a2.54 2.54 0 0 1 .176-.198 3 3 0 1 1 3.847 0ZM9.2 7.073h-.001a1.206 1.206 0 0 0-2.398 0L6.305 11.5h3.39ZM9.5 3a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 3Z"
-                   },
-                   "children": []
-                 }
-               ]
-             }
-           }
-         }
-       }
+      "agent": ["agents", "ai", "cloud", "cloudecode", "code"],
+      "ai-model": ["ai", "model", "llm", "models", "copilot"],
+      "alert": ["warning", "triangle", "exclamation", "point"],
+      ...
      }
      ```
 
@@ -255,3 +222,24 @@ git clone --depth 1 --branch master https://github.com/tailwindlabs/heroicons.gi
 - Typicons is commented out due to issues
 - Total library count: 11 active providers
 - All repositories should be cloned to `tmp/repos/<provider_name>` using snake_case names
+
+# Action Plan
+
+CREATE src/build/icons/metadata.ts. CREATE a scrape<ProviderName> function for each provider in
+ICON_PROVIDERS. the function name should be pascalCase, and the body should implement the matching &
+extraction process defined in the md file. You can reference the adjacent scrape.ts file for inspiration
+if needed. Each function should have 1 arg - icons: ScrapedIcon[], and return (ScrapedIcon & { tags:
+string[] })[]
+
+  Current status summary:
+  - ✅ hero_icons: 100/100 (100%)
+  - ✅ lucide: 100/100 (100%)
+  - ❌ simple_icons: 0/0 (0%) - still failing on slug matching
+  - ✅ feather_icons: 100/100 (100%)
+  - ✅ font_awesome_free: 100/100 (100%)
+  - ✅ remix_icon: 100/100 (100%) - FIXED! Working as expected
+  - ✅ octicons: 58/100 (58%) - FIXED! Working as expected
+  - ✅ boxicons: 100/100 (100%)
+  - ✅ ionicons: 100/100 (100%)
+  - ✅ eva_icons: 100/100 (100%)
+  - ✅ tabler_icons: 100/100 (100%)
