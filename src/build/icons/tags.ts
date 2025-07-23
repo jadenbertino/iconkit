@@ -1,3 +1,4 @@
+import type { IconProviderSlug } from '@/constants/provider'
 import { withTimeout } from '@/lib/error'
 import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
@@ -89,6 +90,31 @@ function extractKeywordsFromFilepath(filePath: string): string[] {
   }
 
   return [...new Set(keywords)] // Remove duplicates
+}
+
+const scrapeFunctions = {
+  hero_icons: scrapeHeroIcons,
+  lucide: scrapeLucide,
+  simple_icons: scrapeSimpleIcons,
+  feather_icons: scrapeFeatherIcons,
+  font_awesome_free: scrapeFontAwesomeFree,
+  remix_icon: scrapeRemixIcon,
+  octicons: scrapeOcticons,
+  boxicons: scrapeBoxicons,
+  ionicons: scrapeIonicons,
+  eva_icons: scrapeEvaIcons,
+  tabler_icons: scrapeTablerIcons,
+} satisfies Record<
+  IconProviderSlug,
+  (icons: ScrapedIcon[]) => Promise<ScrapedIconWithTags[]>
+>
+
+function addTags(
+  providerSlug: IconProviderSlug,
+  icons: ScrapedIcon[],
+): Promise<ScrapedIconWithTags[]> {
+  const scrapeFunction = scrapeFunctions[providerSlug]
+  return scrapeFunction(icons)
 }
 
 /**
@@ -521,16 +547,5 @@ async function scrapeTablerIcons(
   }))
 }
 
-export {
-  scrapeBoxicons,
-  scrapeEvaIcons,
-  scrapeFeatherIcons,
-  scrapeFontAwesomeFree,
-  scrapeHeroIcons,
-  scrapeIonicons,
-  scrapeLucide,
-  scrapeOcticons,
-  scrapeRemixIcon,
-  scrapeSimpleIcons,
-  scrapeTablerIcons,
-}
+export { addTags }
+export type { ScrapedIconWithTags }
