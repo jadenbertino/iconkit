@@ -1,0 +1,314 @@
+# Icon Providers
+
+This document lists all icon providers configured in `ICON_PROVIDERS` from `/src/constants/provider.ts`.
+
+## Provider List
+
+1. **Hero Icons** (`hero_icons`)
+   - Git: https://github.com/tailwindlabs/heroicons.git
+   - Branch: master
+   - Icons Directory: optimized
+   - Metadata: **None** (SVG files only with different sizes: 16px, 20px, 24px and styles: outline, solid)
+   - ❌ Tags
+   - ❌ Categories
+   - ❌ Contributors
+   - ❌ Aliases
+   - ❌ Colors
+   - ❌ Licenses
+   - **Generated Tags**: Extract from icon filename only (e.g., "academic-cap" → ["academic", "cap"])
+
+2. **Lucide** (`lucide`)
+   - Git: https://github.com/lucide-icons/lucide.git
+   - Branch: main
+   - Icons Directory: icons
+   - Metadata: **Rich** - Adjacent JSON files per icon (e.g., `accessibility.json` next to `accessibility.svg`)
+   - ✅ Tags - Access: `icons/accessibility.json` → `tags` array
+   - ✅ Categories - Access: `icons/accessibility.json` → `categories` array
+   - ✅ Contributors - Access: `icons/accessibility.json` → `contributors` array
+   - ❌ Aliases
+   - ❌ Colors
+   - ❌ Licenses
+   - **Generated Tags**: Combine `tags` + `categories` + `contributors` arrays (e.g., ["disability", "disabled", "dda", "wheelchair", "accessibility", "medical", "karsa-mistmere", "jguddas"])
+   - Example metadata (`accessibility.json`):
+     ```json
+     {
+       "$schema": "../icon.schema.json",
+       "contributors": ["karsa-mistmere", "jguddas"],
+       "tags": ["disability", "disabled", "dda", "wheelchair"],
+       "categories": ["accessibility", "medical"]
+     }
+     ```
+
+3. **Simple Icons** (`simple_icons`)
+   - Git: https://github.com/simple-icons/simple-icons.git
+   - Branch: master
+   - Icons Directory: icons
+   - Metadata: **Brand information** - Central JSON file at `data/simple-icons.json`
+   - ❌ Tags
+   - ❌ Categories
+   - ❌ Contributors
+   - ✅ Aliases - Access: `data/simple-icons.json` → find by `title` → `aliases.aka` array (some icons only)
+   - ✅ Colors - Access: `data/simple-icons.json` → find by `title` → `hex` property
+   - ✅ Licenses - Access: `data/simple-icons.json` → find by `title` → `license.type` property (some icons only)
+   - **Generated Tags**: Combine `title` + `aliases.aka` + `license.type` + split filename (e.g., for ".ENV": [".ENV", "Dotenv", "env"])
+   - Example metadata (from `data/simple-icons.json`):
+     ```json
+     {
+       "title": ".ENV",
+       "hex": "ECD53F",
+       "source": "https://github.com/motdotla/dotenv/blob/40e75440337d1de2345dc8326d6108331f583fd8/dotenv.svg",
+       "aliases": {
+         "aka": ["Dotenv"]
+       }
+     }
+     ```
+
+4. **Feather Icons** (`feather_icons`)
+   - Git: https://github.com/feathericons/feather.git
+   - Branch: main
+   - Icons Directory: icons
+   - Metadata: **Tags only** - Central JSON file at `src/tags.json` mapping icon names to search tags
+   - ✅ Tags - Access: `src/tags.json` → `[icon-name]` array
+   - ❌ Categories
+   - ❌ Contributors
+   - ❌ Aliases
+   - ❌ Colors
+   - ❌ Licenses
+   - **Generated Tags**: Use `tags` array directly + split filename (e.g., for "activity": ["pulse", "health", "action", "motion", "activity"])
+   - Example metadata (from `src/tags.json`):
+     ```json
+     {
+       "activity": ["pulse", "health", "action", "motion"],
+       "alert-circle": ["warning", "alert", "danger"],
+       "at-sign": ["mention", "at", "email", "message"],
+       "award": ["achievement", "badge"]
+     }
+     ```
+
+5. **Font Awesome Free** (`font_awesome_free`)
+   - Git: https://github.com/FortAwesome/Font-Awesome.git
+   - Branch: 6.x
+   - Icons Directory: svgs
+   - Metadata: **Extensive** - Central JSON file at `metadata/icons.json`
+   - ✅ Tags - Access: `metadata/icons.json` → `[icon-name].search.terms` array
+   - ❌ Categories
+   - ❌ Contributors
+   - ❌ Aliases
+   - ❌ Colors
+   - ❌ Licenses
+   - **Generated Tags**: Use `search.terms` array + `label` + split filename (e.g., for "0": ["0", "zero", "Digit Zero", "nada", "none", "zilch"])
+   - Example metadata (from `metadata/icons.json`):
+     ```json
+     {
+       "0": {
+         "changes": ["6.0.0"],
+         "search": {
+           "terms": ["0", "zero"]
+         },
+         "styles": ["solid"],
+         "unicode": "30",
+         "label": "0",
+         "svg": {
+           "solid": {
+             "width": 320,
+             "height": 512,
+             "path": "M0 192C0 103.6 71.6 32 160 32s160 71.6 160 160V320c0 88.4-71.6 160-160 160S0 408.4 0 320V192zM160 96c-53 0-96 43-96 96V320c0 53 43 96 96 96s96-43 96-96V192c0-53-43-96-96-96z"
+           }
+         }
+       }
+     }
+     ```
+
+6. **Remix Icon** (`remix_icon`)
+   - Git: https://github.com/Remix-Design/remixicon.git
+   - Branch: master
+   - Icons Directory: icons
+   - Metadata: **Categorized tags** - Central JSON file at `tags.json` organized by categories with multilingual support
+   - ❌ Tags
+   - ✅ Categories - Access: `tags.json` → category keys (e.g., "System", "Business", etc.)
+   - ❌ Contributors
+   - ❌ Aliases
+   - ❌ Colors
+   - ❌ Licenses
+   - **Generated Tags**: Find icon in category + use category name + split filename (e.g., for "add-box-fill": ["System", "系统", "add", "box", "fill"])
+   - Example metadata (from `tags.json`):
+     ```json
+     {
+       "System": {
+         "cn": "系统",
+         "en": "System",
+         "icons": [
+           "add-box-fill",
+           "add-box-line",
+           "add-circle-fill",
+           "add-circle-line"
+         ]
+       }
+     }
+     ```
+
+7. **Octicons** (`octicons`)
+   - Git: https://github.com/primer/octicons.git
+   - Branch: main
+   - Icons Directory: icons
+   - Metadata: **Comprehensive build-generated** - Build script generates `lib/build/data.json` with:
+     - Icon name and keywords array
+     - Multiple sizes (12px, 16px, 24px) with width, SVG path strings, and complete AST structure
+     - Full SVG element tree with attributes and nested children
+     - Keywords: GitHub branding, development tools
+   - **Generated Tags**: Use `keywords` array + `name` + split filename (e.g., for "accessibility": ["accessibility", "accessibility"])
+   - Example `lib/build/data.json`:
+     ```json
+     {
+       "accessibility": {
+         "name": "accessibility",
+         "keywords": [],
+         "heights": {
+           "16": {
+             "width": 16,
+             "path": "<path d=\"M9.923 5.302c.063.063.122.129.178.198H14A.75.75 0 0 1 14 7h-3.3l.578 5.163.362 2.997a.75.75 0 0 1-1.49.18L9.868 13H6.132l-.282 2.34a.75.75 0 0 1-1.49-.18l.362-2.997L5.3 7H2a.75.75 0 0 1 0-1.5h3.9a2.54 2.54 0 0 1 .176-.198 3 3 0 1 1 3.847 0ZM9.2 7.073h-.001a1.206 1.206 0 0 0-2.398 0L6.305 11.5h3.39ZM9.5 3a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 3Z\"></path>",
+             "ast": {
+               "name": "svg",
+               "type": "element",
+               "value": "",
+               "attributes": {
+                 "xmlns": "http://www.w3.org/2000/svg",
+                 "width": "16",
+                 "height": "16",
+                 "viewBox": "0 0 16 16"
+               },
+               "children": [
+                 {
+                   "name": "path",
+                   "type": "element",
+                   "value": "",
+                   "attributes": {
+                     "d": "M9.923 5.302c.063.063.122.129.178.198H14A.75.75 0 0 1 14 7h-3.3l.578 5.163.362 2.997a.75.75 0 0 1-1.49.18L9.868 13H6.132l-.282 2.34a.75.75 0 0 1-1.49-.18l.362-2.997L5.3 7H2a.75.75 0 0 1 0-1.5h3.9a2.54 2.54 0 0 1 .176-.198 3 3 0 1 1 3.847 0ZM9.2 7.073h-.001a1.206 1.206 0 0 0-2.398 0L6.305 11.5h3.39ZM9.5 3a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 3Z"
+                   },
+                   "children": []
+                 }
+               ]
+             }
+           }
+         }
+       }
+     }
+     ```
+
+8. **Boxicons** (`boxicons`)
+   - Git: https://github.com/atisawd/boxicons.git
+   - Branch: master
+   - Icons Directory: svg
+   - Metadata: **Package-based** - Only package.json metadata available
+   - ❌ Tags
+   - ❌ Categories
+   - ❌ Contributors
+   - ❌ Aliases
+   - ❌ Colors
+   - ✅ Licenses - Access: `package.json` → `license` property
+   - **Generated Tags**: Split filename + directory structure + license info (e.g., for "bx-home.svg": ["bx", "home", "regular", "CC-BY-4.0", "OFL-1.1", "MIT"])
+   - Example metadata (from `package.json`):
+     ```json
+     {
+       "name": "boxicons",
+       "description": "High Quality Web Icons",
+       "license": "CC-BY-4.0 OR OFL-1.1 OR MIT",
+       "keywords": [
+         "icons",
+         "iconpack",
+         "svg icons",
+         "web icons",
+         "premium icons",
+         "open source icons"
+       ]
+     }
+     ```
+
+9. **Ionicons** (`ionicons`)
+   - Git: https://github.com/ionic-team/ionicons.git
+   - Branch: main
+   - Icons Directory: src/svg
+   - Metadata: **Build-generated** - Central JSON file at `src/data.json`
+   - ✅ Tags - Access: `src/data.json` → `icons[].tags` array
+   - ❌ Categories
+   - ❌ Contributors
+   - ❌ Aliases
+   - ❌ Colors
+   - ❌ Licenses
+   - **Generated Tags**: Use `tags` array + `name` + split filename (e.g., for "airplane": ["flight", "plane", "travel", "transportation", "airplane"])
+   - Example metadata (from `src/data.json`):
+     ```json
+     {
+       "icons": [
+         {
+           "name": "add",
+           "tags": ["plus", "create", "new"]
+         },
+         {
+           "name": "airplane",
+           "tags": ["flight", "plane", "travel", "transportation"]
+         }
+       ]
+     }
+     ```
+
+10. **Eva Icons** (`eva_icons`)
+    - Git: https://github.com/akveo/eva-icons.git
+    - Branch: master
+    - Icons Directory: package/icons
+    - Metadata: **None** - Only SVG files organized by fill/outline styles
+    - ❌ Tags
+    - ❌ Categories
+    - ❌ Contributors
+    - ❌ Aliases
+    - ❌ Colors
+    - ❌ Licenses
+    - **Generated Tags**: Split filename + directory structure (e.g., for "activity.svg": ["activity", "fill"] or ["activity", "outline"])
+
+11. **Tabler Icons** (`tabler_icons`)
+    - Git: https://github.com/tabler/tabler-icons.git
+    - Branch: main
+    - Icons Directory: icons
+    - Metadata: **Tags only** - Central JSON file at `aliases.json`
+    - ✅ Tags - Access: `aliases.json` → `[icon-name]` array
+    - ❌ Categories
+    - ❌ Contributors
+    - ❌ Aliases
+    - ❌ Colors
+    - ❌ Licenses
+    - **Generated Tags**: Use tags array + split filename (e.g., for "2fa": ["login", "safe", "secure", "security", "two-factor", "authentication", "2fa"])
+    - Example metadata (from `aliases.json`):
+     ```json
+     {
+       "2fa": [
+         "login",
+         "safe",
+         "secure",
+         "security",
+         "two-factor",
+         "authentication"
+       ],
+       "a-b": [
+         "letters",
+         "alphabet",
+         "test",
+         "testing",
+         "text",
+         "type",
+         "typography"
+       ]
+     }
+     ```
+
+## Cloning Instructions
+
+Example to clone a repository to the correct location:
+```bash
+git clone --depth 1 --branch master https://github.com/tailwindlabs/heroicons.git tmp/repos/hero_icons
+```
+
+## Notes
+
+- Typicons is commented out due to issues
+- Total library count: 11 active providers
+- All repositories should be cloned to `tmp/repos/<provider_name>` using snake_case names
