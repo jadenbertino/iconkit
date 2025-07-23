@@ -231,15 +231,17 @@ extraction process defined in the md file. You can reference the adjacent scrape
 if needed. Each function should have 1 arg - icons: ScrapedIcon[], and return (ScrapedIcon & { tags:
 string[] })[]
 
-  Current status summary:
-  - ✅ hero_icons: 100/100 (100%)
-  - ✅ lucide: 100/100 (100%)
-  - ❌ simple_icons: 0/0 (0%) - still failing on slug matching
-  - ✅ feather_icons: 100/100 (100%)
-  - ✅ font_awesome_free: 100/100 (100%)
-  - ✅ remix_icon: 100/100 (100%) - FIXED! Working as expected
-  - ✅ octicons: 58/100 (58%) - FIXED! Working as expected
-  - ✅ boxicons: 100/100 (100%)
-  - ✅ ionicons: 100/100 (100%)
-  - ✅ eva_icons: 100/100 (100%)
-  - ✅ tabler_icons: 100/100 (100%)
+Current status summary:
+
+Provider breakdown (sorted by tag detection rate)
+octicons: 363/657 (55%)
+simple_icons: 3209/3336 (96%)
+remix_icon: 3006/3058 (98%)
+hero_icons: 1288/1288 (100%)
+lucide: 1614/1614 (100%)
+feather_icons: 287/287 (100%)
+font_awesome_free: 2060/2060 (100%)
+boxicons: 1634/1634 (100%)
+ionicons: 1357/1357 (100%)
+eva_icons: 490/490 (100%)
+tabler_icons: 5945/5945 (100%)

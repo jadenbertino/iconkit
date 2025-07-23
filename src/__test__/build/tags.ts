@@ -26,8 +26,9 @@ async function testMetadataExtraction(
   let totalIconsProcessed = 0
   let totalIconsWithTags = 0
 
-  for (const providerSlug of providerSlugs) {
-    try {
+  // Run all provider tests in parallel
+  const providerResults = await Promise.allSettled(
+    providerSlugs.map(async (providerSlug) => {
       const providerName = providerSlug
         .replace(/_/g, ' ')
         .replace(/\b\w/g, (l) => l.toUpperCase())
@@ -61,17 +62,30 @@ async function testMetadataExtraction(
         serverLogger.warn(`No icons with metadata found for ${providerSlug}`)
       }
 
-      results[providerSlug] = testResult.icons.slice(0, TEST_ICON_COUNT)
+      serverLogger.info(`✅ ${providerName} metadata extraction completed`)
+
+      return {
+        providerSlug,
+        testResult,
+        icons: testResult.icons.slice(0, TEST_ICON_COUNT),
+      }
+    }),
+  )
+
+  // Process results and handle any failures
+  for (const [index, result] of providerResults.entries()) {
+    const providerSlug = providerSlugs[index]!
+
+    if (result.status === 'fulfilled') {
+      const { testResult, icons } = result.value
+      results[providerSlug] = icons
       totalIconsProcessed += testResult.numIcons
       totalIconsWithTags += testResult.numIconsWithTags
-
-      serverLogger.info(`✅ ${providerName} metadata extraction completed`)
-    } catch (error) {
+    } else {
       serverLogger.error(
         `❌ ${providerSlug} metadata extraction failed:`,
-        error,
+        result.reason,
       )
-      // Continue with other providers even if one fails
       results[providerSlug] = []
     }
   }
