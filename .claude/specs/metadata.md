@@ -223,15 +223,7 @@ git clone --depth 1 --branch master https://github.com/tailwindlabs/heroicons.gi
 - Total library count: 11 active providers
 - All repositories should be cloned to `tmp/repos/<provider_name>` using snake_case names
 
-# Action Plan
-
-CREATE src/build/icons/metadata.ts. CREATE a scrape<ProviderName> function for each provider in
-ICON_PROVIDERS. the function name should be pascalCase, and the body should implement the matching &
-extraction process defined in the md file. You can reference the adjacent scrape.ts file for inspiration
-if needed. Each function should have 1 arg - icons: ScrapedIcon[], and return (ScrapedIcon & { tags:
-string[] })[]
-
-Current status summary:
+# Current status summary:
 
 Provider breakdown (sorted by tag detection rate)
 octicons: 363/657 (55%)
@@ -245,3 +237,9 @@ boxicons: 1634/1634 (100%)
 ionicons: 1357/1357 (100%)
 eva_icons: 490/490 (100%)
 tabler_icons: 5945/5945 (100%)
+
+# TODO
+
+- [ ] Ensure tags are uploaded to the database
+  - [x] Add `tags` column to `icon` table
+  - [ ] Update tests to verify that icons have tags
