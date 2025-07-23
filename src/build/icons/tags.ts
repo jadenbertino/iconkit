@@ -1,4 +1,3 @@
-import type { IconProviderSlug } from '@/constants'
 import { withTimeout } from '@/lib/error'
 import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'

@@ -15,7 +15,7 @@ import {
   scrapeRemixIcon,
   scrapeSimpleIcons,
   scrapeTablerIcons,
-} from '../../build/icons/metadata'
+} from '../../build/icons/tags'
 import { scrapeIcons } from '../../build/icons/scrape'
 
 // Map provider slugs to their metadata extraction functions
