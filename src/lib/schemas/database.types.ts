@@ -18,9 +18,9 @@ export type Database = {
       graphql: {
         Args: {
           query?: string
+          operationName?: string
           extensions?: Json
           variables?: Json
-          operationName?: string
         }
         Returns: Json
       }
@@ -142,77 +142,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      gtrgm_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      search_icons_and: {
-        Args: {
-          version_filter: string
-          result_limit?: number
-          result_offset?: number
-          search_terms: string[]
-        }
-        Returns: {
-          id: number
-          created_at: string
-          version: string
-          name: string
-          svg: string
-          source_url: string
-          provider_id: number
-          jsx: string
-          tags: string[]
-        }[]
-      }
-      search_icons_or: {
-        Args: {
-          result_offset?: number
-          result_limit?: number
-          version_filter: string
-          exclude_ids: number[]
-          search_terms: string[]
-        }
-        Returns: {
-          name: string
-          tags: string[]
-          svg: string
-          source_url: string
-          provider_id: number
-          jsx: string
-          id: number
-          created_at: string
-          version: string
-        }[]
-      }
-      set_limit: {
-        Args: { "": number }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: { "": string }
-        Returns: string[]
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
