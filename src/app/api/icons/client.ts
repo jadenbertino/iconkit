@@ -49,7 +49,7 @@ async function getIcons({
 
   // Apply relevance scoring and sort
   const sortedResults = sortByRelevance(allResults, terms, scoringStrategy)
-  return sortedResults.slice(skip, skip + limit)
+  return sortedResults
 }
 
 async function getAllIcons({ skip, limit }: Pagination) {
