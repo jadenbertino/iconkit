@@ -2,41 +2,54 @@ import { CLIENT_ENV } from '@/env/client'
 import { supabase } from '@/lib/clients/client'
 import type { Pagination } from '@/lib/schemas'
 import { z } from 'zod'
+import { sortByRelevance, type WeightPreset } from './relevance'
 import { GetRequestSchema } from './schema'
 
 type IconQuery = z.infer<typeof GetRequestSchema>
 
 type SearchParams = Pagination & {
   searchText: string | null
+  scoringStrategy?: WeightPreset
 }
 
-async function getIcons({ skip, limit, searchText }: SearchParams) {
+async function getIcons({
+  skip,
+  limit,
+  searchText,
+  scoringStrategy = 'default',
+}: SearchParams) {
   // Validate that we have search terms
-  if (searchText?.trim().length === 0) {
+  if (!searchText?.trim()) {
     return getAllIcons({ skip, limit })
   }
+  const terms = parseSearchTerms(searchText)
 
   // Do AND query for exact matches first
   const andResults = await searchIconsByAnd({ searchText, skip, limit })
-  if (andResults.length >= limit) {
-    return andResults
-  }
 
   // If we need more results, do OR query excluding AND results
-  const excludeIds = andResults.map((icon) => icon.id)
-  const remainingLimit = limit - andResults.length
-  const remainingSkip = Math.max(0, skip - andResults.length)
+  let allResults = andResults
+  if (andResults.length < limit) {
+    // Update search params
+    const excludeIds = andResults.map((icon) => icon.id)
+    const remainingLimit = limit - andResults.length
+    const remainingSkip = Math.max(0, skip - andResults.length)
 
-  // Get additional OR results excluding already found icons
-  const orResults = await searchIconsByOr({
-    searchText,
-    excludeIds,
-    skip: remainingSkip,
-    limit: remainingLimit,
-  })
+    // Get additional OR results excluding already found icons
+    const orResults = await searchIconsByOr({
+      searchText,
+      excludeIds,
+      skip: remainingSkip,
+      limit: remainingLimit,
+    })
 
-  // Combine results (AND results first, then OR results)
-  return [...andResults, ...orResults]
+    // Combine results (AND results first, then OR results)
+    allResults = [...andResults, ...orResults]
+  }
+
+  // Apply relevance scoring and sort
+  const sortedResults = sortByRelevance(allResults, terms, scoringStrategy)
+  return sortedResults.slice(skip, skip + limit)
 }
 
 async function getAllIcons({ skip, limit }: Pagination) {
