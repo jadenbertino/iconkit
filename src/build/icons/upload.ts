@@ -66,10 +66,7 @@ async function uploadIcons(
   )
 
   for (let i = 0; i < iconsToInsert.length; i += BATCH_SIZE) {
-    const batch = iconsToInsert.slice(i, i + BATCH_SIZE).map((icon) => ({
-      ...icon,
-      tags: icon.tags ? JSON.stringify(icon.tags) : '[]',
-    }))
+    const batch = iconsToInsert.slice(i, i + BATCH_SIZE)
     await limiter.schedule(async () => {
       await supabaseAdmin.from('icon').insert(batch).throwOnError()
     })

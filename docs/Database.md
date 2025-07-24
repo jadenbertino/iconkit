@@ -32,7 +32,7 @@ CREATE TABLE "public"."icon" (
     "source_url" text NOT NULL, -- Direct GitHub URL to the original icon file
     "provider_id" bigint NOT NULL, -- Foreign key reference to provider table
     "jsx" text NOT NULL, -- JSX/React component representation of the icon
-    "tags" text -- String of comma-separated tags for categorizing and searching icons
+    "tags" text[] -- Array of string tags for categorizing and searching icons
 );
 ```
 

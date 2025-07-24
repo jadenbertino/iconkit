@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
-          extensions?: Json
           operationName?: string
-          query?: string
           variables?: Json
+          extensions?: Json
+          query?: string
         }
         Returns: Json
       }
@@ -43,7 +43,7 @@ export type Database = {
           provider_id: number
           source_url: string
           svg: string
-          tags: string | null
+          tags: string[] | null
           version: string
         }
         Insert: {
@@ -54,7 +54,7 @@ export type Database = {
           provider_id: number
           source_url: string
           svg: string
-          tags?: string | null
+          tags?: string[] | null
           version: string
         }
         Update: {
@@ -65,7 +65,7 @@ export type Database = {
           provider_id?: number
           source_url?: string
           svg?: string
-          tags?: string | null
+          tags?: string[] | null
           version?: string
         }
         Relationships: [

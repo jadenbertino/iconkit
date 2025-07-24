@@ -27,7 +27,7 @@ export const iconRowSchema = z.object({
   provider_id: z.number(),
   source_url: z.string(),
   svg: z.string(),
-  tags: z.string().nullable(),
+  tags: z.array(z.string()).nullable(),
   version: z.string(),
 });
 
@@ -39,7 +39,7 @@ export const iconInsertSchema = z.object({
   provider_id: z.number(),
   source_url: z.string(),
   svg: z.string(),
-  tags: z.string().optional().nullable(),
+  tags: z.array(z.string()).optional().nullable(),
   version: z.string(),
 });
 
@@ -51,7 +51,7 @@ export const iconUpdateSchema = z.object({
   provider_id: z.number().optional(),
   source_url: z.string().optional(),
   svg: z.string().optional(),
-  tags: z.string().optional().nullable(),
+  tags: z.array(z.string()).optional().nullable(),
   version: z.string().optional(),
 });
 
