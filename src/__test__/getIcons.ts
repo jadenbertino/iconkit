@@ -269,6 +269,102 @@ async function testGetIcons() {
       `✓ Test 12 passed: Found ${icons12.length} icons with proper AND/OR ordering`,
     )
 
+    // Test 13: Partial tag matching - "nav" should find icons with "navigation" tags
+    const icons13 = await getIcons({
+      skip: 0,
+      limit: 20,
+      searchText: 'nav',
+    })
+    if (icons13.length > 20) {
+      throw new Error(
+        `Test 13 failed: Expected at most 20 icons, got ${icons13.length}`,
+      )
+    }
+    // Count icons that match via tags (not just name)
+    const tagMatchedIcons13 = icons13.filter((icon) => {
+      const hasNavInName = icon.name.toLowerCase().includes('nav')
+      const hasNavigationInTags = icon.tags?.some(tag => 
+        tag.toLowerCase().includes('navigation') || 
+        tag.toLowerCase().includes('nav')
+      ) || false
+      return hasNavInName || hasNavigationInTags
+    })
+    if (tagMatchedIcons13.length !== icons13.length) {
+      const unmatched = icons13.filter(icon => !tagMatchedIcons13.includes(icon))
+      throw new Error(
+        `Test 13 failed: Found ${unmatched.length} icons that don't match 'nav' in name or navigation-related tags. First unmatched: ${unmatched[0]?.name}`,
+      )
+    }
+    console.log(
+      `✓ Test 13 passed: Found ${icons13.length} icons with 'nav' matching names or navigation tags`,
+    )
+
+    // Test 14: Partial tag matching - "form" should find icons with "formatting" tags
+    const icons14 = await getIcons({
+      skip: 0,
+      limit: 15,
+      searchText: 'form',
+    })
+    if (icons14.length > 15) {
+      throw new Error(
+        `Test 14 failed: Expected at most 15 icons, got ${icons14.length}`,
+      )
+    }
+    // Count icons that match via partial tag matching
+    const tagMatchedIcons14 = icons14.filter((icon) => {
+      const hasFormInName = icon.name.toLowerCase().includes('form')
+      const hasFormattingInTags = icon.tags?.some(tag => 
+        tag.toLowerCase().includes('format') || 
+        tag.toLowerCase().includes('form')
+      ) || false
+      return hasFormInName || hasFormattingInTags
+    })
+    if (tagMatchedIcons14.length !== icons14.length) {
+      const unmatched = icons14.filter(icon => !tagMatchedIcons14.includes(icon))
+      throw new Error(
+        `Test 14 failed: Found ${unmatched.length} icons that don't match 'form' in name or formatting-related tags. First unmatched: ${unmatched[0]?.name}`,
+      )
+    }
+    console.log(
+      `✓ Test 14 passed: Found ${icons14.length} icons with 'form' matching names or formatting tags`,
+    )
+
+    // Test 15: Partial tag matching with multi-word search
+    const icons15 = await getIcons({
+      skip: 0,
+      limit: 10,
+      searchText: 'nav arrow',
+    })
+    if (icons15.length > 10) {
+      throw new Error(
+        `Test 15 failed: Expected at most 10 icons, got ${icons15.length}`,
+      )
+    }
+    // This should find icons that have BOTH nav-related and arrow-related content (AND logic first)
+    const andMatchedIcons15 = icons15.filter((icon) => {
+      const matchesNav = icon.name.toLowerCase().includes('nav') || 
+        icon.tags?.some(tag => tag.toLowerCase().includes('nav')) || false
+      const matchesArrow = icon.name.toLowerCase().includes('arrow') || 
+        icon.tags?.some(tag => tag.toLowerCase().includes('arrow')) || false
+      return matchesNav && matchesArrow
+    })
+    // Remaining should match at least one term (OR logic)
+    const orMatchedIcons15 = icons15.filter((icon) => {
+      const matchesNav = icon.name.toLowerCase().includes('nav') || 
+        icon.tags?.some(tag => tag.toLowerCase().includes('nav')) || false
+      const matchesArrow = icon.name.toLowerCase().includes('arrow') || 
+        icon.tags?.some(tag => tag.toLowerCase().includes('arrow')) || false
+      return matchesNav || matchesArrow
+    })
+    if (orMatchedIcons15.length !== icons15.length) {
+      throw new Error(
+        `Test 15 failed: Found icons that don't match 'nav' or 'arrow' in name/tags`,
+      )
+    }
+    console.log(
+      `✓ Test 15 passed: Found ${icons15.length} icons with 'nav arrow' search (${andMatchedIcons15.length} AND matches, ${icons15.length - andMatchedIcons15.length} OR matches)`,
+    )
+
     console.log('All tests passed!')
   } catch (error) {
     console.error('Test failed:', error)

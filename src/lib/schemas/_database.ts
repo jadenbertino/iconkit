@@ -125,3 +125,92 @@ export const providerUpdateSchema = z.object({
   id: z.number().optional(),
   name: z.string().optional(),
 });
+
+export const publicGtrgmCompressArgsSchema = z.object({
+  "": z.unknown(),
+});
+
+export const publicGtrgmCompressReturnsSchema = z.unknown();
+
+export const publicGtrgmDecompressArgsSchema = z.object({
+  "": z.unknown(),
+});
+
+export const publicGtrgmDecompressReturnsSchema = z.unknown();
+
+export const publicGtrgmInArgsSchema = z.object({
+  "": z.unknown(),
+});
+
+export const publicGtrgmInReturnsSchema = z.unknown();
+
+export const publicGtrgmOptionsArgsSchema = z.object({
+  "": z.unknown(),
+});
+
+export const publicGtrgmOptionsReturnsSchema = z.undefined();
+
+export const publicGtrgmOutArgsSchema = z.object({
+  "": z.unknown(),
+});
+
+export const publicGtrgmOutReturnsSchema = z.unknown();
+
+export const publicSearchIconsAndArgsSchema = z.object({
+  version_filter: z.string(),
+  result_limit: z.number().optional(),
+  result_offset: z.number().optional(),
+  search_terms: z.array(z.string()),
+});
+
+export const publicSearchIconsAndReturnsSchema = z.array(
+  z.object({
+    id: z.number(),
+    created_at: z.string(),
+    version: z.string(),
+    name: z.string(),
+    svg: z.string(),
+    source_url: z.string(),
+    provider_id: z.number(),
+    jsx: z.string(),
+    tags: z.array(z.string()),
+  }),
+);
+
+export const publicSearchIconsOrArgsSchema = z.object({
+  result_offset: z.number().optional(),
+  result_limit: z.number().optional(),
+  version_filter: z.string(),
+  exclude_ids: z.array(z.number()),
+  search_terms: z.array(z.string()),
+});
+
+export const publicSearchIconsOrReturnsSchema = z.array(
+  z.object({
+    name: z.string(),
+    tags: z.array(z.string()),
+    svg: z.string(),
+    source_url: z.string(),
+    provider_id: z.number(),
+    jsx: z.string(),
+    id: z.number(),
+    created_at: z.string(),
+    version: z.string(),
+  }),
+);
+
+export const publicSetLimitArgsSchema = z.object({
+  "": z.number(),
+});
+
+export const publicSetLimitReturnsSchema = z.number();
+
+export const publicShowLimitArgsSchema = z.object({});
+
+export const publicShowLimitReturnsSchema = z.number();
+
+export const publicShowTrgmArgsSchema = z.object({
+  "": z.string(),
+});
+
+export const publicShowTrgmReturnsSchema = z.array(z.string());

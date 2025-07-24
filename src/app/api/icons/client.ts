@@ -50,41 +50,30 @@ async function getAllIcons({ skip, limit }: Omit<SearchParams, 'searchText'>) {
 }
 
 async function searchIconsByAnd({ terms, skip, limit }: { terms: string[], skip: number, limit: number }) {
-  let andQuery = baseQuery()
-  terms.forEach((term) => {
-    andQuery = andQuery.or(`name.ilike.%${term}%,tags.cs.{${term}}`)
-  })
-  const { data: andResults } = await andQuery
-    .range(skip, skip + limit - 1)
-    .order('name')
+  const { data: andResults } = await supabase
+    .rpc('search_icons_and', {
+      search_terms: terms,
+      version_filter: CLIENT_ENV.VERSION,
+      result_limit: limit,
+      result_offset: skip
+    })
     .throwOnError()
-  return andResults
+  
+  return andResults || []
 }
 
 async function searchIconsByOr({ terms, excludeIds, skip, limit }: { terms: string[], excludeIds: number[], skip: number, limit: number }) {
-  let orQuery = baseQuery()
-  
-  if (excludeIds.length > 0) {
-    orQuery = orQuery.not('id', 'in', `(${excludeIds.join(',')})`)
-  }
-
-  // Create OR conditions for individual terms (search both name and tags)
-  if (terms.length > 1) {
-    const orConditions = terms
-      .map((term) => `name.ilike.%${term}%,tags.cs.{${term}}`)
-      .join(',')
-    orQuery = orQuery.or(orConditions)
-  } else {
-    // Single term fallback (shouldn't happen but just in case)
-    orQuery = orQuery.or(`name.ilike.%${terms[0]}%,tags.cs.{${terms[0]}}`)
-  }
-
-  const { data: orResults } = await orQuery
-    .range(skip, skip + limit - 1)
-    .order('name')
+  const { data: orResults } = await supabase
+    .rpc('search_icons_or', {
+      search_terms: terms,
+      exclude_ids: excludeIds,
+      version_filter: CLIENT_ENV.VERSION,
+      result_limit: limit,
+      result_offset: skip
+    })
     .throwOnError()
   
-  return orResults
+  return orResults || []
 }
 
 function parseSearchTerms(searchText: string): string[] {
