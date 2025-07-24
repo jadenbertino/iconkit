@@ -10,7 +10,7 @@ const IconSchema = {
 type Icon = z.infer<typeof IconSchema.Row>
 type ScrapedIcon = Omit<
   z.infer<typeof IconSchema.Insert>,
-  'provider_id' | 'created_at'
+  'provider_id' | 'created_at' | 'tags'
 >
 
 const ProviderSchema = {

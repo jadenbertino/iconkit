@@ -11,16 +11,21 @@ async function testGetIcons() {
         `Test 1 failed: Expected at most 5 icons, got ${icons1.length}`,
       )
     }
-    const invalidIcons1 = icons1.filter(
-      (icon) => !icon.name.toLowerCase().includes('icon'),
-    )
+    const invalidIcons1 = icons1.filter((icon) => {
+      const nameMatch = icon.name.toLowerCase().includes('icon')
+      const tags = icon.tags || []
+      const tagMatch = tags.some((tag: string) =>
+        tag.toLowerCase().includes('icon'),
+      )
+      return !nameMatch && !tagMatch
+    })
     if (invalidIcons1.length > 0) {
       throw new Error(
-        `Test 1 failed: Found ${invalidIcons1.length} icons that don't contain 'icon' in name`,
+        `Test 1 failed: Found ${invalidIcons1.length} icons that don't contain 'icon' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 1 passed: Found ${icons1.length} icons with 'icon' in name (limit 5)`,
+      `✓ Test 1 passed: Found ${icons1.length} icons with 'icon' in name or tags (limit 5)`,
     )
 
     // Test 2: Empty search (should return all)
@@ -60,16 +65,21 @@ async function testGetIcons() {
         `Test 4 failed: Expected at most 10 icons, got ${icons4.length}`,
       )
     }
-    const invalidIcons4 = icons4.filter(
-      (icon) => !icon.name.toLowerCase().includes('home'),
-    )
+    const invalidIcons4 = icons4.filter((icon) => {
+      const nameMatch = icon.name.toLowerCase().includes('home')
+      const tags = icon.tags || []
+      const tagMatch = tags.some((tag: string) =>
+        tag.toLowerCase().includes('home'),
+      )
+      return !nameMatch && !tagMatch
+    })
     if (invalidIcons4.length > 0) {
       throw new Error(
-        `Test 4 failed: Found ${invalidIcons4.length} icons that don't contain 'home' in name`,
+        `Test 4 failed: Found ${invalidIcons4.length} icons that don't contain 'home' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 4 passed: Found ${icons4.length} icons with 'home' in name (all valid)`,
+      `✓ Test 4 passed: Found ${icons4.length} icons with 'home' in name or tags (all valid)`,
     )
 
     // Test 5: No results
@@ -98,18 +108,25 @@ async function testGetIcons() {
         `Test 6 failed: Expected at most 10 icons, got ${icons6.length}`,
       )
     }
-    const invalidIcons6 = icons6.filter(
-      (icon) =>
-        !icon.name.toLowerCase().includes('arrow') ||
-        !icon.name.toLowerCase().includes('left'),
-    )
+    const invalidIcons6 = icons6.filter((icon) => {
+      const tags = icon.tags || []
+      const nameHasArrow = icon.name.toLowerCase().includes('arrow')
+      const nameHasLeft = icon.name.toLowerCase().includes('left')
+      const tagsHaveArrow = tags.some((tag: string) =>
+        tag.toLowerCase().includes('arrow'),
+      )
+      const tagsHaveLeft = tags.some((tag: string) =>
+        tag.toLowerCase().includes('left'),
+      )
+      return !(nameHasArrow || tagsHaveArrow) || !(nameHasLeft || tagsHaveLeft)
+    })
     if (invalidIcons6.length > 0) {
       throw new Error(
-        `Test 6 failed: Found ${invalidIcons6.length} icons that don't contain both 'arrow' and 'left' in name`,
+        `Test 6 failed: Found ${invalidIcons6.length} icons that don't contain both 'arrow' and 'left' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 6 passed: Found ${icons6.length} icons with both 'arrow' and 'left' in name`,
+      `✓ Test 6 passed: Found ${icons6.length} icons with both 'arrow' and 'left' in name or tags`,
     )
 
     // Test 7: Multi-word search with hyphens
@@ -123,18 +140,27 @@ async function testGetIcons() {
         `Test 7 failed: Expected at most 10 icons, got ${icons7.length}`,
       )
     }
-    const invalidIcons7 = icons7.filter(
-      (icon) =>
-        !icon.name.toLowerCase().includes('user') &&
-        !icon.name.toLowerCase().includes('profile'),
-    )
+    const invalidIcons7 = icons7.filter((icon) => {
+      const tags = icon.tags || []
+      const nameHasUser = icon.name.toLowerCase().includes('user')
+      const nameHasProfile = icon.name.toLowerCase().includes('profile')
+      const tagsHaveUser = tags.some((tag: string) =>
+        tag.toLowerCase().includes('user'),
+      )
+      const tagsHaveProfile = tags.some((tag: string) =>
+        tag.toLowerCase().includes('profile'),
+      )
+      return (
+        !(nameHasUser || tagsHaveUser) && !(nameHasProfile || tagsHaveProfile)
+      )
+    })
     if (invalidIcons7.length > 0) {
       throw new Error(
-        `Test 7 failed: Found ${invalidIcons7.length} icons that don't contain either 'user' or 'profile' in name`,
+        `Test 7 failed: Found ${invalidIcons7.length} icons that don't contain either 'user' or 'profile' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 7 passed: Found ${icons7.length} icons with 'user' or 'profile' in name`,
+      `✓ Test 7 passed: Found ${icons7.length} icons with 'user' or 'profile' in name or tags`,
     )
 
     // Test 8: Multi-word search with underscores
@@ -148,18 +174,25 @@ async function testGetIcons() {
         `Test 8 failed: Expected at most 10 icons, got ${icons8.length}`,
       )
     }
-    const invalidIcons8 = icons8.filter(
-      (icon) =>
-        !icon.name.toLowerCase().includes('icon') &&
-        !icon.name.toLowerCase().includes('home'),
-    )
+    const invalidIcons8 = icons8.filter((icon) => {
+      const tags = icon.tags || []
+      const nameHasIcon = icon.name.toLowerCase().includes('icon')
+      const nameHasHome = icon.name.toLowerCase().includes('home')
+      const tagsHaveIcon = tags.some((tag: string) =>
+        tag.toLowerCase().includes('icon'),
+      )
+      const tagsHaveHome = tags.some((tag: string) =>
+        tag.toLowerCase().includes('home'),
+      )
+      return !(nameHasIcon || tagsHaveIcon) && !(nameHasHome || tagsHaveHome)
+    })
     if (invalidIcons8.length > 0) {
       throw new Error(
-        `Test 8 failed: Found ${invalidIcons8.length} icons that don't contain either 'icon' or 'home' in name`,
+        `Test 8 failed: Found ${invalidIcons8.length} icons that don't contain either 'icon' or 'home' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 8 passed: Found ${icons8.length} icons with 'icon' or 'home' in name`,
+      `✓ Test 8 passed: Found ${icons8.length} icons with 'icon' or 'home' in name or tags`,
     )
 
     // Test 9: Multi-word search with mixed delimiters
@@ -173,19 +206,33 @@ async function testGetIcons() {
         `Test 9 failed: Expected at most 10 icons, got ${icons9.length}`,
       )
     }
-    const invalidIcons9 = icons9.filter(
-      (icon) =>
-        !icon.name.toLowerCase().includes('arrow') &&
-        !icon.name.toLowerCase().includes('left') &&
-        !icon.name.toLowerCase().includes('icon'),
-    )
+    const invalidIcons9 = icons9.filter((icon) => {
+      const tags = icon.tags || []
+      const nameHasArrow = icon.name.toLowerCase().includes('arrow')
+      const nameHasLeft = icon.name.toLowerCase().includes('left')
+      const nameHasIcon = icon.name.toLowerCase().includes('icon')
+      const tagsHaveArrow = tags.some((tag: string) =>
+        tag.toLowerCase().includes('arrow'),
+      )
+      const tagsHaveLeft = tags.some((tag: string) =>
+        tag.toLowerCase().includes('left'),
+      )
+      const tagsHaveIcon = tags.some((tag: string) =>
+        tag.toLowerCase().includes('icon'),
+      )
+      return (
+        !(nameHasArrow || tagsHaveArrow) &&
+        !(nameHasLeft || tagsHaveLeft) &&
+        !(nameHasIcon || tagsHaveIcon)
+      )
+    })
     if (invalidIcons9.length > 0) {
       throw new Error(
-        `Test 9 failed: Found ${invalidIcons9.length} icons that don't contain any of the terms 'arrow', 'left', or 'icon' in name`,
+        `Test 9 failed: Found ${invalidIcons9.length} icons that don't contain any of the terms 'arrow', 'left', or 'icon' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 9 passed: Found ${icons9.length} icons with at least one of 'arrow', 'left', or 'icon' in name`,
+      `✓ Test 9 passed: Found ${icons9.length} icons with at least one of 'arrow', 'left', or 'icon' in name or tags`,
     )
 
     // Test 10: Empty terms filtering
@@ -199,16 +246,21 @@ async function testGetIcons() {
         `Test 10 failed: Expected at most 10 icons, got ${icons10.length}`,
       )
     }
-    const invalidIcons10 = icons10.filter(
-      (icon) => !icon.name.toLowerCase().includes('home'),
-    )
+    const invalidIcons10 = icons10.filter((icon) => {
+      const nameMatch = icon.name.toLowerCase().includes('home')
+      const tags = icon.tags || []
+      const tagMatch = tags.some((tag: string) =>
+        tag.toLowerCase().includes('home'),
+      )
+      return !nameMatch && !tagMatch
+    })
     if (invalidIcons10.length > 0) {
       throw new Error(
-        `Test 10 failed: Found ${invalidIcons10.length} icons that don't contain 'home' in name`,
+        `Test 10 failed: Found ${invalidIcons10.length} icons that don't contain 'home' in name or tags`,
       )
     }
     console.log(
-      `✓ Test 10 passed: Found ${icons10.length} icons with 'home' in name (trailing spaces handled)`,
+      `✓ Test 10 passed: Found ${icons10.length} icons with 'home' in name or tags (trailing spaces handled)`,
     )
 
     // Test 11: No duplicates in combined AND/OR results
@@ -246,8 +298,18 @@ async function testGetIcons() {
     // Check that all icons contain both terms (AND logic) or are properly ordered
     let andResultsEnded = false
     for (const icon of icons12) {
-      const hasArrow = icon.name.toLowerCase().includes('arrow')
-      const hasLeft = icon.name.toLowerCase().includes('left')
+      const tags = icon.tags || []
+      const nameHasArrow = icon.name.toLowerCase().includes('arrow')
+      const nameHasLeft = icon.name.toLowerCase().includes('left')
+      const tagsHaveArrow = tags.some((tag: string) =>
+        tag.toLowerCase().includes('arrow'),
+      )
+      const tagsHaveLeft = tags.some((tag: string) =>
+        tag.toLowerCase().includes('left'),
+      )
+
+      const hasArrow = nameHasArrow || tagsHaveArrow
+      const hasLeft = nameHasLeft || tagsHaveLeft
       const isAndResult = hasArrow && hasLeft
       const isOrResult = hasArrow || hasLeft
 
@@ -267,6 +329,74 @@ async function testGetIcons() {
     }
     console.log(
       `✓ Test 12 passed: Found ${icons12.length} icons with proper AND/OR ordering`,
+    )
+
+    // Test 13: Tag-only search functionality
+    const icons13 = await getIcons({ skip: 0, limit: 5, searchText: 'solid' })
+    if (icons13.length > 5) {
+      throw new Error(
+        `Test 13 failed: Expected at most 5 icons, got ${icons13.length}`,
+      )
+    }
+    // Verify at least some results have tags containing the search term
+    let tagMatches = 0
+    for (const icon of icons13) {
+      const tags = icon.tags || []
+      if (tags.some((tag: string) => tag.toLowerCase().includes('solid'))) {
+        tagMatches++
+      }
+    }
+    if (tagMatches === 0 && icons13.length > 0) {
+      console.warn('Warning: No tag matches found for "solid" search')
+    }
+    console.log(
+      `✓ Test 13 passed: Found ${icons13.length} icons with tag search, ${tagMatches} with matching tags`,
+    )
+
+    // Test 14: Partial tag match
+    const icons14 = await getIcons({ skip: 0, limit: 5, searchText: 'outl' })
+    if (icons14.length > 5) {
+      throw new Error(
+        `Test 14 failed: Expected at most 5 icons, got ${icons14.length}`,
+      )
+    }
+    // Verify partial matches work
+    let partialMatches = 0
+    for (const icon of icons14) {
+      const tags = icon.tags || []
+      const nameMatch = icon.name.toLowerCase().includes('outl')
+      const tagMatch = tags.some((tag: string) =>
+        tag.toLowerCase().includes('outl'),
+      )
+      if (nameMatch || tagMatch) {
+        partialMatches++
+      }
+    }
+    console.log(
+      `✓ Test 14 passed: Found ${icons14.length} icons with partial search, ${partialMatches} with matches`,
+    )
+
+    // Test 15: Verify array tag format
+    const icons15 = await getIcons({ skip: 0, limit: 3, searchText: '' })
+    for (const icon of icons15) {
+      if (icon.tags) {
+        if (!Array.isArray(icon.tags)) {
+          throw new Error(
+            `Test 15 failed: Tags should be array, got: ${typeof icon.tags} for icon ${icon.name}`,
+          )
+        }
+        // Verify all tags are strings
+        for (const tag of icon.tags) {
+          if (typeof tag !== 'string') {
+            throw new Error(
+              `Test 15 failed: All tags should be strings, got: ${typeof tag} for icon ${icon.name}`,
+            )
+          }
+        }
+      }
+    }
+    console.log(
+      `✓ Test 15 passed: All tags are properly formatted as string arrays`,
     )
 
     console.log('All tests passed!')

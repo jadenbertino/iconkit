@@ -13,12 +13,15 @@ import type { ScrapedIcon } from '@/lib/schemas/database'
 import { transform } from '@svgr/core'
 import path from 'path'
 import { cloneRepo } from '../utils'
+import { addTags, type ScrapedIconWithTags } from './tags'
 
 // Timeout constants (in milliseconds)
 const SCRAPE_OPERATION_TIMEOUT = 10 * 60 * 1000 // 10 minutes for overall scraping
 const FILE_READ_TIMEOUT = 30 * 1000 // 30 seconds for file operations
 
-async function scrapeIcons(provider: IconProviderSlug): Promise<ScrapedIcon[]> {
+async function scrapeIcons(
+  provider: IconProviderSlug,
+): Promise<ScrapedIconWithTags[]> {
   // Wrap the entire scraping operation with timeout
   return withTimeout(
     _scrapeIconsInternal(provider),
@@ -29,7 +32,7 @@ async function scrapeIcons(provider: IconProviderSlug): Promise<ScrapedIcon[]> {
 
 async function _scrapeIconsInternal(
   provider: IconProviderSlug,
-): Promise<ScrapedIcon[]> {
+): Promise<ScrapedIconWithTags[]> {
   // Clone repo to tmp dir
   const repoDir = await cloneRepo(provider)
   const { git } = ICON_PROVIDERS[provider]
@@ -47,7 +50,7 @@ async function _scrapeIconsInternal(
   serverLogger.info(`Found ${svgFiles.length} SVG files for ${provider}`)
 
   // Parse svg files with timeout for each file
-  return await Promise.all(
+  const icons = await Promise.all(
     svgFiles.map(async (filePath): Promise<ScrapedIcon> => {
       const name = path.basename(filePath, '.svg')
 
@@ -112,6 +115,9 @@ export default ${componentName}`
       }
     }),
   )
+
+  const iconsWithTags = await addTags(provider, icons)
+  return iconsWithTags
 }
 
 export { scrapeIcons }

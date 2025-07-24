@@ -11,7 +11,7 @@ echo "🔍 Running ESLint..."
 npm run lint
 
 echo "🔄 Uploading icons to database..."
-npx tsx src/build/index.ts
+npx tsx src/build/index.ts "$@"
 
 echo "🏗️  Building Next.js app..."
 npx next build

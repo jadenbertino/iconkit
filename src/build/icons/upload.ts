@@ -2,9 +2,9 @@ import type { IconProviderSlug } from '@/constants'
 import { SERVER_ENV } from '@/env/server'
 import { supabaseAdmin } from '@/lib/clients/server'
 import { serverLogger } from '@/lib/logs/server'
-import type { ScrapedIcon } from '@/lib/schemas/database'
 import Bottleneck from 'bottleneck'
 import { getProviderRecord } from '../providers'
+import type { ScrapedIconWithTags } from './tags'
 
 const limiter = new Bottleneck({
   maxConcurrent: 1,
@@ -12,7 +12,7 @@ const limiter = new Bottleneck({
 })
 
 async function uploadIcons(
-  icons: ScrapedIcon[],
+  icons: ScrapedIconWithTags[],
   providerSlug: IconProviderSlug,
 ) {
   const provider = await getProviderRecord(providerSlug)
