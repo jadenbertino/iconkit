@@ -5,47 +5,34 @@ interface ScoringWeights {
   exactName: number
   /** Score when icon name starts with search term (e.g., "user" finds "user-profile") */
   startsWith: number
-  /** Score when icon name contains search term (e.g., "home" finds "smartphone") */
-  contains: number
   /** Score for exact tag match (e.g., searching "navigation" finds tag "navigation") */
   exactTag: number
-  /** Score when tag contains search term (e.g., "nav" finds tag "navigation") */
-  partialTag: number
-  /** Penalty per character in icon name (shorter names score higher) */
-  nameLength: number
-  /** Optional penalty for common/generic words like "icon", "svg", "outline" */
-  commonWords?: number
+  /** Score when icon name contains search term (e.g., "home" finds "smartphone") */
+  contains: number
 }
 
 /** Balanced scoring weights for general-purpose icon search */
 const DEFAULT_WEIGHTS: ScoringWeights = {
   exactName: 100,
-  startsWith: 60,
-  contains: 30,
-  exactTag: 40,
-  partialTag: 20,
-  nameLength: 0.5,
+  startsWith: 80,
+  exactTag: 60,
+  contains: 40,
 }
 
 /** Strict scoring that heavily favors exact matches and penalizes partial matches */
 const STRICT_WEIGHTS: ScoringWeights = {
   exactName: 100,
-  startsWith: 80,
+  startsWith: 90,
+  exactTag: 70,
   contains: 10,
-  exactTag: 60,
-  partialTag: 5,
-  nameLength: 1,
-  commonWords: 10,
 }
 
 /** Fuzzy scoring that is more generous with partial matches and broader results */
 const FUZZY_WEIGHTS: ScoringWeights = {
   exactName: 100,
-  startsWith: 50,
-  contains: 40,
-  exactTag: 30,
-  partialTag: 25,
-  nameLength: 0.2,
+  startsWith: 70,
+  exactTag: 50,
+  contains: 60,
 }
 
 const WEIGHT_PRESETS = {
@@ -96,7 +83,7 @@ function calculateWeightedScore(
   terms.forEach((term) => {
     const lowerTerm = term.toLowerCase()
 
-    // Name matching
+    // Name matching - in priority order
     if (lowerName === lowerTerm) {
       score += weights.exactName
     } else if (lowerName.startsWith(lowerTerm)) {
@@ -105,27 +92,11 @@ function calculateWeightedScore(
       score += weights.contains
     }
 
-    // Tag matching
+    // Tag matching - only exact matches
     if (icon.tags?.includes(term)) {
       score += weights.exactTag
-    } else if (
-      icon.tags?.some((tag) => tag.toLowerCase().includes(lowerTerm))
-    ) {
-      score += weights.partialTag
     }
   })
-
-  // Length penalty (longer names get slightly lower scores)
-  score -= icon.name.length * weights.nameLength
-
-  // Optional: Common words penalty
-  if (weights.commonWords) {
-    const commonWords = ['icon', 'svg', 'outline', 'solid', 'mini', 'fill']
-    const hasCommonWords = commonWords.some((word) => lowerName.includes(word))
-    if (hasCommonWords) {
-      score -= weights.commonWords
-    }
-  }
 
   return Math.max(0, score) // Ensure non-negative scores
 }
@@ -148,10 +119,6 @@ function getMatchTypes(icon: Icon, terms: string[]): string[] {
 
     if (icon.tags?.includes(term)) {
       matches.push('exact-tag')
-    } else if (
-      icon.tags?.some((tag) => tag.toLowerCase().includes(lowerTerm))
-    ) {
-      matches.push('partial-tag')
     }
   })
 

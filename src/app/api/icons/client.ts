@@ -16,7 +16,7 @@ async function getIcons({
   skip,
   limit,
   searchText,
-  scoringStrategy = 'default',
+  scoringStrategy = 'fuzzy',
 }: SearchParams) {
   // Validate that we have search terms
   if (!searchText?.trim()) {
