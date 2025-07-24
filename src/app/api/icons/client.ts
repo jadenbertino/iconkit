@@ -52,7 +52,7 @@ async function getAllIcons({ skip, limit }: Omit<SearchParams, 'searchText'>) {
 async function searchIconsByAnd({ terms, skip, limit }: { terms: string[], skip: number, limit: number }) {
   let andQuery = baseQuery()
   terms.forEach((term) => {
-    andQuery = andQuery.or(`name.ilike.%${term}%,tags.cs.{${term}}`)
+    andQuery = andQuery.or(`name.ilike.%${term}%,tags.ilike.%${term}%`)
   })
   const { data: andResults } = await andQuery
     .range(skip, skip + limit - 1)
@@ -71,12 +71,12 @@ async function searchIconsByOr({ terms, excludeIds, skip, limit }: { terms: stri
   // Create OR conditions for individual terms (search both name and tags)
   if (terms.length > 1) {
     const orConditions = terms
-      .map((term) => `name.ilike.%${term}%,tags.cs.{${term}}`)
+      .map((term) => `name.ilike.%${term}%,tags.ilike.%${term}%`)
       .join(',')
     orQuery = orQuery.or(orConditions)
   } else {
     // Single term fallback (shouldn't happen but just in case)
-    orQuery = orQuery.or(`name.ilike.%${terms[0]}%,tags.cs.{${terms[0]}}`)
+    orQuery = orQuery.or(`name.ilike.%${terms[0]}%,tags.ilike.%${terms[0]}%`)
   }
 
   const { data: orResults } = await orQuery
