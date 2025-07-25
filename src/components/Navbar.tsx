@@ -1,9 +1,13 @@
 import { Package } from 'lucide-react'
 import { Container } from './Layout'
 
-export function Navbar() {
+interface NavbarProps {
+  as?: 'nav' | 'header'
+}
+
+export function Navbar({ as: Element = 'header' }: NavbarProps) {
   return (
-    <nav className='border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50'>
+    <Element className='border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50'>
       <Container>
         <div className='flex items-center gap-2'>
           <Package className='h-6 w-6 sm:h-8 sm:w-8 text-slate-900' />
@@ -12,6 +16,6 @@ export function Navbar() {
           </span>
         </div>
       </Container>
-    </nav>
+    </Element>
   )
 }
