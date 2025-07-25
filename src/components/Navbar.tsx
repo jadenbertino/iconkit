@@ -1,22 +1,17 @@
-'use client'
-
+import { Package } from 'lucide-react'
+import { Container } from './Layout'
 
 export function Navbar() {
   return (
-    <nav className='w-full bg-background'>
-      <div className='flex items-center justify-between'>
+    <nav className='border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50'>
+      <Container>
         <div className='flex items-center gap-2'>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={'/logo.png'}
-            alt='IconKit'
-            className='size-8'
-          />
-          <h1 className='text-2xl font-semibold text-foreground pointer-events-none select-none'>
+          <Package className='h-6 w-6 sm:h-8 sm:w-8 text-slate-900' />
+          <span className='text-xl sm:text-2xl font-bold text-slate-900'>
             IconKit
-          </h1>
+          </span>
         </div>
-      </div>
+      </Container>
     </nav>
   )
 }

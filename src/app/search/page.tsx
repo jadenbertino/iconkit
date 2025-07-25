@@ -13,24 +13,26 @@ export default function SearchPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <Container>
+    <>
       <Navbar />
-      <div className='w-full space-y-6'>
-        <Row className='pt-4'>
-          <SearchBar />
-        </Row>
-        <IconsGrid
-          onIconClick={(icon) => {
-            setActiveIcon(icon)
-            setIsModalOpen(true)
-          }}
+      <Container>
+        <div className='w-full space-y-6'>
+          <Row className='pt-4'>
+            <SearchBar />
+          </Row>
+          <IconsGrid
+            onIconClick={(icon) => {
+              setActiveIcon(icon)
+              setIsModalOpen(true)
+            }}
+          />
+        </div>
+        <IconModal
+          icon={activeIcon}
+          isOpen={isModalOpen}
+          handleClose={() => setIsModalOpen(false)}
         />
-      </div>
-      <IconModal
-        icon={activeIcon}
-        isOpen={isModalOpen}
-        handleClose={() => setIsModalOpen(false)}
-      />
-    </Container>
+      </Container>
+    </>
   )
 }

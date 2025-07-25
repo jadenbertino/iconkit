@@ -8,12 +8,7 @@ type Wrapper = {
 
 const Container = ({ children, className }: Wrapper) => {
   return (
-    <div
-      className={cn(
-        'max-w-[1200px] w-full flex flex-col m-auto px-4 py-3',
-        className,
-      )}
-    >
+    <div className={cn('container mx-auto px-4 py-4', className)}>
       {children}
     </div>
   )
