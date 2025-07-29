@@ -31,6 +31,9 @@
   }
   ```
 
+- Create as few design tokens as possible; keep the system simple and maintainable.
+  - Typically use 4-6 tokens for any scale-based tokens (e.g. font size, spacing, etc)
+
 ## Color
 
 ### Color Palette
@@ -93,12 +96,12 @@
 
 ### Font Size & Line Height
 
-- `text-hero` — For hero headlines or large promo banners
-- `text-impact` — For large, bold headings
-- `text-heading` — For primary section headings
-- `text-subheading` — For secondary or supporting headings
-- `text-body` — For main paragraph content
-- `text-small` — For small text, labels, and captions
+- ~~`text-impact` — For the biggest headings~~
+- ~~`text-display` — For the second-biggest headings~~
+- `text-heading` — For primary page or section headings
+- `text-subheading` — For supporting headings or intros under a main heading
+- `text-body` — For standard paragraph and content text
+- `text-small` — For secondary text, labels, or fine print
 
 ### Font Weight
 
