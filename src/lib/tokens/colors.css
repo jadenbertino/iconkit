@@ -1,0 +1,61 @@
+/* Color Tokens */
+
+/* Text Colors - Neutral */
+.text-neutral-high {
+  @apply text-slate-900;
+}
+
+.text-neutral {
+  @apply text-slate-700;
+}
+
+.text-neutral-low {
+  @apply text-slate-600;
+}
+
+.text-neutral-lowest {
+  @apply text-slate-400;
+}
+
+/* Background Colors */
+.bg-canvas {
+  @apply bg-gradient-to-br from-slate-50 to-white;
+}
+
+.bg-surface {
+  @apply bg-white;
+}
+
+.bg-overlay {
+  @apply bg-slate-100;
+}
+
+.bg-inverse {
+  @apply bg-slate-900;
+}
+
+.bg-hover {
+  @apply hover:bg-slate-100;
+}
+
+/* Inverse Context - Text colors within dark backgrounds */
+.bg-inverse .text-neutral-high {
+  @apply !text-white;
+}
+
+.bg-inverse .text-neutral {
+  @apply !text-slate-300;
+}
+
+.bg-inverse .text-neutral-low {
+  @apply !text-slate-400;
+}
+
+.bg-inverse .text-neutral-lowest {
+  @apply !text-slate-500;
+}
+
+/* Hover states for inverse context */
+.bg-inverse .bg-hover {
+  @apply hover:bg-slate-800;
+}
