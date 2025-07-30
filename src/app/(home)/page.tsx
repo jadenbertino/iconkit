@@ -8,7 +8,7 @@ import { ThreeCardSection } from './ThreeCardSection'
 
 export default function HomePage() {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-white'>
+    <div className='min-h-screen bg-canvas'>
       <Navbar />
       <div className='space-y-0'>
         <HeroSection />
