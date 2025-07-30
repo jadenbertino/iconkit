@@ -27,7 +27,7 @@ export function IconsGrid({
   if (error && !icons) return <div>Error loading icons</div>
 
   const cardClasses =
-    'relative w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden'
+    'relative w-16 h-16 bg-surface rounded-lg shadow-md overflow-hidden'
 
   return (
     <>
