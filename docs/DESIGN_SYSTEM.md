@@ -96,8 +96,7 @@
 
 ### Font Size & Line Height
 
-- ~~`text-impact` — For the biggest headings~~
-- ~~`text-display` — For the second-biggest headings~~
+- `text-hero` — For large hero/display text (responsive: 4xl → 5xl → 6xl)
 - `text-heading` — For primary page or section headings
 - `text-subheading` — For supporting headings or intros under a main heading
 - `text-body` — For standard paragraph and content text
@@ -122,3 +121,5 @@
 - [padding](https://tailwindcss.com/docs/padding)
 - [flexbox & grid](https://tailwindcss.com/docs/flex)
 - [z-index](https://tailwindcss.com/docs/z-index)
+- [breakpoints](https://tailwindcss.com/docs/breakpoints)
+  - Added `xs` breakpoint for `480px`

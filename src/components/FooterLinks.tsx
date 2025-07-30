@@ -20,7 +20,7 @@ export const FooterLinks = ({ title, links }: FooterLinks) => {
   return (
     <div>
       <h3 className='font-semibold mb-4'>{title}</h3>
-      <ul className='space-y-2 text-sm text-slate-400'>
+      <ul className='space-y-2 text-small text-slate-400'>
         {links.map((link) => (
           <li key={link.name}>
             <a

@@ -9,6 +9,7 @@ const plugin = {
     'no-import-custom-error': require('./api-routes/no-import-custom-error.cjs'),
     'no-supabase-admin-outside-allowed-dirs': require('./api-routes/no-supabase-admin-outside-allowed-dirs.cjs'),
     'require-named-exports-in-icons': require('./icons.cjs'),
+    'no-tailwind-font-sizes': require('./no-tailwind-font-sizes.cjs'),
   },
 }
 

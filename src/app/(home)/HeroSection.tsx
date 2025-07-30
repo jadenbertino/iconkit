@@ -8,7 +8,7 @@ const HeroSection = () => {
   return (
     <section className='container mx-auto px-4 pt-24 pb-16 text-center'>
       <div className='max-w-4xl mx-auto'>
-        <h1 className='text-3xl sm:text-4xl md:text-6xl font-bold text-neutral-high mb-6 sm:mb-8'>
+        <h1 className='text-hero font-bold text-neutral-high mb-6 sm:mb-8'>
           Your favorite icons,
           <br />
           all in one place.
@@ -18,19 +18,19 @@ const HeroSection = () => {
           <div className='flex flex-wrap justify-center gap-4'>
             <Badge
               variant='outline'
-              className='text-sm sm:text-lg px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
+              className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
             >
               {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ icons
             </Badge>
             <Badge
               variant='outline'
-              className='text-sm sm:text-lg px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
+              className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
             >
               {ICON_LIBRARY_COUNT}+ libraries
             </Badge>
             <Badge
               variant='outline'
-              className='text-sm sm:text-lg px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
+              className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
             >
               1 search bar
             </Badge>

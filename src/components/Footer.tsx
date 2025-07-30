@@ -34,9 +34,9 @@ const Footer = () => {
           <div className='md:col-span-1'>
             <div className='flex items-center gap-2 mb-4'>
               <Package className='h-6 w-6 text-white' />
-              <span className='text-xl font-bold'>IconKit</span>
+              <span className='text-subheading font-bold'>IconKit</span>
             </div>
-            <p className='text-slate-400 text-sm leading-relaxed'>
+            <p className='text-slate-400 text-small leading-relaxed'>
               Your favorite icons, all in one place.
             </p>
           </div>
@@ -52,11 +52,11 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className='border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center'>
-          <p className='text-slate-400 text-sm'>
+          <p className='text-slate-400 text-small'>
             © {new Date().getFullYear()} IconKit. All rights reserved.
           </p>
           <div className='flex items-center gap-6 mt-4 md:mt-0'>
-            <p className='text-slate-400 text-sm'>
+            <p className='text-slate-400 text-small'>
               Made with ❤ by{' '}
               <ExternalLink
                 href='https://github.com/jadenbertino'

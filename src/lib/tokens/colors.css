@@ -39,6 +39,10 @@
 }
 
 /* Inverse Context - Text colors within dark backgrounds */
+.bg-inverse {
+  @apply text-white;
+}
+
 .bg-inverse .text-neutral-high {
   @apply !text-white;
 }
@@ -58,4 +62,26 @@
 /* Hover states for inverse context */
 .bg-inverse .bg-hover {
   @apply hover:bg-slate-800;
+}
+
+/* Border Colors */
+.border-default {
+  border-color: var(--border-default);
+}
+
+.border-muted {
+  border-color: var(--border-muted);
+}
+
+/* Ring Colors */
+.ring-focus {
+  @apply ring-slate-500;
+}
+
+.ring-error {
+  @apply ring-red-500;
+}
+
+.ring-hover {
+  @apply ring-slate-400;
 }

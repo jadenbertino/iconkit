@@ -9,7 +9,7 @@ import { cn } from '@/lib'
  */
 const Skeleton = ({ className }: { className?: string }) => {
   return (
-    <div className={cn('w-full h-full bg-gray-200 animate-pulse', className)} />
+    <div className={cn('w-full h-full bg-overlay animate-pulse', className)} />
   )
 }
 

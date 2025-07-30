@@ -1,12 +1,16 @@
 /* Typography Tokens */
 
 /* Font Size & Line Height */
+.text-hero {
+  @apply text-4xl xs:text-5xl md:text-6xl;
+}
+
 .text-heading {
   @apply text-2xl sm:text-3xl md:text-4xl font-bold;
 }
 
 .text-subheading {
-  @apply text-lg sm:text-xl;
+  @apply text-base sm:text-lg;
 }
 
 .text-body {

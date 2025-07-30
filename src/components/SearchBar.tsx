@@ -17,7 +17,7 @@ export function SearchBar() {
         placeholder='Search icons...'
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
-        className='flex-1 pr-4 pl-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500 focus:border-transparent bg-surface'
+        className='flex-1 pr-4 pl-10 py-2 border border-default rounded-lg focus:outline-none focus:ring-2 ring-focus focus:border-transparent bg-surface text-body'
       />
     </form>
   )

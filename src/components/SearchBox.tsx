@@ -65,7 +65,7 @@ export function SearchBox() {
     <div className='max-w-2xl mx-auto mb-8'>
       <form
         onSubmit={onSubmit}
-        className='flex items-center gap-3 p-2 rounded-full border-2 border-slate-200 focus-within:border-slate-400 shadow-lg'
+        className='flex items-center gap-3 p-2 rounded-full border-2 focus-within:ring-focus shadow-lg text-body'
       >
         <div className='flex-1 relative'>
           <input
@@ -84,10 +84,10 @@ export function SearchBox() {
             onChange={(e) => setSearchText(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={handleBlur}
-            className='w-full h-10 text-base sm:text-lg pl-4 pr-2 bg-transparent rounded-full focus:outline-none'
+            className='w-full h-10 pl-4 pr-2 bg-transparent rounded-full focus:outline-none text-neutral-high'
           />
           {!searchText && !isFocused && (
-            <div className='absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-base sm:text-lg text-slate-400'>
+            <div className='absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-lowest'>
               <TypeAnimation
                 key={animationKey}
                 sequence={getRandomizedSequence()}
@@ -102,7 +102,7 @@ export function SearchBox() {
         <Button
           type='submit'
           onMouseEnter={handlePrefetch}
-          className='h-10 px-4 sm:px-6 rounded-full bg-slate-900 hover:bg-slate-800 flex items-center flex-shrink-0'
+          className='h-10 px-4 sm:px-6 rounded-full bg-inverse hover:bg-slate-800 flex items-center flex-shrink-0 text-small'
         >
           <MagnifyingGlassHero className='size-5' />
           <span className='-mt-0.5'>
