@@ -22,6 +22,7 @@
     theme('colors.slate.100'),
     theme('colors.slate.50')
   );
+  --bg-canvas-solid: theme('colors.slate.50');
   --bg-surface: theme('colors.white');
   --bg-overlay: theme('colors.slate.100');
   --bg-hover: theme('colors.slate.100');
@@ -63,6 +64,7 @@
 
   /* Background color variables */
   --bg-canvas: theme('colors.slate.900');
+  --bg-canvas-solid: theme('colors.slate.900');
   --bg-surface: theme('colors.slate.800');
   --bg-overlay: theme('colors.slate.700');
   --bg-hover: theme('colors.slate.800');
@@ -87,6 +89,17 @@
 @utility bg-canvas {
   @apply context-light;
   background: var(--bg-canvas);
+
+  /* Hover behavior - current element or child elements */
+  &.bg-hover:hover,
+  .bg-hover:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
+@utility bg-canvas-gradient {
+  @apply context-light;
+  background: var(--bg-canvas-gradient);
 
   /* Hover behavior - current element or child elements */
   &.bg-hover:hover,

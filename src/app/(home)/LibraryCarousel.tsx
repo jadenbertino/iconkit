@@ -21,6 +21,7 @@ const LibraryCarousel = () => {
         speed={30}
         gradient={true}
         gradientWidth={gradientWidth}
+        gradientColor='var(--bg-canvas-solid)'
         autoFill={true}
       >
         {visibleLibraries.map((name, index) => (
