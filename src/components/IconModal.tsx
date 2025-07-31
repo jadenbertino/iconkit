@@ -61,7 +61,7 @@ const IconModal = ({
           </div>
           <div className='flex-grow flex flex-col text-center'>
             {/* Details */}
-            <h1 className='text-heading'>{icon.name}</h1>
+            <h1 className='text-header font-semibold'>{icon.name}</h1>
             <div className='text-small flex p-2 -ml-2 *:p-1 flex-wrap justify-center pt-1'>
               {!provider ? null : (
                 <ExternalLink

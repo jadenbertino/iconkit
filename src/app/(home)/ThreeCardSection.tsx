@@ -47,7 +47,7 @@ const ThreeCardSection = () => {
                   className={`h-6 w-6 sm:h-8 sm:w-8 ${card.iconColor}`}
                 />
               </div>
-              <h3 className='text-subheading font-bold text-neutral-high mb-3 sm:mb-4'>
+              <h3 className='text-subheader font-bold text-neutral-high mb-3 sm:mb-4'>
                 {card.title}
               </h3>
               <p className='text-body text-neutral-low leading-relaxed'>

@@ -97,10 +97,11 @@
 ### Font Size & Line Height
 
 - `text-hero` — For large hero/display text (responsive: 4xl → 5xl → 6xl)
-- `text-heading` — For primary page or section headings
-- `text-subheading` — For supporting headings or intros under a main heading
-- `text-body` — For standard paragraph and content text
-- `text-small` — For secondary text, labels, or fine print
+- `text-impact` — For high-impact headings (responsive: 2xl → 3xl → 4xl, bold)
+- `text-header` — For primary page or section headings (lg → 2xl, bold)
+- `text-subheader` — For supporting headings or intros under a main heading (base → lg)
+- `text-body` — For standard paragraph and content text (sm → base)
+- `text-small` — For secondary text, labels, or fine print (sm)
 
 ### Font Weight
 

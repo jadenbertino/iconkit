@@ -34,7 +34,7 @@ const Footer = () => {
           <div className='md:col-span-1'>
             <div className='flex items-center gap-2 mb-4'>
               <Package className='h-6 w-6 text-neutral-high' />
-              <span className='text-subheading font-bold'>IconKit</span>
+              <span className='text-subheader font-bold'>IconKit</span>
             </div>
             <p className='text-neutral-low text-small leading-relaxed'>
               Your favorite icons, all in one place.

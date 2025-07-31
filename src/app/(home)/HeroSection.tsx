@@ -39,7 +39,7 @@ const HeroSection = () => {
 
         <SearchBox />
 
-        <p className='text-neutral-low text-subheading max-w-xl mx-auto leading-relaxed'>
+        <p className='text-neutral-low text-subheader max-w-xl mx-auto leading-relaxed'>
           Find any icon from Font Awesome, Lucide, Hero Icons, and{' '}
           {ICON_LIBRARY_COUNT - 3} more of your favorite libraries.
         </p>

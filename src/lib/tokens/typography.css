@@ -5,11 +5,15 @@
   @apply text-4xl xs:text-5xl md:text-6xl;
 }
 
-.text-heading {
+.text-impact {
   @apply text-2xl sm:text-3xl md:text-4xl font-bold;
 }
 
-.text-subheading {
+.text-header {
+  @apply text-lg sm:text-2xl font-bold;
+}
+
+.text-subheader {
   @apply text-base sm:text-lg;
 }
 

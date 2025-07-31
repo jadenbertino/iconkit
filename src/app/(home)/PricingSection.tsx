@@ -6,8 +6,8 @@ const PricingSection = () => {
   return (
     <section className='bg-inverse py-20'>
       <div className='container mx-auto px-4 text-center'>
-        <h2 className='text-heading mb-3 sm:mb-4'>Pricing</h2>
-        <p className='text-subheading text-neutral mb-2'>
+        <h2 className='text-impact mb-3 sm:mb-4'>Pricing</h2>
+        <p className='text-subheader text-neutral mb-2'>
           IconKit is 100% free!
         </p>
         <p className='text-body text-neutral-low mb-3 sm:mb-4'>

@@ -11,7 +11,7 @@ export function Navbar({ as: Element = 'header' }: NavbarProps) {
       <Container>
         <div className='flex items-center gap-2'>
           <Package className='h-6 w-6 sm:h-8 sm:w-8 text-neutral-high' />
-          <span className='text-subheading font-bold text-neutral-high'>
+          <span className='text-subheader font-bold text-neutral-high'>
             IconKit
           </span>
         </div>

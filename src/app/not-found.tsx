@@ -9,11 +9,11 @@ export default function NotFound() {
   return (
     <main className='grid min-h-full place-items-center bg-surface px-6 py-24 sm:py-32 lg:px-8'>
       <div className='text-center text-neutral-low'>
-        <p className='text-subheading font-semibold'>404</p>
-        <h1 className='mt-4 text-heading font-semibold tracking-tight text-balance text-neutral-high'>
+        <p className='text-subheader font-semibold'>404</p>
+        <h1 className='mt-4 text-impact font-semibold tracking-tight text-balance text-neutral-high'>
           Page not found
         </h1>
-        <p className='mt-6 text-subheading font-medium text-pretty text-neutral-low'>
+        <p className='mt-6 text-subheader font-medium text-pretty text-neutral-low'>
           Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <div className='mt-10 flex items-center justify-center gap-x-6'>

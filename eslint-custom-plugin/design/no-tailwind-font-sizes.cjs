@@ -6,7 +6,7 @@
  *
  * How to fix: Replace Tailwind font size utilities with design system tokens
  * - Instead of: text-xs, text-sm, text-base, text-lg, text-xl, text-2xl, etc.
- * - Use: text-heading, text-subheading, text-body, or text-small
+ * - Use: text-hero, text-impact, text-header, text-subheader, text-body, or text-small
  *
  * @author Custom ESLint Plugin
  */
@@ -31,8 +31,9 @@ const TAILWIND_FONT_SIZE_TOKENS = [
 // Approved design system tokens (these are allowed)
 const APPROVED_TOKENS = [
   'text-hero',
-  'text-heading',
-  'text-subheading',
+  'text-impact',
+  'text-header',
+  'text-subheader',
   'text-body',
   'text-small',
 ]
