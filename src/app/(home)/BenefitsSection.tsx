@@ -19,7 +19,7 @@ const BenefitsSection = () => {
           <h2 className='text-impact text-neutral-high mb-3 sm:mb-4'>
             Your icon workflow, simplified
           </h2>
-          <h3 className='text-subheader text-neutral-low mb-6 sm:mb-8'>
+          <h3 className='text-subheader text-neutral-low mb-6'>
             Search all your favorite libraries with one search bar.
           </h3>
           <div className='text-left text-neutral flex flex-col gap-3 sm:gap-4 pt-2 sm:pt-4'>

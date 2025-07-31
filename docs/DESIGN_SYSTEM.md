@@ -124,3 +124,19 @@
 - [z-index](https://tailwindcss.com/docs/z-index)
 - [breakpoints](https://tailwindcss.com/docs/breakpoints)
   - Added `xs` breakpoint for `480px`
+
+## Screen Size Testing
+
+**Minimum supported size:** `320px` (iPhone SE in portrait)
+
+**Test at these breakpoints:**
+
+- `320px` — iPhone SE, minimum supported
+- `375px` — iPhone 12/13/14 mini
+- `390px` — iPhone 12/13/14/15
+- `480px` — Custom `xs` breakpoint
+- `640px` — Tailwind `sm` breakpoint
+- `768px` — Tailwind `md` breakpoint (tablets)
+- `1024px` — Tailwind `lg` breakpoint (laptops)
+- `1280px` — Tailwind `xl` breakpoint (desktops)
+- `1920px` — Common desktop resolution
