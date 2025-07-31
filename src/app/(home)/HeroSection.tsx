@@ -3,6 +3,12 @@ import { Badge } from '@/components/ui/badge'
 import { ICON_LIBRARY_COUNT } from '@/constants/provider'
 import { CLIENT_ENV } from '@/env/client'
 
+const BADGES = [
+  `${CLIENT_ENV.ICON_COUNT.toLocaleString()}+ icons`,
+  `${ICON_LIBRARY_COUNT}+ libraries`,
+  '1 search bar',
+]
+
 // Note: could use https://www.npmjs.com/package/react-countup to animate the numbers
 const HeroSection = () => {
   return (
@@ -15,25 +21,16 @@ const HeroSection = () => {
         </h1>
 
         <div className='max-w-2xl mx-auto mb-8'>
-          <div className='flex flex-wrap justify-center gap-4'>
-            <Badge
-              variant='outline'
-              className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
-            >
-              {CLIENT_ENV.ICON_COUNT.toLocaleString()}+ icons
-            </Badge>
-            <Badge
-              variant='outline'
-              className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
-            >
-              {ICON_LIBRARY_COUNT}+ libraries
-            </Badge>
-            <Badge
-              variant='outline'
-              className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
-            >
-              1 search bar
-            </Badge>
+          <div className='flex flex-wrap justify-center gap-x-2 sm:gap-x-4 gap-y-2'>
+            {BADGES.map((badge, index) => (
+              <Badge
+                key={index}
+                variant='outline'
+                className='text-body px-3 sm:px-4 py-1.5 sm:py-2 bg-overlay'
+              >
+                {badge}
+              </Badge>
+            ))}
           </div>
         </div>
 

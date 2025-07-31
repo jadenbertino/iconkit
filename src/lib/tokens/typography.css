@@ -2,7 +2,7 @@
 
 /* Font Size & Line Height */
 .text-hero {
-  @apply text-4xl xs:text-5xl md:text-6xl;
+  @apply text-3xl xs:text-4xl md:text-5xl lg:text-6xl;
 }
 
 .text-impact {
