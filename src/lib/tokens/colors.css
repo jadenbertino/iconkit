@@ -19,6 +19,13 @@
   --bg-overlay: theme('colors.slate.100');
   --bg-hover: theme('colors.slate.100');
   --bg-hover-overlay: theme('colors.slate.200');
+
+  /* Border color variables */
+  --border-default: theme('colors.slate.200');
+  --border-muted: theme('colors.slate.100');
+  --border-focus: theme('colors.slate.700');
+  --border-error: theme('colors.red.500');
+  --border-hover: theme('colors.slate.400');
 }
 
 @utility context-dark {
@@ -35,6 +42,13 @@
   --bg-overlay: theme('colors.slate.700');
   --bg-hover: theme('colors.slate.800');
   --bg-hover-overlay: theme('colors.slate.600');
+
+  /* Border color variables */
+  --border-default: theme('colors.slate.700');
+  --border-muted: theme('colors.slate.800');
+  --border-focus: theme('colors.white');
+  --border-error: theme('colors.red.400');
+  --border-hover: theme('colors.slate.600');
 }
 
 /* Background Utilities */
@@ -115,15 +129,36 @@
   border-color: var(--border-muted);
 }
 
+.border-focus {
+  border-color: var(--border-focus);
+}
+
+.focus-within\:border-focus {
+  &:focus-within {
+    border-color: var(--border-focus);
+  }
+}
+
 /* Ring Colors */
+
+.ring-default {
+  --tw-ring-color: var(--border-default);
+}
+
 .ring-focus {
-  @apply ring-slate-500;
+  --tw-ring-color: var(--border-focus);
 }
 
 .ring-error {
-  @apply ring-red-500;
+  --tw-ring-color: var(--border-error);
 }
 
 .ring-hover {
-  @apply ring-slate-400;
+  --tw-ring-color: var(--border-hover);
+}
+
+.focus-within\:ring-focus {
+  &:focus-within {
+    --tw-ring-color: var(--border-focus);
+  }
 }

@@ -65,7 +65,7 @@ export function SearchBox() {
     <div className='max-w-2xl mx-auto mb-8'>
       <form
         onSubmit={onSubmit}
-        className='flex items-center gap-3 p-2 rounded-full border-2 focus-within:ring-focus shadow-lg text-body'
+        className='flex items-center gap-3 p-2 rounded-full border-2 border-default focus-within:border-focus shadow-lg text-body bg-surface'
       >
         <div className='flex-1 relative'>
           <input
