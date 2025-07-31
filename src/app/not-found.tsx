@@ -7,13 +7,13 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <main className='grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
-      <div className='text-center text-gray-500'>
+    <main className='grid min-h-full place-items-center bg-surface px-6 py-24 sm:py-32 lg:px-8'>
+      <div className='text-center text-neutral-low'>
         <p className='text-subheading font-semibold'>404</p>
-        <h1 className='mt-4 text-heading font-semibold tracking-tight text-balance text-gray-900'>
+        <h1 className='mt-4 text-heading font-semibold tracking-tight text-balance text-neutral-high'>
           Page not found
         </h1>
-        <p className='mt-6 text-subheading font-medium text-pretty text-gray-500'>
+        <p className='mt-6 text-subheading font-medium text-pretty text-neutral-low'>
           Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <div className='mt-10 flex items-center justify-center gap-x-6'>
@@ -28,7 +28,7 @@ export default function NotFound() {
           <Button
             asChild
             variant='ghost'
-            className='group text-small font-semibold text-gray-900'
+            className='group text-small font-semibold text-neutral-high'
           >
             <ExternalLink href={`mailto:${CONTACT_EMAIL}`}>
               Contact support

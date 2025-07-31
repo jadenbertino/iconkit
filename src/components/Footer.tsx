@@ -27,16 +27,16 @@ const FooterLinkSections: Record<string, FooterLink[]> = {
 
 const Footer = () => {
   return (
-    <footer className='bg-slate-900 text-white'>
+    <footer className='bg-inverse text-neutral-high'>
       <div className='container mx-auto px-4 py-12 border-t border-slate-800'>
         <div className='grid md:grid-cols-4 gap-8'>
           {/* Brand */}
           <div className='md:col-span-1'>
             <div className='flex items-center gap-2 mb-4'>
-              <Package className='h-6 w-6 text-white' />
+              <Package className='h-6 w-6 text-neutral-high' />
               <span className='text-subheading font-bold'>IconKit</span>
             </div>
-            <p className='text-slate-400 text-small leading-relaxed'>
+            <p className='text-neutral-low text-small leading-relaxed'>
               Your favorite icons, all in one place.
             </p>
           </div>
@@ -52,15 +52,15 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className='border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center'>
-          <p className='text-slate-400 text-small'>
+          <p className='text-neutral-low text-small'>
             © {new Date().getFullYear()} IconKit. All rights reserved.
           </p>
           <div className='flex items-center gap-6 mt-4 md:mt-0'>
-            <p className='text-slate-400 text-small'>
+            <p className='text-neutral-low text-small'>
               Made with ❤ by{' '}
               <ExternalLink
                 href='https://github.com/jadenbertino'
-                className='text-slate-400 hover:text-white transition-colors underline'
+                className='text-neutral-low hover:text-neutral-high transition-colors underline'
               >
                 Jaden Bertino
               </ExternalLink>

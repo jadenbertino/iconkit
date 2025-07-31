@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import '../lib/tokens/index.css';
 
 :root {
   --border-default: #cbd5e1; /* slate-300 */
@@ -16,8 +17,6 @@
     border-color: var(--border-default);
   }
 }
-
-@import '../lib/tokens/index.css';
 
 button {
   @apply cursor-pointer;

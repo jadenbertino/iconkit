@@ -8,8 +8,8 @@ const ThreeCardSection = () => {
         'Every icon comes from trusted open-source libraries with permissive licenses.',
       // No subscriptions, no premium tiers, no gotchas.
       icon: Package,
-      iconColor: 'text-emerald-600',
-      bgColor: 'bg-emerald-100',
+      iconColor: 'text-success',
+      bgColor: 'bg-success',
     },
     {
       title: 'Easy Attribution',
@@ -17,16 +17,16 @@ const ThreeCardSection = () => {
         "See each icon's license and attribution requirements upfront.",
       // Stay compliant without the legal guesswork.
       icon: Shield,
-      iconColor: 'text-purple-600',
-      bgColor: 'bg-purple-100',
+      iconColor: 'text-info',
+      bgColor: 'bg-info',
     },
     {
       title: 'SVG & JSX Ready',
       description:
         'Click any icon to copy as SVG markup or ready-to-use JSX components.',
       icon: Clipboard,
-      iconColor: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      iconColor: 'text-primary',
+      bgColor: 'bg-primary',
     },
   ]
 

@@ -102,7 +102,7 @@ export function SearchBox() {
         <Button
           type='submit'
           onMouseEnter={handlePrefetch}
-          className='h-10 px-4 sm:px-6 rounded-full bg-inverse hover:bg-slate-800 flex items-center flex-shrink-0 text-small'
+          className='h-10 px-4 sm:px-6 rounded-full bg-inverse bg-hover flex items-center flex-shrink-0 text-small'
         >
           <MagnifyingGlassHero className='size-5' />
           <span className='-mt-0.5'>
