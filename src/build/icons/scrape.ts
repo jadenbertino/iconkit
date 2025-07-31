@@ -11,6 +11,7 @@ import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
 import { transform } from '@svgr/core'
+import DOMPurify from 'dompurify'
 import path from 'path'
 import { cloneRepo } from '../utils'
 import { addTags, type ScrapedIconWithTags } from './tags'
@@ -54,23 +55,18 @@ async function _scrapeIconsInternal(
     svgFiles.map(async (filePath): Promise<ScrapedIcon> => {
       const name = path.basename(filePath, '.svg')
 
-      // Add timeout to file reading operation
+      // Get SVG Content
       const svgContent = await withTimeout(
         fsp.readFile(filePath, 'utf-8'),
         FILE_READ_TIMEOUT,
         `Reading file: ${filePath}`,
       )
-
-      // Remove the SVG wrapper tags and get the inner content
-      const cleanedSvgContent = svgContent
-        .replace(/"/g, "'") // replace " with '
-        .replace(/<!--[\s\S]*?-->/g, '') // remove HTML comments
-        .trim()
+      const processedSvgContent = preprocessSvg(svgContent)
 
       // Convert SVG to JSX using @svgr/core (just get the JSX elements)
       const componentName = toPascalCase(name)
       const svgJsx = await transform(
-        cleanedSvgContent,
+        processedSvgContent,
         {
           jsxRuntime: 'automatic', // prevent React import
           expandProps: false, // prevent props expansion
@@ -108,7 +104,7 @@ export default ${componentName}`
 
       return {
         name,
-        svg: cleanedSvgContent,
+        svg: processedSvgContent,
         version: CLIENT_ENV.VERSION,
         source_url,
         jsx: jsxContent,
@@ -118,6 +114,46 @@ export default ${componentName}`
 
   const iconsWithTags = await addTags(provider, icons)
   return iconsWithTags
+}
+
+const preprocessSvg = (svgString: string): string => {
+  let processedSvg = svgString
+    .replace(/"/g, "'") // replace " with '
+    .replace(/<!--[\s\S]*?-->/g, '') // remove HTML comments
+    .trim()
+
+  // Add fill="currentColor" to the svg tag if it doesn't exist
+  // shouldn't add to all because some have fill="none"
+  if (!/fill\s*=/.test(svgString)) {
+    processedSvg = svgString.replace(
+      /<svg([^>]*)>/,
+      '<svg$1 fill="currentColor">',
+    )
+  }
+
+  return DOMPurify.sanitize(processedSvg)
+
+  // Old DOM-based implementation (more robust but heavier):
+  //   // Parse the SVG string to check for existing fill attribute
+  //   const parser = new DOMParser()
+  //   const doc = parser.parseFromString(svgString, 'image/svg+xml')
+  //   const svg = doc.querySelector('svg')
+  //
+  //   if (!svg) return svgString
+  //
+  //   // Check if fill attribute already exists
+  //   const hasFill = svg.hasAttribute('fill')
+  //
+  //   // If fill already exists, return as-is
+  //   if (hasFill) return svgString
+  //
+  //   // Clone the SVG element to modify it
+  //   const modifiedSvg = svg.cloneNode(true) as SVGElement
+  //
+  //   // Add fill="currentColor" if not present
+  //   modifiedSvg.setAttribute('fill', 'currentColor')
+  //
+  //   return modifiedSvg.outerHTML
 }
 
 export { scrapeIcons }
