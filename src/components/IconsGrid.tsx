@@ -44,7 +44,7 @@ export function IconsGrid({
                 >
                   <SvgIcon
                     icon={icon}
-                    className={cn(cardClasses, 'p-2 icon-gradient')}
+                    className={cn(cardClasses, 'p-2 bg-hover')}
                   />
                 </motion.button>
               ))
