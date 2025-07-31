@@ -10,7 +10,7 @@ const SvgIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain [&>svg]:fill-current aspect-square text-neutral-high',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square text-neutral-high',
         centerClasses,
         className,
       )}
@@ -18,7 +18,7 @@ const SvgIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
       data-search-terms={firstFiveTags.join(' ')}
       aria-label={`${icon.name} icon${firstFiveTags.length > 0 ? ` - ${firstFiveTags.slice(0, 3).join(', ')}` : ''}`}
       dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(icon.svg),
+        __html: preprocessSvg(icon.svg),
       }}
     />
   )
@@ -34,7 +34,7 @@ const JsxIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain [&>svg]:fill-current aspect-square text-neutral-low',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square text-neutral-low',
         centerClasses,
         className,
       )}
@@ -42,9 +42,49 @@ const JsxIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
       data-search-terms={firstFiveTags.join(' ')}
       aria-label={`${icon.name} icon${firstFiveTags.length > 0 ? ` - ${firstFiveTags.slice(0, 3).join(', ')}` : ''}`}
     >
-      {parse(icon.jsx)}
+      {parse(preprocessSvg(icon.jsx))}
     </div>
   )
 }
+
+const preprocessSvg = (svgString: string): string => {
+  let processedSvg = svgString
+
+  // Add fill="currentColor" to the svg tag if it doesn't exist
+  // shouldn't add to all because some have fill="none"
+  if (!/fill\s*=/.test(svgString)) {
+    processedSvg = svgString.replace(
+      /<svg([^>]*)>/,
+      '<svg$1 fill="currentColor">',
+    )
+  }
+
+  return DOMPurify.sanitize(processedSvg)
+}
+
+// Old DOM-based implementation (more robust but heavier):
+// const preprocessSvg = (svgString: string): string => {
+//   // Parse the SVG string to check for existing fill attribute
+//   const parser = new DOMParser()
+//   const doc = parser.parseFromString(svgString, 'image/svg+xml')
+//   const svg = doc.querySelector('svg')
+//
+//   if (!svg) return svgString
+//
+//   // Check if fill attribute already exists
+//   const hasFill = svg.hasAttribute('fill')
+//
+//   // If fill already exists, return as-is
+//   if (hasFill) return svgString
+//
+//   // Clone the SVG element to modify it
+//   const modifiedSvg = svg.cloneNode(true) as SVGElement
+//
+//   // Add fill="currentColor" if not present
+//   modifiedSvg.setAttribute('fill', 'currentColor')
+//
+//   return modifiedSvg.outerHTML
+// }
+
 export default SvgIcon
 export { JsxIcon }
