@@ -20,7 +20,7 @@ const PricingSection = () => {
         <Button
           asChild
           size='lg'
-          className='bg-surface text-neutral-high bg-hover text-body px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold'
+          className='bg-surface bg-hover text-neutral-high text-body px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold'
         >
           <Link href={'/search'}>
             <span className='hidden sm:inline'>

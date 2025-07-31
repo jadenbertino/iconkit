@@ -1,67 +1,109 @@
 /* Color Tokens */
 
+/* Context Utility Classes */
+@utility context-light {
+  /* Text color variables */
+  --text-neutral-high: theme('colors.slate.900');
+  --text-neutral: theme('colors.slate.700');
+  --text-neutral-low: theme('colors.slate.600');
+  --text-neutral-lowest: theme('colors.slate.400');
+  color: var(--text-neutral-high);
+
+  /* Background color variables */
+  --bg-canvas: linear-gradient(
+    to bottom right,
+    theme('colors.slate.50'),
+    theme('colors.white')
+  );
+  --bg-surface: theme('colors.white');
+  --bg-overlay: theme('colors.slate.100');
+  --bg-hover: theme('colors.slate.100');
+  --bg-hover-overlay: theme('colors.slate.200');
+}
+
+@utility context-dark {
+  /* Text color variables */
+  --text-neutral-high: theme('colors.white');
+  --text-neutral: theme('colors.slate.300');
+  --text-neutral-low: theme('colors.slate.400');
+  --text-neutral-lowest: theme('colors.slate.500');
+  color: var(--text-neutral-high);
+
+  /* Background color variables */
+  --bg-canvas: theme('colors.slate.900');
+  --bg-surface: theme('colors.slate.800');
+  --bg-overlay: theme('colors.slate.700');
+  --bg-hover: theme('colors.slate.800');
+  --bg-hover-overlay: theme('colors.slate.600');
+}
+
+/* Background Utilities */
+@utility bg-canvas {
+  @apply context-light;
+  background: var(--bg-canvas);
+
+  /* Hover behavior - current element or child elements */
+  &.bg-hover:hover,
+  .bg-hover:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
+@utility bg-surface {
+  @apply context-light;
+  background-color: var(--bg-surface);
+
+  /* Hover behavior - current element or child elements */
+  &.bg-hover:hover,
+  .bg-hover:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
+@utility bg-overlay {
+  @apply context-light;
+  background-color: var(--bg-overlay);
+
+  /* Hover behavior - current element or child elements */
+  &.bg-hover:hover,
+  .bg-hover:hover {
+    background-color: var(--bg-hover-overlay);
+  }
+}
+
+@utility bg-inverse {
+  @apply context-dark;
+  background-color: var(--bg-canvas);
+
+  /* Hover behavior - current element or child elements */
+  &.bg-hover:hover,
+  .bg-hover:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
+/* General hover utility (fallback) */
+@utility bg-hover {
+  &:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
 /* Text Colors - Neutral */
-.text-neutral-high {
-  @apply text-slate-900;
+@utility text-neutral-high {
+  color: var(--text-neutral-high);
 }
 
-.text-neutral {
-  @apply text-slate-700;
+@utility text-neutral {
+  color: var(--text-neutral);
 }
 
-.text-neutral-low {
-  @apply text-slate-600;
+@utility text-neutral-low {
+  color: var(--text-neutral-low);
 }
 
-.text-neutral-lowest {
-  @apply text-slate-400;
-}
-
-/* Background Colors */
-.bg-canvas {
-  @apply bg-gradient-to-br from-slate-50 to-white;
-}
-
-.bg-surface {
-  @apply bg-white;
-}
-
-.bg-overlay {
-  @apply bg-slate-100;
-}
-
-.bg-inverse {
-  @apply bg-slate-900;
-}
-
-.bg-hover {
-  @apply hover:bg-slate-100;
-}
-
-/* Inverse Context - Text colors within dark backgrounds */
-.bg-inverse {
-  @apply text-white;
-}
-
-.bg-inverse .text-neutral-high {
-  @apply !text-white;
-}
-
-.bg-inverse .text-neutral {
-  @apply !text-slate-300;
-}
-
-.bg-inverse .text-neutral-low {
-  @apply !text-slate-400;
-}
-
-.bg-inverse .text-neutral-lowest {
-  @apply !text-slate-500;
-}
-
-/* Hover states for inverse context */
-.bg-inverse .bg-hover {
-  @apply hover:bg-slate-800;
+@utility text-neutral-lowest {
+  color: var(--text-neutral-lowest);
 }
 
 /* Border Colors */
