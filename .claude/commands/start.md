@@ -49,7 +49,19 @@ eza --tree --git-ignore --level=10 --no-permissions --no-user --no-time --all
 
 ### Code Rules
 
-Please read through `.claude/context/rules.md` for the code rules.
+- After changing any file, run `npx prettier --write <filepath> > /dev/null` to format the code silently
+- Whenver you need to use `tsx`, run it like so: `source env/.env.$ENVIRONMENT && export DOPPLER_TOKEN && doppler run -- npx tsx ...`
+- All exports should be 1) named and 2) at the bottom of the file
+- Prefer "fail fast" behavior: throw errors instead of returning null/undefined/"unknown" values
+  - All `supabaseAdmin` and `supabasePublic` queries should tack on the `.throwOnError()` method and only destructure the `data` property
+- I'm using `pnpm` as my package manager.
+- Order functions from highest to lowest abstraction level
+
+### Linting
+
+- **ESLint config**: `eslint.config.mjs` with Next.js + TypeScript rules
+- **Custom rules**: `eslint-custom-plugin/` directory contains project-specific rules (design system enforcement, API route standards, etc.)
+- **Run linting**: `pnpm lint` to check
 
 ## Next Steps: Begin development session
 
