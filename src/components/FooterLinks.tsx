@@ -13,7 +13,7 @@ export const FooterLinks = ({ title, links }: FooterLinks) => {
   const handleClick = (e: React.MouseEvent, link: FooterLink) => {
     if (link.href === '#') {
       e.preventDefault()
-      toast.error(`${link.name} is coming soon!`)
+      toast.info(`${link.name} is coming soon!`)
     }
   }
 

@@ -21,3 +21,29 @@
 button {
   @apply cursor-pointer;
 }
+
+/* Sonner Toast Styling */
+[data-sonner-toast] {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--text-neutral-high);
+  font-size: 0.875rem !important;
+}
+
+[data-sonner-toast][data-type='error'] {
+  background: var(--bg-error) !important;
+  border-color: var(--border-error) !important;
+  color: var(--text-error) !important;
+}
+
+[data-sonner-toast][data-type='success'] {
+  background: var(--bg-success) !important;
+  border-color: var(--border-default) !important;
+  color: var(--text-success) !important;
+}
+
+[data-sonner-toast][data-type='warning'] {
+  background: var(--bg-warning) !important;
+  border-color: var(--border-default) !important;
+  color: var(--text-warning) !important;
+}
