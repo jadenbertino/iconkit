@@ -19,8 +19,8 @@
   /* Background color variables */
   --bg-canvas: linear-gradient(
     to bottom right,
-    theme('colors.slate.100'),
-    theme('colors.slate.50')
+    theme('colors.slate.50'),
+    theme('colors.white')
   );
   --bg-canvas-solid: theme('colors.slate.50');
   --bg-surface: theme('colors.white');
