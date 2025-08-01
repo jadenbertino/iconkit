@@ -11,7 +11,6 @@ import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
 import { transform } from '@svgr/core'
-import DOMPurify from 'dompurify'
 import path from 'path'
 import { cloneRepo } from '../utils'
 import { addTags, type ScrapedIconWithTags } from './tags'
@@ -124,14 +123,14 @@ const preprocessSvg = (svgString: string): string => {
 
   // Add fill="currentColor" to the svg tag if it doesn't exist
   // shouldn't add to all because some have fill="none"
-  if (!/fill\s*=/.test(svgString)) {
-    processedSvg = svgString.replace(
+  if (!/fill\s*=/.test(processedSvg)) {
+    processedSvg = processedSvg.replace(
       /<svg([^>]*)>/,
       '<svg$1 fill="currentColor">',
     )
   }
 
-  return DOMPurify.sanitize(processedSvg)
+  return processedSvg
 
   // Old DOM-based implementation (more robust but heavier):
   //   // Parse the SVG string to check for existing fill attribute
