@@ -11,6 +11,7 @@ import { fsp, pathExists } from '@/lib/fs'
 import { serverLogger } from '@/lib/logs/server'
 import type { ScrapedIcon } from '@/lib/schemas/database'
 import { transform } from '@svgr/core'
+import DOMPurify from 'isomorphic-dompurify'
 import path from 'path'
 import { cloneRepo } from '../utils'
 import { addTags, type ScrapedIconWithTags } from './tags'
@@ -130,7 +131,7 @@ const preprocessSvg = (svgString: string): string => {
     )
   }
 
-  return processedSvg
+  return DOMPurify.sanitize(processedSvg)
 
   // Old DOM-based implementation (more robust but heavier):
   //   // Parse the SVG string to check for existing fill attribute
