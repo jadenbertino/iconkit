@@ -46,8 +46,8 @@ function validateClientEnv() {
 /**
  * Call this to display the required environment variables
  */
-// @ts-ignore
-function displayRequiredEnv() {
+// @ts-expect-error - This function is currently unused but kept for self-documentation use
+function _displayRequiredEnv() {
   const requiredKeys = Object.keys(clientSchema.shape).map(
     (key) => `NEXT_PUBLIC_${key}`,
   )
