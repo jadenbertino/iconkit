@@ -7,7 +7,9 @@ set -e
 # Update version in Doppler
 git_branch=$(git branch --show-current)
 echo "🔍 Git branch: $git_branch"
-[ "$git_branch" = "main" || "$git_branch" = "master" ] && ./scripts/version-manager.sh check # local & git is "main" but vercel clones to "master" for some reason
+if [ "$git_branch" = "main" ] || [ "$git_branch" = "master" ]; then
+    ./scripts/version-manager.sh check # local & git is "main" but vercel clones to "master" for some reason
+fi
 ./scripts/version-manager.sh update
 
 echo "🔍 Running ESLint..."
