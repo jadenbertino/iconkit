@@ -4,14 +4,13 @@ import { CLIENT_ENV } from './client'
 type Environment = (typeof CLIENT_ENV)['ENVIRONMENT']
 type DopplerEnvSlug = 'dev' | 'preview' | 'prd'
 
+const serverSchema = z.object({
+  SUPABASE_SERVICE_ROLE_KEY: z.string(),
+  DOPPLER_TOKEN: z.string(),
+})
+
 function validateServerEnv() {
-  const serverSchema = z.object({
-    SUPABASE_SERVICE_ROLE_KEY: z.string(),
-    DOPPLER_TOKEN: z.string(),
-  })
-
   const serverValidation = serverSchema.safeParse(process.env)
-
   if (!serverValidation.success) {
     console.error(
       '❌ Invalid server environment variables:',
@@ -34,6 +33,20 @@ function getDopplerEnvSlug(env: Environment): DopplerEnvSlug {
     default:
       throw new Error('Invalid environment')
   }
+}
+
+/**
+ * Call this to display the required environment variables
+ */
+// @ts-expect-error - This function is currently unused but kept for self-documentation use
+function _displayRequiredEnv() {
+  const requiredKeys = Object.keys(serverSchema.shape).map(
+    (key) => `NEXT_PUBLIC_${key}`,
+  )
+  const requiredEnv = requiredKeys
+    .map((key) => process.env[key])
+    .filter(Boolean)
+  console.log('Required environment variables:', requiredEnv)
 }
 
 const SERVER_ENV = {

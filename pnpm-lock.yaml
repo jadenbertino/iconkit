@@ -41,9 +41,6 @@ importers:
       clsx:
         specifier: 2.1.1
         version: 2.1.1
-      dompurify:
-        specifier: 3.2.6
-        version: 3.2.6
       fs-extra:
         specifier: 11.3.0
         version: 11.3.0

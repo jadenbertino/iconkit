@@ -1,3 +1,4 @@
+import { MAX_PROVIDERS } from '@/constants/query'
 import { supabase } from '@/lib/clients/client'
 
 async function getProviders() {
@@ -5,6 +6,7 @@ async function getProviders() {
     .from('provider')
     .select('*')
     .order('name')
+    .limit(MAX_PROVIDERS)
     .throwOnError()
 
   return data

@@ -1,4 +1,4 @@
-import { getLicenses } from '@/app/api/licenses/client'
+import { getLicenses } from '@/lib/queries/licenses/client'
 import {
   queryOptions as createQueryOptions,
   useQuery,

@@ -20,6 +20,7 @@ export const jsonSchema: z.ZodSchema<Json> = z.lazy(() =>
 );
 
 export const iconRowSchema = z.object({
+  build_id: z.string(),
   created_at: z.string(),
   id: z.number(),
   jsx: z.string(),
@@ -28,10 +29,10 @@ export const iconRowSchema = z.object({
   source_url: z.string(),
   svg: z.string(),
   tags: z.array(z.string()).nullable(),
-  version: z.string(),
 });
 
 export const iconInsertSchema = z.object({
+  build_id: z.string(),
   created_at: z.string(),
   id: z.number().optional(),
   jsx: z.string(),
@@ -40,10 +41,10 @@ export const iconInsertSchema = z.object({
   source_url: z.string(),
   svg: z.string(),
   tags: z.array(z.string()).optional().nullable(),
-  version: z.string(),
 });
 
 export const iconUpdateSchema = z.object({
+  build_id: z.string().optional(),
   created_at: z.string().optional(),
   id: z.number().optional(),
   jsx: z.string().optional(),
@@ -52,7 +53,6 @@ export const iconUpdateSchema = z.object({
   source_url: z.string().optional(),
   svg: z.string().optional(),
   tags: z.array(z.string()).optional().nullable(),
-  version: z.string().optional(),
 });
 
 export const iconRelationshipsSchema = z.tuple([

@@ -1,4 +1,4 @@
-import { getProviders } from '@/app/api/providers/client'
+import { getProviders } from '@/lib/queries/providers/client'
 import {
   queryOptions as createQueryOptions,
   useQuery,
