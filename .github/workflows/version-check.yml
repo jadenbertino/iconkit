@@ -7,12 +7,12 @@ on:
 jobs:
   check-version:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout current commit
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2  # Fetch current and previous commit
+          fetch-depth: 2 # Fetch current and previous commit
 
       - name: Extract current version
         id: current-version
@@ -34,12 +34,12 @@ jobs:
         run: |
           CURRENT="${{ steps.current-version.outputs.version }}"
           PREVIOUS="${{ steps.previous-version.outputs.version }}"
-          
+
           echo "🔍 Extracted versions:"
           echo "  Current:  $CURRENT"
           echo "  Previous: $PREVIOUS"
           echo ""
-          
+
           # Validate current version format (x.x.x)
           if ! echo "$CURRENT" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' > /dev/null; then
             echo "❌ Error: Invalid current version format in CHANGELOG.md"
@@ -47,7 +47,7 @@ jobs:
             echo "Found: $CURRENT"
             exit 1
           fi
-          
+
           # Validate previous version format (x.x.x)
           if ! echo "$PREVIOUS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' > /dev/null; then
             echo "❌ Error: Invalid previous version format in CHANGELOG.md"
@@ -55,15 +55,15 @@ jobs:
             echo "Found: $PREVIOUS"
             exit 1
           fi
-          
+
           echo "✅ Both versions have valid format"
           echo ""
-          
+
           # Compare versions
           if [ "$CURRENT" = "$PREVIOUS" ]; then
             echo "❌ ERROR: Version has not been updated!"
             echo ""
-            echo "The version in CHANGELOG.md is the same as the previous commit."
+            echo "The version in CHANGELOG.md ($CURRENT) is the same as the previous commit."
             echo "Please update the version number in CHANGELOG.md before deploying to production."
             echo ""
             echo "Current version: $CURRENT"
