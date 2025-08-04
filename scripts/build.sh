@@ -5,6 +5,7 @@ set -e
 # doppler run -- ./scripts/build.sh
 
 # Update version in Doppler
+./scripts/version-manager.sh check
 ./scripts/version-manager.sh update
 
 echo "🔍 Running ESLint..."
