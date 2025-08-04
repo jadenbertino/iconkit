@@ -1,4 +1,4 @@
-0.0.4
+0.0.3
 - Enforce that version changes between prod commits
 0.0.2
 - Add automated version management system that updates Doppler environment variables from changelog
