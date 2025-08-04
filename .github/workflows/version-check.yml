@@ -1,0 +1,77 @@
+name: Version Change Validation
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout current commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Fetch current and previous commit
+
+      - name: Extract current version
+        id: current-version
+        run: |
+          # Extract version from first line of CHANGELOG.md
+          CURRENT_VERSION=$(head -n 1 CHANGELOG.md | tr -d '\r')
+          echo "Current version: $CURRENT_VERSION"
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Extract previous version
+        id: previous-version
+        run: |
+          # Get the previous commit's CHANGELOG.md
+          PREVIOUS_VERSION=$(git show HEAD~1:CHANGELOG.md | head -n 1 | tr -d '\r')
+          echo "Previous version: $PREVIOUS_VERSION"
+          echo "version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Validate and compare versions
+        run: |
+          CURRENT="${{ steps.current-version.outputs.version }}"
+          PREVIOUS="${{ steps.previous-version.outputs.version }}"
+          
+          echo "🔍 Extracted versions:"
+          echo "  Current:  $CURRENT"
+          echo "  Previous: $PREVIOUS"
+          echo ""
+          
+          # Validate current version format (x.x.x)
+          if ! echo "$CURRENT" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' > /dev/null; then
+            echo "❌ Error: Invalid current version format in CHANGELOG.md"
+            echo "Expected format: x.x.x (e.g., 1.2.3)"
+            echo "Found: $CURRENT"
+            exit 1
+          fi
+          
+          # Validate previous version format (x.x.x)
+          if ! echo "$PREVIOUS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' > /dev/null; then
+            echo "❌ Error: Invalid previous version format in CHANGELOG.md"
+            echo "Expected format: x.x.x (e.g., 1.2.3)"
+            echo "Found: $PREVIOUS"
+            exit 1
+          fi
+          
+          echo "✅ Both versions have valid format"
+          echo ""
+          
+          # Compare versions
+          if [ "$CURRENT" = "$PREVIOUS" ]; then
+            echo "❌ ERROR: Version has not been updated!"
+            echo ""
+            echo "The version in CHANGELOG.md is the same as the previous commit."
+            echo "Please update the version number in CHANGELOG.md before deploying to production."
+            echo ""
+            echo "Current version: $CURRENT"
+            echo "Previous version: $PREVIOUS"
+            echo ""
+            exit 1
+          else
+            echo "✅ SUCCESS: Version has been updated!"
+            echo "Ready for production deployment with version $CURRENT"
+            echo ""
+          fi
