@@ -4,8 +4,8 @@ set -e
 # If running this script locally, then do:
 # doppler run -- ./scripts/build.sh
 
-# Detect version from CHANGELOG.md & update NEXT_PUBLIC_VERSION in Doppler
-npx tsx src/build/version.ts
+# Update version in Doppler
+./scripts/version-manager.sh update
 
 echo "🔍 Running ESLint..."
 npm run lint
