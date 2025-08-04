@@ -5,7 +5,9 @@ set -e
 # doppler run -- ./scripts/build.sh
 
 # Update version in Doppler
-[ "$(git branch --show-current)" = "main" ] && ./scripts/version-manager.sh check
+git_branch=$(git branch --show-current)
+echo "🔍 Git branch: $git_branch"
+[ "$git_branch" = "main" ] && ./scripts/version-manager.sh check
 ./scripts/version-manager.sh update
 
 echo "🔍 Running ESLint..."
