@@ -1,8 +1,10 @@
+import { PAGE_SIZE } from '@/constants'
 import { DELIMITERS, MAX_SEARCH_TERMS } from '@/constants/query'
 import { CLIENT_ENV } from '@/env/client'
 import { supabase } from '@/lib/clients/client'
 import type { Pagination } from '@/lib/schemas'
 import { z } from 'zod'
+import DEFAULT_ICONS from './default'
 import { sortByRelevance, type WeightPreset } from './relevance'
 import { GetRequestSchema } from './schema'
 
@@ -56,6 +58,11 @@ async function getIcons({
 }
 
 async function getAllIcons({ skip, limit }: Pagination) {
+  if (skip === 0 && limit === PAGE_SIZE) {
+    return DEFAULT_ICONS
+  }
+
+  // Database fallback for other pages or if static file unavailable
   const { data } = await baseQuery()
     .range(skip, skip + limit - 1)
     .order('name')
