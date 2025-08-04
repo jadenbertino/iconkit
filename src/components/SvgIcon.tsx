@@ -1,8 +1,8 @@
 import { centerClasses } from '@/constants/classes'
 import { cn } from '@/lib'
 import type { Icon } from '@/lib/schemas/database'
-import DOMPurify from 'dompurify'
 import parse from 'html-react-parser'
+import DOMPurify from 'isomorphic-dompurify'
 
 const SvgIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   const firstFiveTags = icon.tags?.slice(0, 5) || []
