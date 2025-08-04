@@ -1,3 +1,4 @@
+import { DELIMITERS, MAX_SEARCH_TERMS } from '@/constants/query'
 import { CLIENT_ENV } from '@/env/client'
 import { supabase } from '@/lib/clients/client'
 import type { Pagination } from '@/lib/schemas'
@@ -13,19 +14,21 @@ type SearchParams = Pagination & {
 }
 
 async function getIcons({
-  skip,
-  limit,
-  searchText,
   scoringStrategy = 'fuzzy',
+  ...searchParams
 }: SearchParams) {
-  // Validate that we have search terms
+  const { skip, limit, searchText } = GetRequestSchema.parse(searchParams)
   if (!searchText?.trim()) {
     return getAllIcons({ skip, limit })
   }
   const terms = parseSearchTerms(searchText)
 
   // Do AND query for exact matches first
-  const andResults = await searchIconsByAnd({ searchText, skip, limit })
+  const andResults = await searchIconsByAnd({
+    searchText,
+    skip,
+    limit,
+  })
 
   // If we need more results, do OR query excluding AND results
   let allResults = andResults
@@ -110,9 +113,9 @@ function parseSearchTerms(searchText: string | null): string[] {
   if (!searchText) return []
   return searchText
     .trim()
-    .split(/[\s\-_]+/)
+    .split(DELIMITERS)
     .filter((term) => term.length > 0)
-    .slice(0, 10) // Limit to 10 terms max
+    .slice(0, MAX_SEARCH_TERMS) // Use constant for consistency
 }
 
 const baseQuery = () =>
