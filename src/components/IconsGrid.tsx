@@ -27,7 +27,7 @@ export function IconsGrid({
   })
 
   useEffect(() => {
-    if (icons?.length) {
+    if (error && icons?.length) {
       console.error('Error loading icons', error)
       toast.error('Error loading icons')
     }
