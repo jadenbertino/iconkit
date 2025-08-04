@@ -1,10 +1,15 @@
 import { z } from 'zod'
 
+const VersionSchema = z
+  .string()
+  .regex(/^\d+\.\d+\.\d+$/)
+  .describe('The version of the app. Must be in the format x.x.x')
+
 const clientSchema = z.object({
   ENVIRONMENT: z.enum(['development', 'staging', 'production']),
   SUPABASE_PROJECT_ID: z.string(),
   SUPABASE_ANON_KEY: z.string(),
-  VERSION: z.string(),
+  VERSION: VersionSchema,
   ICON_COUNT: z.coerce.number().int().positive(),
 })
 type ClientEnvKeys = keyof z.infer<typeof clientSchema>
@@ -13,7 +18,7 @@ const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
   ENVIRONMENT: process.env['NEXT_PUBLIC_ENVIRONMENT'],
   SUPABASE_ANON_KEY: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
   SUPABASE_PROJECT_ID: process.env['NEXT_PUBLIC_SUPABASE_PROJECT_ID'],
-  VERSION: '0.0.1', // during build we validate that changelog matches this. TOOD: scrape & update doppler during build process
+  VERSION: process.env['NEXT_PUBLIC_VERSION'],
   ICON_COUNT: process.env['NEXT_PUBLIC_ICON_COUNT'],
 }
 
@@ -59,4 +64,4 @@ function _displayRequiredEnv() {
 
 const CLIENT_ENV = validateClientEnv()
 
-export { CLIENT_ENV }
+export { CLIENT_ENV, VersionSchema }
