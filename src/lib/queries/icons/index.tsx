@@ -1,5 +1,3 @@
-import type { IconQuery } from '@/app/api/icons/client'
-import { getIcons } from '@/app/api/icons/client'
 import { PAGE_SIZE } from '@/constants'
 import { useSearch } from '@/context/SearchContext'
 import {
@@ -7,6 +5,8 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
+import type { IconQuery } from './client'
+import { getIcons } from './client'
 
 const QUERY_KEYS = {
   all: ['icons'] as const,

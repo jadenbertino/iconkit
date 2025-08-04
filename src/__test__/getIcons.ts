@@ -1,4 +1,4 @@
-import { getIcons } from '@/app/api/icons/client'
+import { getIcons } from '@/lib/queries/icons/client'
 
 async function testGetIcons() {
   try {
