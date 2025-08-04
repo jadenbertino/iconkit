@@ -23,9 +23,9 @@ if [ -z "$DOPPLER_TOKEN" ]; then
   exit 1
 fi
 
+# Export DOPPLER_TOKEN
+export DOPPLER_TOKEN
+
 # Validate environment variables
 doppler run -- npx tsx src/env/client.ts
 doppler run -- npx tsx src/env/server.ts
-
-# Export DOPPLER_TOKEN
-export DOPPLER_TOKEN

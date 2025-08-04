@@ -31,7 +31,17 @@ const Providers = ({ children }: { children: ReactNode }) => {
       <SearchProvider>
         {children}
         <ReactQueryDevtools initialIsOpen={false} />
-        <Toaster />
+        <Toaster
+          theme='light'
+          position='bottom-right'
+          toastOptions={{
+            style: {
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-default)',
+              color: 'var(--text-neutral-high)',
+            },
+          }}
+        />
       </SearchProvider>
     </QueryClientProvider>
   )

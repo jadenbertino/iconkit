@@ -21,18 +21,19 @@ const LibraryCarousel = () => {
         speed={30}
         gradient={true}
         gradientWidth={gradientWidth}
+        gradientColor='var(--bg-canvas-solid)'
         autoFill={true}
       >
         {visibleLibraries.map((name, index) => (
           <div
             key={index}
-            className='rounded-full border border-input px-4 py-2 text-sm font-medium bg-transparent hover:bg-slate-100 transition-colors mx-2 select-none'
+            className='rounded-full border border-input px-4 py-2 text-small font-medium bg-transparent bg-hover transition-colors mx-2 select-none'
           >
             {name}
           </div>
         ))}
         {remainingCount > 0 && (
-          <div className='rounded-full border border-input px-4 py-2 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-colors mx-2 select-none'>
+          <div className='rounded-full border border-input px-4 py-2 text-small font-medium bg-inverse transition-colors mx-2 select-none'>
             {remainingCount}+ more
           </div>
         )}

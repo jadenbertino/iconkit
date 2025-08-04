@@ -4,7 +4,7 @@ const ExpandableChevronIcon = () => {
       className={`relative flex items-center justify-center cursor-pointer min-w-8 overflow-hidden`}
     >
       {/* Horizontal line that extends on hover */}
-      <div className='h-0.5 bg-gray-800 origin-left -mr-2.5 w-0 group-hover:w-4 transition-all duration-200 ease-out' />
+      <div className='h-0.5 bg-inverse origin-left -mr-2.5 w-0 group-hover:w-4 transition-all duration-200 ease-out' />
 
       {/* Chevron */}
       <svg

@@ -55,18 +55,18 @@ const IconModal = ({
     >
       <CloseModalButton handleClose={handleClose} />
       {!icon ? null : (
-        <div className='flex'>
+        <div className='flex pt-4'>
           <div className='w-2/3 xs:w-2/5 p-4 flex flex-col justify-center'>
             <SvgIcon icon={icon} />
           </div>
-          <div className='flex-grow flex flex-col text-center pt-4'>
+          <div className='flex-grow flex flex-col text-center'>
             {/* Details */}
-            <h1 className='text-2xl font-bold'>{icon.name}</h1>
-            <div className='text-sm flex p-2 -ml-2 *:p-1 flex-wrap justify-center pt-1'>
+            <h1 className='text-header font-semibold'>{icon.name}</h1>
+            <div className='text-small flex p-2 -ml-2 *:p-1 flex-wrap justify-center pt-1'>
               {!provider ? null : (
                 <ExternalLink
                   href={icon.source_url}
-                  className='px-3 text-gray-500 hover:underline underline-offset-4'
+                  className='px-3 text-neutral-low hover:underline underline-offset-4'
                 >
                   {provider.name}
                 </ExternalLink>
@@ -74,7 +74,7 @@ const IconModal = ({
               {!license ? null : (
                 <ExternalLink
                   href={license.url}
-                  className='px-3 text-gray-500 hover:underline underline-offset-4'
+                  className='px-3 text-neutral-low hover:underline underline-offset-4'
                 >
                   ({license.type} License)
                 </ExternalLink>
@@ -82,7 +82,7 @@ const IconModal = ({
             </div>
 
             {/* Copy Buttons */}
-            <div className='text-md flex flex-col gap-2 pt-2'>
+            <div className='text-small flex flex-col gap-2 pt-2'>
               {/* Copy SVG */}
               <Button
                 className={cn(centerClasses, 'gap-0')}
@@ -90,7 +90,7 @@ const IconModal = ({
               >
                 <ListIconWrapper>
                   {copiedButton === 'svg' ? (
-                    <CheckmarkIcon className='text-white' />
+                    <CheckmarkIcon className='text-neutral-high' />
                   ) : (
                     <CodeIcon />
                   )}
@@ -107,7 +107,7 @@ const IconModal = ({
               >
                 <ListIconWrapper>
                   {copiedButton === 'jsx' ? (
-                    <CheckmarkIcon className='text-white' />
+                    <CheckmarkIcon className='text-neutral-high' />
                   ) : (
                     <ReactIcon />
                   )}

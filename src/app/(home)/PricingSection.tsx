@@ -4,25 +4,23 @@ import Link from 'next/link'
 
 const PricingSection = () => {
   return (
-    <section className='bg-slate-900 text-white py-20'>
+    <section className='bg-inverse py-20'>
       <div className='container mx-auto px-4 text-center'>
-        <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4'>
-          Pricing
-        </h2>
-        <p className='text-lg sm:text-xl text-slate-300 mb-2'>
+        <h2 className='text-impact mb-3 sm:mb-4'>Pricing</h2>
+        <p className='text-subheader text-neutral mb-2'>
           IconKit is 100% free!
         </p>
-        <p className='text-sm sm:text-base text-slate-400 mb-3 sm:mb-4'>
+        <p className='text-body text-neutral-low mb-3 sm:mb-4'>
           No subscriptions, no premium tiers, no gotchas.
         </p>
-        <p className='text-sm sm:text-base text-slate-400 mb-6 sm:mb-8 max-w-md mx-auto'>
+        <p className='text-body text-neutral-low mb-6 sm:mb-8 max-w-md mx-auto'>
           We built this because we got tired of paying for icons too.
         </p>
 
         <Button
           asChild
           size='lg'
-          className='bg-white text-slate-900 hover:bg-slate-100 text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold'
+          className='bg-surface bg-hover text-neutral-high text-body px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold'
         >
           <Link href={'/search'}>
             <span className='hidden sm:inline'>

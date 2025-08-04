@@ -10,7 +10,7 @@ const SvgIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square text-neutral-high',
         centerClasses,
         className,
       )}
@@ -34,7 +34,7 @@ const JsxIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
   return (
     <div
       className={cn(
-        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square',
+        '[&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain aspect-square text-neutral-low',
         centerClasses,
         className,
       )}
@@ -42,9 +42,10 @@ const JsxIcon = ({ icon, className }: { icon: Icon; className?: string }) => {
       data-search-terms={firstFiveTags.join(' ')}
       aria-label={`${icon.name} icon${firstFiveTags.length > 0 ? ` - ${firstFiveTags.slice(0, 3).join(', ')}` : ''}`}
     >
-      {parse(icon.jsx)}
+      {parse(DOMPurify.sanitize(icon.jsx))}
     </div>
   )
 }
+
 export default SvgIcon
 export { JsxIcon }

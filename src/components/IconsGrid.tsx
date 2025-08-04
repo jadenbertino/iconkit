@@ -27,7 +27,7 @@ export function IconsGrid({
   if (error && !icons) return <div>Error loading icons</div>
 
   const cardClasses =
-    'relative w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden'
+    'relative w-16 h-16 bg-surface rounded-lg shadow-md overflow-hidden'
 
   return (
     <>
@@ -44,7 +44,7 @@ export function IconsGrid({
                 >
                   <SvgIcon
                     icon={icon}
-                    className={cn(cardClasses, 'p-2 icon-gradient')}
+                    className={cn(cardClasses, 'p-2 bg-hover')}
                   />
                 </motion.button>
               ))

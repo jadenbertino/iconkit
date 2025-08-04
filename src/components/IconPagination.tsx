@@ -31,7 +31,7 @@ function IconPagination({ hasMore }: { hasMore: boolean }) {
           />
         </PaginationItem>
         <PaginationItem>
-          <span className='py-2 px-4 text-gray-600'>Page {search.page}</span>
+          <span className='py-2 px-4 text-neutral-low'>Page {search.page}</span>
         </PaginationItem>
         <PaginationItem>
           <PaginationNext

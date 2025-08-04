@@ -61,6 +61,8 @@
     "@types/tmp": "0.2.6",
     "eslint": "9.29.0",
     "eslint-config-next": "15.3.3",
+    "isomorphic-dompurify": "2.26.0",
+    "jsdom": "26.1.0",
     "prettier": "3.5.3",
     "supazod": "2.0.0",
     "tailwindcss": "4.1.10",
