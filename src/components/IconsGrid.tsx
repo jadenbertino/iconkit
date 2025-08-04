@@ -4,6 +4,8 @@ import { useIconQueries } from '@/lib/queries/icons'
 import DEFAULT_ICONS from '@/lib/queries/icons/default'
 import type { Icon } from '@/lib/schemas/database'
 import { motion } from 'motion/react'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 import { useSearch } from '../context/SearchContext'
 import IconPagination from './IconPagination'
 import './Icons.css'
@@ -24,7 +26,12 @@ export function IconsGrid({
     searchText: search.text,
   })
 
-  if (error && !icons) return <div>Error loading icons</div>
+  useEffect(() => {
+    if (icons?.length) {
+      console.error('Error loading icons', error)
+      toast.error('Error loading icons')
+    }
+  }, [error, icons])
 
   const cardClasses =
     'relative w-16 h-16 bg-surface rounded-lg shadow-md overflow-hidden'
