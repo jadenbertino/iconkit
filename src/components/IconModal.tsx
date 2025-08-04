@@ -5,7 +5,7 @@ import { cn } from '@/lib'
 import { useLicenses } from '@/lib/queries/licenses'
 import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import ExternalLink from './ExternalLink'
 import { CheckmarkIcon, CodeIcon, ReactIcon } from './icons'
 import { Button } from './ui/button'
@@ -25,12 +25,6 @@ const IconModal = ({
   const { data: licenses } = useLicenses()
   const provider = providers?.find((p) => p.id === icon?.provider_id)
   const license = licenses?.find((l) => l.provider_id === icon?.provider_id)
-
-  useEffect(() => {
-    if (licenses) {
-      console.log(licenses)
-    }
-  }, [licenses])
 
   const handleCopy = (text: string, buttonType: 'svg' | 'jsx') => {
     navigator.clipboard.writeText(text)

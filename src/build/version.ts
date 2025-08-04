@@ -28,17 +28,12 @@ async function updateVersionSecret(
   }
 }
 
-export { updateVersionSecret }
-
-// If this script is run directly, update the version
-if (import.meta.url === `file://${process.argv[1]}`) {
-  updateVersionSecret()
-    .then((version) => {
-      console.log(`📝 Updated VERSION in Doppler: ${version}`)
-      process.exit(0)
-    })
-    .catch((error) => {
-      console.error('Failed to update version in Doppler:', error)
-      process.exit(1)
-    })
-}
+updateVersionSecret()
+  .then((version) => {
+    console.log(`📝 Updated VERSION in Doppler: ${version}`)
+    process.exit(0)
+  })
+  .catch((error) => {
+    console.error('Failed to update version in Doppler:', error)
+    process.exit(1)
+  })
