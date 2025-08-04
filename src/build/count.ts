@@ -12,7 +12,7 @@ async function countIcons(
   const { count } = await supabaseAdmin
     .from('icon')
     .select('*', { count: 'exact', head: true })
-    .eq('version', buildId)
+    .eq('build_id', buildId)
     .throwOnError()
   if (count === null) {
     throw new Error('Failed to count icons')

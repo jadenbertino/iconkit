@@ -116,7 +116,7 @@ function parseSearchTerms(searchText: string | null): string[] {
 }
 
 const baseQuery = () =>
-  supabase.from('icon').select('*').eq('version', CLIENT_ENV.BUILD_ID)
+  supabase.from('icon').select('*').eq('build_id', CLIENT_ENV.BUILD_ID)
 
 export { getIcons }
 export type { IconQuery }
