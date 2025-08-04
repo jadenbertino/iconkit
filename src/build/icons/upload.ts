@@ -24,18 +24,18 @@ async function uploadIcons(
       .from('icon')
       .select('id')
       .eq('provider_id', provider.id)
-      .eq('version', SERVER_ENV.VERSION)
+      .eq('version', SERVER_ENV.BUILD_ID)
       .limit(1)
       .throwOnError()
 
     if (existingIcons && existingIcons.length > 0) {
       throw new Error(
-        `Production icons are read-only. Icons for ${providerSlug} version ${SERVER_ENV.VERSION} already exist.`,
+        `Production icons are read-only. Icons for ${providerSlug} version ${SERVER_ENV.BUILD_ID} already exist.`,
       )
     }
 
     serverLogger.info(
-      `✅ Production check passed: No existing icons for ${providerSlug} version ${SERVER_ENV.VERSION}`,
+      `✅ Production check passed: No existing icons for ${providerSlug} version ${SERVER_ENV.BUILD_ID}`,
     )
   } else {
     // Non-production: Clear existing icons for this provider and version
@@ -43,7 +43,7 @@ async function uploadIcons(
       .from('icon')
       .delete({ count: 'exact' })
       .eq('provider_id', provider.id)
-      .eq('version', SERVER_ENV.VERSION)
+      .eq('version', SERVER_ENV.BUILD_ID)
       .throwOnError()
 
     serverLogger.info(`💀 Cleared ${deleteCount || 0} existing icons.`, {
@@ -51,7 +51,7 @@ async function uploadIcons(
         slug: providerSlug,
         ...provider,
       },
-      version: SERVER_ENV.VERSION,
+      version: SERVER_ENV.BUILD_ID,
     })
   }
 

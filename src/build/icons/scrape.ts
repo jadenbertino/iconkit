@@ -105,7 +105,7 @@ export default ${componentName}`
       return {
         name,
         svg: processedSvgContent,
-        version: CLIENT_ENV.VERSION,
+        build_id: CLIENT_ENV.BUILD_ID,
         source_url,
         jsx: jsxContent,
       }

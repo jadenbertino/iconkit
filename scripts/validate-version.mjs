@@ -13,4 +13,5 @@ if (changelogVersion !== CLIENT_ENV.VERSION) {
 }
 
 console.log(`💡 Version: ${changelogVersion}`)
+console.log(`💡 Build ID: ${CLIENT_ENV.BUILD_ID}`)
 process.exit(0)
