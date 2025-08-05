@@ -5,10 +5,10 @@ set -e
 # doppler run -- ./scripts/build.sh
 
 # Update version in Doppler
-git_branch=$(git branch --show-current)
+git_branch="${VERCEL_GIT_COMMIT_REF:-$(git branch --show-current)}"
 echo "🔍 Git branch: $git_branch"
-if [ "$git_branch" = "main" ] || [ "$git_branch" = "master" ]; then
-    ./scripts/version-manager.sh check # local & git is "main" but vercel clones to "master" for some reason
+if [ "$git_branch" = "main" ]; then
+  ./scripts/version-manager.sh check
 fi
 ./scripts/version-manager.sh update
 
