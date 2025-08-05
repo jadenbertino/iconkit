@@ -1,5 +1,6 @@
 import { PAGE_SIZE } from '@/constants'
 import { cn } from '@/lib'
+import { clientLogger } from '@/lib/logs/client'
 import { useIconQueries } from '@/lib/queries/icons'
 import DEFAULT_ICONS from '@/lib/queries/icons/default'
 import type { Icon } from '@/lib/schemas/database'
@@ -28,7 +29,7 @@ export function IconsGrid({
 
   useEffect(() => {
     if (error && icons?.length) {
-      console.error('Error loading icons', error)
+      clientLogger.error('Error loading icons', error)
       toast.error('Error loading icons')
     }
   }, [error, icons])

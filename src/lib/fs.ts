@@ -6,6 +6,7 @@ import { promisify } from 'util'
 import { z } from 'zod'
 import { withTimeout } from './error'
 import { serialize } from './logs/utils'
+import { serverLogger } from './logs/server'
 
 const execAsync = promisify(exec)
 tmp.setGracefulCleanup()
@@ -41,14 +42,14 @@ async function readJsonFile<T>(
   try {
     jsonContent = await fse.readJson(path)
   } catch (error) {
-    console.error(`Error reading JSON file: ${path}`, serialize(error))
+    serverLogger.error(`Error reading JSON file: ${path}`, serialize(error))
     throw error
   }
 
   // Validate JSON
   const validation = schema.safeParse(jsonContent)
   if (!validation.success) {
-    console.error(
+    serverLogger.error(
       `Error validating JSON file: ${path}`,
       serialize(validation.error),
     )

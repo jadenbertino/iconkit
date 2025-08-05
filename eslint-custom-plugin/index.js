@@ -12,6 +12,7 @@ const plugin = {
     'no-tailwind-font-sizes': require('./design/no-tailwind-font-sizes.cjs'),
     'no-tailwind-colors': require('./design/no-tailwind-colors.cjs'),
     'no-tailwind-backgrounds': require('./design/no-tailwind-backgrounds.cjs'),
+    'no-console-methods': require('./no-console-methods.cjs'),
   },
 }
 

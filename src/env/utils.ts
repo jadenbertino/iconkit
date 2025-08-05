@@ -1,4 +1,5 @@
 import { fs } from '@/lib/fs'
+import { serverLogger } from '@/lib/logs/server'
 import path from 'path'
 import { VersionSchema } from './client'
 
@@ -8,7 +9,7 @@ function getVersionFromChangelog(): string {
   const firstLine = content.split('\n')[0]?.trim()
   const validation = VersionSchema.safeParse(firstLine)
   if (!validation.success) {
-    console.error(
+    serverLogger.error(
       `❌ Error: Invalid version found in CHANGELOG.md: ${firstLine}`,
     )
     throw new Error('Invalid version found in CHANGELOG.md')
