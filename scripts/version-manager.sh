@@ -79,6 +79,10 @@ check_version_change() {
 update_doppler_version() {
   echo "🔄 Updating version in Doppler..."
   npx tsx src/build/version.ts
+  
+  echo "⏳ Waiting 10 seconds for Doppler update to propagate..."
+  sleep 10
+  echo "✅ Doppler update complete"
 }
 
 # Function to display help
