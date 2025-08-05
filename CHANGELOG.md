@@ -1,6 +1,5 @@
 0.0.7
 - Update security headers
-- Remove version check from bash build script (is still in typescript build though)
 0.0.6
 - Enforce that version changes between prod commits
 0.0.2

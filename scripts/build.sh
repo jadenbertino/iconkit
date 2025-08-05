@@ -7,6 +7,9 @@ set -e
 # Update version in Doppler
 git_branch="${VERCEL_GIT_COMMIT_REF:-$(git branch --show-current)}"
 echo "🔍 Git branch: $git_branch"
+if [ "$git_branch" = "main" ]; then
+  ./scripts/version-manager.sh check
+fi
 ./scripts/version-manager.sh update
 
 echo "🔍 Running ESLint..."
