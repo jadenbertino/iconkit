@@ -37,7 +37,12 @@ async function uploadAssets(): Promise<void> {
         )
       }
 
-      await uploadIcons(icons, provider)
+      try {
+        await uploadIcons(icons, provider)
+      } catch (error) {
+        serverLogger.error(`❌ Failed to upload icons for ${provider}:`, error)
+        throw error
+      }
     }),
   )
   serverLogger.info(`⭐ Uploaded ${iconCount} icons`)
