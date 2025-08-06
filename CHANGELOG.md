@@ -1,3 +1,5 @@
+0.0.9
+- Rebuild icons
 0.0.8
 - Use pino for all logging
 - Create lint rule to enforce that console log methods are not used
