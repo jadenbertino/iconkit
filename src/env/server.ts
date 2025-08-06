@@ -8,9 +8,9 @@ const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string(),
   DOPPLER_TOKEN: z.string(),
   // Sentry
-  SENTRY_ORG_ID: z.string(),
-  SENTRY_PROJECT_ID: z.string(),
-  SENTRY_ORG_TOKEN: z.string(),
+  SENTRY_ORG: z.string().describe('Sentry Org Slug'),
+  SENTRY_PROJECT: z.string().describe('Sentry Project Slug'),
+  SENTRY_AUTH_TOKEN: z.string().describe('Sentry Org Auth Token'),
 })
 
 function validateServerEnv() {

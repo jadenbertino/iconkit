@@ -7,19 +7,27 @@ import { CLIENT_ENV } from './env/client'
 
 Sentry.init({
   dsn: CLIENT_ENV.SENTRY_DSN,
+  release: CLIENT_ENV.VERSION,
+  environment: CLIENT_ENV.ENVIRONMENT,
+  sendDefaultPii: true,
 
   // Add optional integrations for additional features
-  integrations: [Sentry.replayIntegration()],
+  integrations: [
+    Sentry.replayIntegration({
+      maskAllText: false,
+      blockAllMedia: false,
+    }),
+  ],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1,
+  tracesSampleRate: CLIENT_ENV.ENVIRONMENT === 'production' ? 0.1 : 1.0,
   // Enable logs to be sent to Sentry
   enableLogs: true,
 
   // Define how likely Replay events are sampled.
   // This sets the sample rate to be 10%. You may want this to be 100% while
   // in development and sample at a lower rate in production
-  replaysSessionSampleRate: 0.1,
+  replaysSessionSampleRate: CLIENT_ENV.ENVIRONMENT === 'production' ? 0.1 : 1.0,
 
   // Define how likely Replay events are sampled when an error occurs.
   replaysOnErrorSampleRate: 1.0,
