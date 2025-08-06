@@ -11,6 +11,7 @@ const clientSchema = z.object({
   SUPABASE_ANON_KEY: z.string(),
   VERSION: VersionSchema,
   ICON_COUNT: z.coerce.number().int().positive(),
+  SENTRY_DSN: z.string().url(),
 })
 type ClientEnvKeys = keyof z.infer<typeof clientSchema>
 
@@ -20,6 +21,7 @@ const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
   SUPABASE_PROJECT_ID: process.env['NEXT_PUBLIC_SUPABASE_PROJECT_ID'],
   VERSION: process.env['NEXT_PUBLIC_VERSION'],
   ICON_COUNT: process.env['NEXT_PUBLIC_ICON_COUNT'],
+  SENTRY_DSN: process.env['NEXT_PUBLIC_SENTRY_DSN'],
 }
 
 function validateClientEnv() {

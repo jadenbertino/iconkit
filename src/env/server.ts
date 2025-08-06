@@ -7,6 +7,10 @@ type DopplerEnvSlug = 'dev' | 'preview' | 'prd'
 const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string(),
   DOPPLER_TOKEN: z.string(),
+  // Sentry
+  SENTRY_ORG_ID: z.string(),
+  SENTRY_PROJECT_ID: z.string(),
+  SENTRY_ORG_TOKEN: z.string(),
 })
 
 function validateServerEnv() {
