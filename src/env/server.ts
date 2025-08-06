@@ -12,6 +12,7 @@ const serverSchema = z.object({
 function validateServerEnv() {
   const serverValidation = serverSchema.safeParse(process.env)
   if (!serverValidation.success) {
+    // eslint-disable-next-line custom/no-console-methods
     console.error(
       '❌ Invalid server environment variables:',
       serverValidation.error.flatten().fieldErrors,
@@ -46,6 +47,7 @@ function _displayRequiredEnv() {
   const requiredEnv = requiredKeys
     .map((key) => process.env[key])
     .filter(Boolean)
+  // eslint-disable-next-line custom/no-console-methods
   console.log('Required environment variables:', requiredEnv)
 }
 

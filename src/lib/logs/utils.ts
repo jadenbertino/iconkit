@@ -1,5 +1,12 @@
+import { CLIENT_ENV } from '@/env/client'
 import { serializeError } from 'serialize-error'
 import serializeJavascript from 'serialize-javascript'
+
+// Log levels matching pino levels for compatibility
+const LOG_LEVELS = ['debug', 'info', 'warn', 'error'] as const
+type LogLevel = (typeof LOG_LEVELS)[number]
+const LOG_LEVEL: LogLevel =
+  CLIENT_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info'
 
 function serialize(value: unknown): string {
   /*
@@ -19,4 +26,4 @@ function serialize(value: unknown): string {
   return serializeJavascript(value, serializeOptions)
 }
 
-export { serialize }
+export { LOG_LEVEL, LOG_LEVELS, serialize, type LogLevel }

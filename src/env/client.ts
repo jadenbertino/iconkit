@@ -36,6 +36,7 @@ function validateClientEnv() {
       prefixedErrors[prefixedKey] = errors || []
     }
 
+    // eslint-disable-next-line custom/no-console-methods
     console.error(`❌ Invalid client environment variables:`, prefixedErrors)
     throw new Error('Invalid client environment variables')
   }
@@ -59,6 +60,7 @@ function _displayRequiredEnv() {
   const requiredEnv = requiredKeys
     .map((key) => process.env[key])
     .filter(Boolean)
+  // eslint-disable-next-line custom/no-console-methods
   console.log('Required environment variables:', requiredEnv)
 }
 

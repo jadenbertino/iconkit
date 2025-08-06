@@ -1,6 +1,7 @@
 import { SERVER_ENV, type DopplerEnvSlug } from '@/env/server'
 import { getVersionFromChangelog } from '@/env/utils'
 import { doppler } from '@/lib/clients/server'
+import { serverLogger } from '@/lib/logs/server'
 
 /**
  * Updates the NEXT_PUBLIC_VERSION secret in Doppler with the version from CHANGELOG.md
@@ -20,20 +21,25 @@ async function updateVersionSecret(
       },
     })
 
-    console.log(`✅ Updated NEXT_PUBLIC_VERSION in ${envSlug} to ${version}`)
+    serverLogger.info(
+      `✅ Updated NEXT_PUBLIC_VERSION in ${envSlug} to ${version}`,
+    )
     return version
   } catch (error) {
-    console.error(`❌ Failed to update NEXT_PUBLIC_VERSION in Doppler:`, error)
+    serverLogger.error(
+      `❌ Failed to update NEXT_PUBLIC_VERSION in Doppler:`,
+      error,
+    )
     throw error
   }
 }
 
 updateVersionSecret()
   .then((version) => {
-    console.log(`📝 Updated VERSION in Doppler: ${version}`)
+    serverLogger.info(`📝 Updated VERSION in Doppler: ${version}`)
     process.exit(0)
   })
   .catch((error) => {
-    console.error('Failed to update version in Doppler:', error)
+    serverLogger.error('Failed to update version in Doppler:', error)
     process.exit(1)
   })

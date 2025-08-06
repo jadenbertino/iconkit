@@ -1,5 +1,6 @@
 import { SERVER_ENV, type DopplerEnvSlug } from '@/env/server'
 import { doppler, supabaseAdmin } from '@/lib/clients/server'
+import { serverLogger } from '@/lib/logs/server'
 
 /**
  * Counts the number of icon records in the database for a given build ID
@@ -40,10 +41,12 @@ async function updateIconCountSecret(
       },
     })
 
-    console.log(`✅ Updated NEXT_PUBLIC_ICON_COUNT in ${envSlug} to ${count}`)
+    serverLogger.info(
+      `✅ Updated NEXT_PUBLIC_ICON_COUNT in ${envSlug} to ${count}`,
+    )
     return count
   } catch (error) {
-    console.error(
+    serverLogger.error(
       `❌ Failed to update NEXT_PUBLIC_ICON_COUNT in Doppler:`,
       error,
     )

@@ -1,3 +1,6 @@
+0.0.8
+- Use pino for all logging
+- Create lint rule to enforce that console log methods are not used
 0.0.7
 - Update security headers
 0.0.6
