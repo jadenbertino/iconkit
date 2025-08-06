@@ -1,9 +1,13 @@
+import { SERVER_ENV } from '@/env/server'
 import pino from 'pino'
-import { pinoOptions } from './utils'
 
 const serverLogger = pino({
-  ...pinoOptions,
-  // can extend with custom transport, etc
+  formatters: {
+    level(label) {
+      return { level: label.toUpperCase() }
+    },
+  },
+  level: SERVER_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info',
 })
 
 export { serverLogger }

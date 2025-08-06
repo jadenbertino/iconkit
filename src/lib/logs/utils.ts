@@ -1,16 +1,5 @@
-import { CLIENT_ENV } from '@/env/client'
-import pino from 'pino'
 import { serializeError } from 'serialize-error'
 import serializeJavascript from 'serialize-javascript'
-
-const pinoOptions: pino.LoggerOptions = {
-  formatters: {
-    level(label) {
-      return { level: label.toUpperCase() }
-    },
-  },
-  level: CLIENT_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info',
-}
 
 function serialize(value: unknown): string {
   /*
@@ -30,4 +19,4 @@ function serialize(value: unknown): string {
   return serializeJavascript(value, serializeOptions)
 }
 
-export { pinoOptions, serialize }
+export { serialize }
