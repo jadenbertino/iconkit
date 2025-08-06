@@ -38,15 +38,44 @@ async function uploadIcons(
       `✅ Production check passed: No existing icons for ${providerSlug} build_id ${SERVER_ENV.BUILD_ID}`,
     )
   } else {
-    // Non-production: Clear existing icons for this provider and build_id
-    const { count: deleteCount } = await supabaseAdmin
-      .from('icon')
-      .delete({ count: 'exact' })
-      .eq('provider_id', provider.id)
-      .eq('build_id', SERVER_ENV.BUILD_ID)
-      .throwOnError()
+    // Non-production: Clear existing icons for this provider and build_id in batches
+    let totalDeleteCount = 0
+    const DELETE_BATCH_SIZE = 1000
 
-    serverLogger.info(`💀 Cleared ${deleteCount || 0} existing icons.`, {
+    while (true) {
+      // Get a batch of icon IDs to delete
+      const { data: iconsToDelete } = await supabaseAdmin
+        .from('icon')
+        .select('id')
+        .eq('provider_id', provider.id)
+        .eq('build_id', SERVER_ENV.BUILD_ID)
+        .limit(DELETE_BATCH_SIZE)
+        .throwOnError()
+
+      if (!iconsToDelete || iconsToDelete.length === 0) {
+        break // No more icons to delete
+      }
+
+      // Delete this batch
+      const iconIds = iconsToDelete.map((icon) => icon.id)
+      const { count: batchDeleteCount } = await supabaseAdmin
+        .from('icon')
+        .delete({ count: 'exact' })
+        .in('id', iconIds)
+        .throwOnError()
+
+      totalDeleteCount += batchDeleteCount || 0
+      serverLogger.debug(
+        `💀 Deleted batch: ${batchDeleteCount || 0} icons (total: ${totalDeleteCount})`,
+      )
+
+      // If we deleted fewer than the batch size, we're done
+      if (iconsToDelete.length < DELETE_BATCH_SIZE) {
+        break
+      }
+    }
+
+    serverLogger.info(`💀 Cleared ${totalDeleteCount} existing icons.`, {
       provider: {
         slug: providerSlug,
         ...provider,
