@@ -1,11 +1,7 @@
-import { CLIENT_ENV } from '@/env/client'
-import { LOG_LEVELS, serialize, type LogLevel, type LogMethod } from './utils'
+import { LOG_LEVEL, LOG_LEVELS, serialize, type LogLevel } from './utils'
 
-const currentLogLevel =
-  CLIENT_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info'
-const currentLogLevelValue = LOG_LEVELS[currentLogLevel]
+type LogMethod = (message: string, data?: object | unknown) => void
 
-// Native browser logger implementation
 const clientLogger: Record<LogLevel, LogMethod> = {
   debug: createLogMethod('debug'),
   info: createLogMethod('info'),
@@ -13,14 +9,11 @@ const clientLogger: Record<LogLevel, LogMethod> = {
   error: createLogMethod('error'),
 }
 
-function shouldLog(level: LogLevel) {
-  return LOG_LEVELS[level] >= currentLogLevelValue
-}
-
 function createLogMethod(level: LogLevel): LogMethod {
   return (message: string, data?: object | unknown) => {
-    if (shouldLog(level)) {
-      console[level](
+    const shouldLog = LOG_LEVELS.indexOf(level) >= LOG_LEVELS.indexOf(LOG_LEVEL)
+    if (shouldLog) {
+      console.log(
         `[${level.toUpperCase()}] ${message}`,
         data ? serialize(data) : '',
       )

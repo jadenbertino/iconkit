@@ -1,17 +1,12 @@
+import { CLIENT_ENV } from '@/env/client'
 import { serializeError } from 'serialize-error'
 import serializeJavascript from 'serialize-javascript'
 
-// Log method signature for consistent API
-type LogMethod = (message: string, data?: object | unknown) => void
-
 // Log levels matching pino levels for compatibility
-type LogLevel = 'debug' | 'info' | 'warn' | 'error'
-const LOG_LEVELS = {
-  debug: 1,
-  info: 2,
-  warn: 3,
-  error: 4,
-} as const satisfies Record<LogLevel, number>
+const LOG_LEVELS = ['debug', 'info', 'warn', 'error'] as const
+type LogLevel = (typeof LOG_LEVELS)[number]
+const LOG_LEVEL: LogLevel =
+  CLIENT_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info'
 
 function serialize(value: unknown): string {
   /*
@@ -31,4 +26,4 @@ function serialize(value: unknown): string {
   return serializeJavascript(value, serializeOptions)
 }
 
-export { LOG_LEVELS, serialize, type LogLevel, type LogMethod }
+export { LOG_LEVEL, LOG_LEVELS, serialize, type LogLevel }
