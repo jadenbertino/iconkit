@@ -20,13 +20,15 @@ async function uploadIcons(
 
   // In production, check if icons already exist for this version (read-only protection)
   if (SERVER_ENV.ENVIRONMENT === 'production') {
-    const { data: existingIcons } = await supabaseAdmin
-      .from('icon')
-      .select('id')
-      .eq('provider_id', provider.id)
-      .eq('build_id', SERVER_ENV.BUILD_ID)
-      .limit(1)
-      .throwOnError()
+    const { data: existingIcons } = await limiter.schedule(async () => {
+      return await supabaseAdmin
+        .from('icon')
+        .select('id')
+        .eq('provider_id', provider.id)
+        .eq('build_id', SERVER_ENV.BUILD_ID)
+        .limit(1)
+        .throwOnError()
+    })
 
     if (existingIcons && existingIcons.length > 0) {
       throw new Error(
@@ -44,13 +46,15 @@ async function uploadIcons(
 
     while (true) {
       // Get a batch of icon IDs to delete
-      const { data: iconsToDelete } = await supabaseAdmin
-        .from('icon')
-        .select('id')
-        .eq('provider_id', provider.id)
-        .eq('build_id', SERVER_ENV.BUILD_ID)
-        .limit(DELETE_BATCH_SIZE)
-        .throwOnError()
+      const { data: iconsToDelete } = await limiter.schedule(async () => {
+        return await supabaseAdmin
+          .from('icon')
+          .select('id')
+          .eq('provider_id', provider.id)
+          .eq('build_id', SERVER_ENV.BUILD_ID)
+          .limit(DELETE_BATCH_SIZE)
+          .throwOnError()
+      })
 
       if (!iconsToDelete || iconsToDelete.length === 0) {
         break // No more icons to delete
@@ -58,11 +62,13 @@ async function uploadIcons(
 
       // Delete this batch
       const iconIds = iconsToDelete.map((icon) => icon.id)
-      const { count: batchDeleteCount } = await supabaseAdmin
-        .from('icon')
-        .delete({ count: 'exact' })
-        .in('id', iconIds)
-        .throwOnError()
+      const { count: batchDeleteCount } = await limiter.schedule(async () => {
+        return await supabaseAdmin
+          .from('icon')
+          .delete({ count: 'exact' })
+          .in('id', iconIds)
+          .throwOnError()
+      })
 
       totalDeleteCount += batchDeleteCount || 0
       serverLogger.debug(
