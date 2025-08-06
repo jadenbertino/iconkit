@@ -7,7 +7,7 @@ import { getProviderRecord } from '../providers'
 import type { ScrapedIconWithTags } from './tags'
 
 const limiter = new Bottleneck({
-  maxConcurrent: 1,
+  maxConcurrent: 5,
   minTime: 100,
 })
 
