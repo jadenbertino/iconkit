@@ -1,37 +1,30 @@
 import { CLIENT_ENV } from '@/env/client'
-import pino from 'pino'
+import { LOG_LEVELS, serialize, type LogLevel, type LogMethod } from './utils'
 
-const basePinoLogger = pino({
-  browser: {
-    // https://github.com/pinojs/pino/blob/HEAD/docs/browser.md#browser-api
-    asObject: true,
-    formatters: {
-      level(label) {
-        return { level: label.toUpperCase() }
-      },
-    },
-  },
-  timestamp: false, // Disable timestamps
-  level: CLIENT_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info',
-})
+const currentLogLevel =
+  CLIENT_ENV.ENVIRONMENT === 'development' ? 'debug' : 'info'
+const currentLogLevelValue = LOG_LEVELS[currentLogLevel]
 
-// browser pino doesn't natively support the
-// (message, object) pattern, so we wrap it
-const clientLogger: Record<
-  pino.Level,
-  (message: string, data?: object) => void
-> = {
-  trace: createLogMethod('trace'),
+// Native browser logger implementation
+const clientLogger: Record<LogLevel, LogMethod> = {
   debug: createLogMethod('debug'),
   info: createLogMethod('info'),
   warn: createLogMethod('warn'),
   error: createLogMethod('error'),
-  fatal: createLogMethod('fatal'),
 }
 
-function createLogMethod(level: pino.Level) {
-  return (message: string, data?: object) => {
-    basePinoLogger[level]({ msg: message, ...data })
+function shouldLog(level: LogLevel) {
+  return LOG_LEVELS[level] >= currentLogLevelValue
+}
+
+function createLogMethod(level: LogLevel): LogMethod {
+  return (message: string, data?: object | unknown) => {
+    if (shouldLog(level)) {
+      console[level](
+        `[${level.toUpperCase()}] ${message}`,
+        data ? serialize(data) : '',
+      )
+    }
   }
 }
 
