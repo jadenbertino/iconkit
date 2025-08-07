@@ -1,3 +1,5 @@
+0.0.10
+- Move supabase project
 0.0.9
 - Rebuild icons
 0.0.8
