@@ -21,7 +21,11 @@ export function IconsGrid({
   const { useIconsQuery } = useIconQueries()
   const skip = (search.page - 1) * PAGE_SIZE
 
-  const { data: icons, error } = useIconsQuery({
+  const {
+    data: icons,
+    error,
+    isFetching,
+  } = useIconsQuery({
     skip,
     limit: PAGE_SIZE,
     searchText: search.text,
@@ -48,6 +52,8 @@ export function IconsGrid({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98, y: 1 }}
               transition={{ type: 'spring', stiffness: 800, damping: 30 }}
+              disabled={isFetching}
+              className='disabled:opacity-50 disabled:pointer-events-none'
             >
               <SvgIcon
                 icon={icon}
