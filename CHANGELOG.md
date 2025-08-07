@@ -1,3 +1,5 @@
+0.0.11
+- Single db query per search to favor speed over relevance
 0.0.10
 - Move supabase project
 0.0.9
