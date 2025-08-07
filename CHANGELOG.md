@@ -1,5 +1,6 @@
 0.0.12
 - Improve icon modal layout on mobile
+- Add "no icons found" message to icons grid
 0.0.11
 - Single db query per search to favor speed over relevance
 0.0.10
