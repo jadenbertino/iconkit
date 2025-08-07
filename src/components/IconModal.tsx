@@ -49,8 +49,8 @@ const IconModal = ({
     >
       <CloseModalButton handleClose={handleClose} />
       {!icon ? null : (
-        <div className='flex pt-4'>
-          <div className='w-2/3 xs:w-2/5 p-4 flex flex-col justify-center'>
+        <div className='flex flex-col sm:flex-row pt-4'>
+          <div className='w-full sm:w-2/5 max-w-[240px] sm:max-w-none p-4 flex flex-col sm:justify-center'>
             <SvgIcon icon={icon} />
           </div>
           <div className='flex-grow flex flex-col text-center'>
