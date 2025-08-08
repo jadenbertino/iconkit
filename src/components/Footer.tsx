@@ -24,7 +24,7 @@ const FooterLinkSections: Record<string, FooterLink[]> = {
   developer: [
     { name: 'Contact', href: '#' }, // TODO: Create /contact page
     { name: 'GitHub', href: 'https://github.com/jadenbertino/iconkit' },
-    { name: 'Tech Stack', href: 'https://iconkit.jadenbertino.com/iconkit' },
+    { name: 'Tech Stack', href: 'https://github.com/jadenbertino/iconkit' },
   ],
 }
 
