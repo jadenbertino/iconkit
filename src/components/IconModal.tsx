@@ -6,7 +6,7 @@ import { useLicenses } from '@/lib/queries/licenses'
 import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
 import { useRef, useState } from 'react'
-import ExternalLink from './ExternalLink'
+import DynamicLink from './DynamicLink'
 import { CheckmarkIcon, CodeIcon, ReactIcon } from './icons'
 import { Button } from './ui/button'
 
@@ -58,20 +58,20 @@ const IconModal = ({
             <h1 className='text-header font-semibold'>{icon.name}</h1>
             <div className='text-small flex p-2 -ml-2 *:p-1 flex-wrap justify-center pt-1'>
               {!provider ? null : (
-                <ExternalLink
+                <DynamicLink
                   href={icon.source_url}
                   className='px-3 text-neutral-low hover:underline underline-offset-4'
                 >
                   {provider.name}
-                </ExternalLink>
+                </DynamicLink>
               )}
               {!license ? null : (
-                <ExternalLink
+                <DynamicLink
                   href={license.url}
                   className='px-3 text-neutral-low hover:underline underline-offset-4'
                 >
                   ({license.type} License)
-                </ExternalLink>
+                </DynamicLink>
               )}
             </div>
 
