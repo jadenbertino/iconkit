@@ -107,9 +107,9 @@ export default function Page() {
           <div className='success_placeholder' />
         )}
 
+        <p>Project ID: {CLIENT_ENV.SENTRY_DSN.split('/')[3]}</p>
         <p>DSN: {CLIENT_ENV.SENTRY_DSN}</p>
         <div className='flex-spacer' />
-
       </main>
 
       <style>{`
