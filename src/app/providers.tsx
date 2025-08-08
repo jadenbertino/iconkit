@@ -62,7 +62,10 @@ const PostHogProvider = ({ children }: { children: ReactNode }) => {
       return null
     }
     */
-    posthog.init(CLIENT_ENV.POSTHOG_KEY)
+    posthog.init(CLIENT_ENV.POSTHOG_KEY, {
+      api_host: CLIENT_ENV.POSTHOG_HOST,
+      debug: false,
+    })
   }, [])
 
   return <PostHogProviderBase client={posthog}>{children}</PostHogProviderBase>
