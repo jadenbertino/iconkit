@@ -1,3 +1,6 @@
+1.0.4
+- Remove sentry test pages
+
 1.0.3
 - Add sentry
 

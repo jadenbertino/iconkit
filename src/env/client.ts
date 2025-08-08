@@ -12,6 +12,7 @@ const clientSchema = z.object({
   VERSION: VersionSchema,
   ICON_COUNT: z.coerce.number().int().positive(),
   SENTRY_DSN: z.string().url(),
+  SENTRY_PROJECT: z.string().describe('Sentry Project Slug'),
 })
 type ClientEnvKeys = keyof z.infer<typeof clientSchema>
 
@@ -22,6 +23,7 @@ const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
   VERSION: process.env['NEXT_PUBLIC_VERSION'],
   ICON_COUNT: process.env['NEXT_PUBLIC_ICON_COUNT'],
   SENTRY_DSN: process.env['NEXT_PUBLIC_SENTRY_DSN'],
+  SENTRY_PROJECT: process.env['NEXT_PUBLIC_SENTRY_PROJECT'],
 }
 
 function validateClientEnv() {
