@@ -1,5 +1,6 @@
 'use client'
 
+import { CLIENT_ENV } from '@/env/client'
 import {
   MutationCache,
   QueryCache,
@@ -7,7 +8,10 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import posthog from 'posthog-js'
+import { PostHogProvider as PostHogProviderBase } from 'posthog-js/react'
 import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 import { Toaster } from 'sonner' // https://github.com/emilkowalski/sonner
 import { SearchProvider } from '../context/SearchContext'
 
@@ -29,7 +33,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <SearchProvider>
-        {children}
+        <PostHogProvider>{children}</PostHogProvider>
         <ReactQueryDevtools initialIsOpen={false} />
         <Toaster
           theme='light'
@@ -45,6 +49,23 @@ const Providers = ({ children }: { children: ReactNode }) => {
       </SearchProvider>
     </QueryClientProvider>
   )
+}
+
+const PostHogProvider = ({ children }: { children: ReactNode }) => {
+  useEffect(() => {
+    /*
+    You can disable on local development like this
+    
+    const host = window.location.host
+    const isLocal = host.includes('127.0.0.1') || host.includes('localhost')
+    if (isLocal) {
+      return null
+    }
+    */
+    posthog.init(CLIENT_ENV.POSTHOG_KEY)
+  }, [])
+
+  return <PostHogProviderBase client={posthog}>{children}</PostHogProviderBase>
 }
 
 export { Providers }

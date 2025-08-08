@@ -13,6 +13,8 @@ const clientSchema = z.object({
   ICON_COUNT: z.coerce.number().int().positive(),
   SENTRY_DSN: z.string().url(),
   SENTRY_PROJECT: z.string().describe('Sentry Project Slug'),
+  POSTHOG_KEY: z.string(),
+  POSTHOG_HOST: z.string(),
 })
 type ClientEnvKeys = keyof z.infer<typeof clientSchema>
 
@@ -24,6 +26,8 @@ const rawClientEnv: Record<ClientEnvKeys, string | undefined> = {
   ICON_COUNT: process.env['NEXT_PUBLIC_ICON_COUNT'],
   SENTRY_DSN: process.env['NEXT_PUBLIC_SENTRY_DSN'],
   SENTRY_PROJECT: process.env['NEXT_PUBLIC_SENTRY_PROJECT'],
+  POSTHOG_KEY: process.env['NEXT_PUBLIC_POSTHOG_KEY'],
+  POSTHOG_HOST: process.env['NEXT_PUBLIC_POSTHOG_HOST'],
 }
 
 function validateClientEnv() {

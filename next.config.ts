@@ -1,3 +1,4 @@
+import { SERVER_ENV } from '@/env/server'
 import { withSentryConfig } from '@sentry/nextjs'
 import type { NextConfig } from 'next'
 
@@ -47,8 +48,8 @@ const nextConfig = withSentryConfig(getNextConfig(), {
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
-  org: process.env['SENTRY_ORG'],
-  project: process.env['SENTRY_PROJECT'],
+  org: SERVER_ENV.SENTRY_ORG,
+  project: SERVER_ENV.SENTRY_PROJECT,
   silent: !process.env['CI'],
   widenClientFileUpload: true, // Upload a larger set of source maps for prettier stack traces (increases build time)
   reactComponentAnnotation: {
