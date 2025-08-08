@@ -5,6 +5,7 @@ import { clientLogger } from '@/lib/logs/client'
 import { useIconQueries } from '@/lib/queries/icons'
 import DEFAULT_ICONS from '@/lib/queries/icons/default'
 import type { Icon } from '@/lib/schemas/database'
+import * as Sentry from '@sentry/nextjs'
 import { motion } from 'motion/react'
 import { usePostHog } from 'posthog-js/react'
 import { useEffect } from 'react'
@@ -28,7 +29,6 @@ export function IconsGrid({
     data: icons = DEFAULT_ICONS,
     error,
     isFetching,
-    isSuccess,
   } = useIconsQuery({
     skip,
     limit: PAGE_SIZE,
@@ -36,27 +36,25 @@ export function IconsGrid({
   })
 
   useEffect(() => {
-    if (!isSuccess || !search.text.trim().length) return
+    if (error) {
+      clientLogger.error('Error loading icons', error)
+      toast.error('Error loading icons')
+      Sentry.captureException(error)
+      return
+    }
+
+    if (isFetching || !search.text.trim().length) return
     const meta = {
       search_query: search.text.trim(),
       search_terms: search.text.split(' '),
     }
     clientLogger.debug('Fetched icons', meta)
-    if (posthog) {
-      posthog.capture('search_icons', {
-        ...meta,
-        version: CLIENT_ENV.VERSION,
-        environment: CLIENT_ENV.ENVIRONMENT,
-      })
-    }
-  }, [isSuccess, search.text])
-
-  useEffect(() => {
-    if (error && icons?.length) {
-      clientLogger.error('Error loading icons', error)
-      toast.error('Error loading icons')
-    }
-  }, [error, icons])
+    posthog.capture('search_icons', {
+      ...meta,
+      version: CLIENT_ENV.VERSION,
+      environment: CLIENT_ENV.ENVIRONMENT,
+    })
+  }, [error, isFetching, search.text])
 
   const cardClasses =
     'relative w-16 h-16 bg-surface rounded-lg shadow-md overflow-hidden'
