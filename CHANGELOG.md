@@ -1,3 +1,6 @@
+1.0.1
+- Update base text size to be 16px on mobile
+
 1.0.0
 - Improve icon modal layout on mobile
 - Add "no icons found" message to icons grid

@@ -18,7 +18,7 @@
 }
 
 .text-body {
-  @apply text-sm sm:text-base;
+  @apply text-base;
 }
 
 .text-small {
