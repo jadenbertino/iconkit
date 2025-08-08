@@ -1,4 +1,4 @@
-import ExternalLink from '@/components/ExternalLink'
+import DynamicLink from '@/components/DynamicLink'
 import { ExpandableChevronIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { CONTACT_EMAIL } from '@/constants'
@@ -30,10 +30,10 @@ export default function NotFound() {
             variant='ghost'
             className='group text-small font-semibold text-neutral-high'
           >
-            <ExternalLink href={`mailto:${CONTACT_EMAIL}`}>
+            <DynamicLink href={`mailto:${CONTACT_EMAIL}`}>
               Contact support
               <ExpandableChevronIcon />
-            </ExternalLink>
+            </DynamicLink>
           </Button>
         </div>
       </div>

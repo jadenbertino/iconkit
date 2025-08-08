@@ -6,7 +6,7 @@ import { useLicenses } from '@/lib/queries/licenses'
 import { useProviders } from '@/lib/queries/providers'
 import type { Icon } from '@/lib/schemas/database'
 import { useRef, useState } from 'react'
-import ExternalLink from './ExternalLink'
+import DynamicLink from './DynamicLink'
 import { CheckmarkIcon, CodeIcon, ReactIcon } from './icons'
 import { Button } from './ui/button'
 
@@ -49,8 +49,8 @@ const IconModal = ({
     >
       <CloseModalButton handleClose={handleClose} />
       {!icon ? null : (
-        <div className='flex pt-4'>
-          <div className='w-2/3 xs:w-2/5 p-4 flex flex-col justify-center'>
+        <div className='flex flex-col sm:flex-row pt-4'>
+          <div className='w-full sm:w-2/5 max-w-[240px] sm:max-w-none p-4 flex flex-col sm:justify-center'>
             <SvgIcon icon={icon} />
           </div>
           <div className='flex-grow flex flex-col text-center'>
@@ -58,20 +58,20 @@ const IconModal = ({
             <h1 className='text-header font-semibold'>{icon.name}</h1>
             <div className='text-small flex p-2 -ml-2 *:p-1 flex-wrap justify-center pt-1'>
               {!provider ? null : (
-                <ExternalLink
+                <DynamicLink
                   href={icon.source_url}
                   className='px-3 text-neutral-low hover:underline underline-offset-4'
                 >
                   {provider.name}
-                </ExternalLink>
+                </DynamicLink>
               )}
               {!license ? null : (
-                <ExternalLink
+                <DynamicLink
                   href={license.url}
                   className='px-3 text-neutral-low hover:underline underline-offset-4'
                 >
                   ({license.type} License)
-                </ExternalLink>
+                </DynamicLink>
               )}
             </div>
 

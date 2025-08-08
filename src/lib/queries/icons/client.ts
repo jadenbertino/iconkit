@@ -2,6 +2,7 @@ import { PAGE_SIZE } from '@/constants'
 import { DELIMITERS, MAX_SEARCH_TERMS } from '@/constants/query'
 import { CLIENT_ENV } from '@/env/client'
 import { supabase } from '@/lib/clients/client'
+import { clientLogger } from '@/lib/logs/client'
 import type { Pagination } from '@/lib/schemas'
 import { z } from 'zod'
 import DEFAULT_ICONS from './default'
@@ -20,79 +21,40 @@ async function getIcons({
   ...searchParams
 }: SearchParams) {
   const { skip, limit, searchText } = GetRequestSchema.parse(searchParams)
+
+  // Handle no search text
   if (!searchText?.trim()) {
-    return getAllIcons({ skip, limit })
+    const isFirstPage = skip === 0 && limit === PAGE_SIZE
+    if (isFirstPage) {
+      return DEFAULT_ICONS
+    }
+    const { data: icons } = await baseQuery()
+      .range(skip, skip + limit - 1)
+      .order('name')
+      .throwOnError()
+    return icons
   }
   const terms = parseSearchTerms(searchText)
 
-  // Do AND query for exact matches first
-  const andResults = await searchIconsByAnd({
+  // Fetch icons
+  clientLogger.debug('Fetching icons', searchParams)
+  const orResults = await searchIconsByOr({
     searchText,
     skip,
     limit,
   })
 
-  // If we need more results, do OR query excluding AND results
-  let allResults = andResults
-  if (andResults.length < limit) {
-    // Update search params
-    const excludeIds = andResults.map((icon) => icon.id)
-    const remainingLimit = limit - andResults.length
-    const remainingSkip = Math.max(0, skip - andResults.length)
-
-    // Get additional OR results excluding already found icons
-    const orResults = await searchIconsByOr({
-      searchText,
-      excludeIds,
-      skip: remainingSkip,
-      limit: remainingLimit,
-    })
-
-    // Combine results (AND results first, then OR results)
-    allResults = [...andResults, ...orResults]
-  }
-
-  // Apply relevance scoring and sort
-  const sortedResults = sortByRelevance(allResults, terms, scoringStrategy)
+  // Sort results (DB query already applies pagination via range)
+  const sortedResults = sortByRelevance(orResults, terms, scoringStrategy)
   return sortedResults
-}
-
-async function getAllIcons({ skip, limit }: Pagination) {
-  if (skip === 0 && limit === PAGE_SIZE) {
-    return DEFAULT_ICONS
-  }
-
-  // Database fallback for other pages or if static file unavailable
-  const { data } = await baseQuery()
-    .range(skip, skip + limit - 1)
-    .order('name')
-    .throwOnError()
-  return data
-}
-
-async function searchIconsByAnd({ searchText, skip, limit }: SearchParams) {
-  const terms = parseSearchTerms(searchText)
-  let andQuery = baseQuery()
-
-  // For AND logic, each term must match either name OR tags
-  terms.forEach((term) => {
-    andQuery = andQuery.or(`name.ilike.%${term}%,tags.ov.{${term}}`)
-  })
-
-  const { data: andResults } = await andQuery
-    .range(skip, skip + limit - 1)
-    .order('name')
-    .throwOnError()
-
-  return andResults
 }
 
 async function searchIconsByOr({
   searchText,
-  excludeIds,
+  excludeIds = [],
   skip,
   limit,
-}: SearchParams & { excludeIds: number[] }) {
+}: SearchParams & { excludeIds?: number[] }) {
   const terms = parseSearchTerms(searchText)
   let orQuery = baseQuery()
 
