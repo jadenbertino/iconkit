@@ -1,14 +1,9 @@
 import Footer from '@/components/Footer'
 import { Navbar } from '@/components/Navbar'
 import type { Metadata } from 'next'
-import dynamic from 'next/dynamic'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
-
-const PostHogPageView = dynamic(() => import('../components/PostHogPageView'), {
-  ssr: false,
-})
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,7 +28,6 @@ export default function RootLayout({
           <div className='min-h-screen'>
             <Navbar />
             <main>{children}</main>
-            <PostHogPageView />
           </div>
           <Footer />
         </Providers>
