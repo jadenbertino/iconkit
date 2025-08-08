@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from '@/constants'
 import { capitalize } from '@/lib/utils'
 import { Package } from 'lucide-react'
 import DynamicLink from './DynamicLink'
@@ -22,7 +23,7 @@ const FooterLinkSections: Record<string, FooterLink[]> = {
     // { name: 'Icon Guidelines', href: '#' }, // TODO: Create design system documentation
   ],
   developer: [
-    { name: 'Contact', href: '#' }, // TODO: Create /contact page
+    { name: 'Contact', href: `mailto:${CONTACT_EMAIL}` }, // TODO: Create /contact page
     { name: 'GitHub', href: 'https://github.com/jadenbertino/iconkit' },
   ],
 }
