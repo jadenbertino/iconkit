@@ -9,18 +9,16 @@ type FooterLink = { name: string; href: string }
 const FooterLinkSections: Record<string, FooterLink[]> = {
   product: [
     { name: 'Browse Icons', href: '/search' }, // Working - could create dedicated /libraries page
-    { name: 'License Info', href: '/license-info' },
     {
       name: 'Changelog',
       href: 'https://github.com/jadenbertino/iconkit/blob/main/CHANGELOG.md',
     },
-  ],
-  info: [
     { name: 'Support', href: `mailto:${CONTACT_EMAIL}` }, // TODO: Create support/contact page or GitHub issues
+  ],
+  legal: [
+    { name: 'License Info', href: '/license-info' },
     { name: 'Privacy', href: '/privacy' },
     { name: 'Terms', href: '/terms' },
-    // Consider adding: Icon Guidelines (/guidelines), Contributing (/contributing), System Status
-    // { name: 'Icon Guidelines', href: '#' }, // TODO: Create design system documentation
   ],
   developer: [
     { name: 'Contact', href: `mailto:${CONTACT_EMAIL}` }, // TODO: Create /contact page
