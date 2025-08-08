@@ -1,10 +1,12 @@
 import { PAGE_SIZE } from '@/constants'
+import { CLIENT_ENV } from '@/env/client'
 import { cn } from '@/lib'
 import { clientLogger } from '@/lib/logs/client'
 import { useIconQueries } from '@/lib/queries/icons'
 import DEFAULT_ICONS from '@/lib/queries/icons/default'
 import type { Icon } from '@/lib/schemas/database'
 import { motion } from 'motion/react'
+import { usePostHog } from 'posthog-js/react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { useSearch } from '../context/SearchContext'
@@ -20,16 +22,34 @@ export function IconsGrid({
   const { search } = useSearch()
   const { useIconsQuery } = useIconQueries()
   const skip = (search.page - 1) * PAGE_SIZE
+  const posthog = usePostHog()
 
   const {
     data: icons = DEFAULT_ICONS,
     error,
     isFetching,
+    isSuccess,
   } = useIconsQuery({
     skip,
     limit: PAGE_SIZE,
     searchText: search.text,
   })
+
+  useEffect(() => {
+    if (!isSuccess || !search.text.trim().length) return
+    const meta = {
+      search_query: search.text.trim(),
+      search_terms: search.text.split(' '),
+    }
+    clientLogger.debug('Fetched icons', meta)
+    if (posthog) {
+      posthog.capture('search_icons', {
+        ...meta,
+        version: CLIENT_ENV.VERSION,
+        environment: CLIENT_ENV.ENVIRONMENT,
+      })
+    }
+  }, [isSuccess, search.text])
 
   useEffect(() => {
     if (error && icons?.length) {
@@ -67,7 +87,9 @@ export function IconsGrid({
               <p className='text-small text-neutral-low text-center'>
                 No icons found for
                 <br />
-                <span className='font-semibold pt-1'>&ldquo;{search.text.trim()}&rdquo;</span>
+                <span className='font-semibold pt-1'>
+                  &ldquo;{search.text.trim()}&rdquo;
+                </span>
               </p>
             </div>
           )}
