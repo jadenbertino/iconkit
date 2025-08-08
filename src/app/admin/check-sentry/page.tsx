@@ -1,5 +1,6 @@
 'use client'
 
+import { CLIENT_ENV } from '@/env/client'
 import * as Sentry from '@sentry/nextjs'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
@@ -106,7 +107,9 @@ export default function Page() {
           <div className='success_placeholder' />
         )}
 
+        <p>DSN: {CLIENT_ENV.SENTRY_DSN}</p>
         <div className='flex-spacer' />
+
       </main>
 
       <style>{`
