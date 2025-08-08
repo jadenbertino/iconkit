@@ -1,3 +1,6 @@
+1.0.2
+- Add sentry
+
 1.0.1
 - Update base text size to be 16px on mobile
 
