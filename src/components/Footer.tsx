@@ -16,15 +16,15 @@ const FooterLinkSections: Record<string, FooterLink[]> = {
   ],
   info: [
     { name: 'Support', href: '#' }, // TODO: Create support/contact page or GitHub issues
-    { name: 'Privacy', href: '#' }, // TODO: Create privacy policy for professional touch
-    { name: 'Terms', href: '#' }, // TODO: Create terms of service
+    { name: 'Privacy', href: '/privacy' },
+    { name: 'Terms', href: '/terms' },
     // Consider adding: Icon Guidelines (/guidelines), Contributing (/contributing), System Status
     // { name: 'Icon Guidelines', href: '#' }, // TODO: Create design system documentation
   ],
   developer: [
     { name: 'Contact', href: '#' }, // TODO: Create /contact page
     { name: 'GitHub', href: 'https://github.com/jadenbertino/iconkit' },
-    { name: 'Tech Stack', href: '#' }, // TODO: Create /docs page showcasing tech decisions
+    { name: 'Tech Stack', href: 'https://iconkit.jadenbertino.com/iconkit' },
   ],
 }
 
