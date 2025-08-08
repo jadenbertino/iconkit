@@ -1,3 +1,6 @@
+1.0.5
+- Add posthog
+
 1.0.4
 - Remove sentry test pages
 
