@@ -2,6 +2,7 @@ import { PAGE_SIZE } from '@/constants'
 import { DELIMITERS, MAX_SEARCH_TERMS } from '@/constants/query'
 import { CLIENT_ENV } from '@/env/client'
 import { supabase } from '@/lib/clients/client'
+import { clientLogger } from '@/lib/logs/client'
 import type { Pagination } from '@/lib/schemas'
 import { z } from 'zod'
 import DEFAULT_ICONS from './default'
@@ -36,16 +37,16 @@ async function getIcons({
   const terms = parseSearchTerms(searchText)
 
   // Fetch icons
+  clientLogger.debug('Fetching icons', searchParams)
   const orResults = await searchIconsByOr({
     searchText,
     skip,
     limit,
   })
 
-  // Sort & slice results
+  // Sort results (DB query already applies pagination via range)
   const sortedResults = sortByRelevance(orResults, terms, scoringStrategy)
-  const pagedResults = sortedResults.slice(skip, skip + limit)
-  return pagedResults
+  return sortedResults
 }
 
 async function searchIconsByOr({

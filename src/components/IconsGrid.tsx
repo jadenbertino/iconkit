@@ -22,7 +22,7 @@ export function IconsGrid({
   const skip = (search.page - 1) * PAGE_SIZE
 
   const {
-    data: icons,
+    data: icons = DEFAULT_ICONS,
     error,
     isFetching,
   } = useIconsQuery({
@@ -43,24 +43,34 @@ export function IconsGrid({
 
   return (
     <>
-      <div className='min-h-[544px]'>
+      <div className='min-h-[544px] relative'>
         <div className='grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-4 justify-items-start'>
-          {(icons || DEFAULT_ICONS).map((icon) => (
-            <motion.button
-              onClick={() => onIconClick(icon)}
-              key={icon.id}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98, y: 1 }}
-              transition={{ type: 'spring', stiffness: 800, damping: 30 }}
-              disabled={isFetching}
-              className='disabled:opacity-50 disabled:pointer-events-none'
-            >
-              <SvgIcon
-                icon={icon}
-                className={cn(cardClasses, 'p-2 bg-hover')}
-              />
-            </motion.button>
-          ))}
+          {icons.length > 0 ? (
+            icons.map((icon) => (
+              <motion.button
+                onClick={() => onIconClick(icon)}
+                key={icon.id}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98, y: 1 }}
+                transition={{ type: 'spring', stiffness: 800, damping: 30 }}
+                disabled={isFetching}
+                className='disabled:opacity-50 disabled:pointer-events-none'
+              >
+                <SvgIcon
+                  icon={icon}
+                  className={cn(cardClasses, 'p-2 bg-hover')}
+                />
+              </motion.button>
+            ))
+          ) : (
+            <div className='absolute inset-0 flex justify-center top-4'>
+              <p className='text-small text-neutral-low text-center'>
+                No icons found for
+                <br />
+                <span className='font-semibold pt-1'>&ldquo;{search.text.trim()}&rdquo;</span>
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <IconPagination hasMore={icons?.length === PAGE_SIZE} />

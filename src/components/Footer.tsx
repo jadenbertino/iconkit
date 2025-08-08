@@ -1,6 +1,7 @@
+import { CONTACT_EMAIL } from '@/constants'
 import { capitalize } from '@/lib/utils'
 import { Package } from 'lucide-react'
-import ExternalLink from './ExternalLink'
+import DynamicLink from './DynamicLink'
 import { FooterLinks } from './FooterLinks'
 
 type FooterLink = { name: string; href: string }
@@ -8,20 +9,22 @@ type FooterLink = { name: string; href: string }
 const FooterLinkSections: Record<string, FooterLink[]> = {
   product: [
     { name: 'Browse Icons', href: '/search' }, // Working - could create dedicated /libraries page
-    { name: 'License Info', href: '#' }, // TODO: Create /licenses page using existing API
-    { name: 'Changelog', href: '#' }, // TODO: Create changelog page from git history
+    { name: 'License Info', href: '/license-info' },
+    {
+      name: 'Changelog',
+      href: 'https://github.com/jadenbertino/iconkit/blob/main/CHANGELOG.md',
+    },
   ],
   info: [
-    { name: 'Support', href: '#' }, // TODO: Create support/contact page or GitHub issues
-    { name: 'Privacy', href: '#' }, // TODO: Create privacy policy for professional touch
-    { name: 'Terms', href: '#' }, // TODO: Create terms of service
+    { name: 'Support', href: `mailto:${CONTACT_EMAIL}` }, // TODO: Create support/contact page or GitHub issues
+    { name: 'Privacy', href: '/privacy' },
+    { name: 'Terms', href: '/terms' },
     // Consider adding: Icon Guidelines (/guidelines), Contributing (/contributing), System Status
     // { name: 'Icon Guidelines', href: '#' }, // TODO: Create design system documentation
   ],
   developer: [
-    { name: 'Contact', href: '#' }, // TODO: Create /contact page
-    { name: 'GitHub', href: 'https://github.com/jadenbertino/iconkit' }, // Working - real repo
-    { name: 'Tech Stack', href: '#' }, // TODO: Create /docs page showcasing tech decisions
+    { name: 'Contact', href: `mailto:${CONTACT_EMAIL}` }, // TODO: Create /contact page
+    { name: 'GitHub', href: 'https://github.com/jadenbertino/iconkit' },
   ],
 }
 
@@ -58,12 +61,12 @@ const Footer = () => {
           <div className='flex items-center gap-6 mt-4 md:mt-0'>
             <p className='text-neutral-low text-small'>
               Made with ❤ by{' '}
-              <ExternalLink
+              <DynamicLink
                 href='https://github.com/jadenbertino'
                 className='text-neutral-low hover:text-neutral-high transition-colors underline'
               >
                 Jaden Bertino
-              </ExternalLink>
+              </DynamicLink>
             </p>
           </div>
         </div>

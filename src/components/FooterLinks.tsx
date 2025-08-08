@@ -1,6 +1,7 @@
 'use client'
 
 import { toast } from 'sonner'
+import DynamicLink from './DynamicLink'
 
 type FooterLink = { name: string; href: string }
 
@@ -23,13 +24,13 @@ export const FooterLinks = ({ title, links }: FooterLinks) => {
       <ul className='space-y-2 text-small text-neutral-low'>
         {links.map((link) => (
           <li key={link.name}>
-            <a
+            <DynamicLink
               href={link.href}
-              onClick={(e) => handleClick(e, link)}
+              onClick={(e: React.MouseEvent) => handleClick(e, link)}
               className='hover:text-neutral-high transition-colors cursor-pointer'
             >
               {link.name}
-            </a>
+            </DynamicLink>
           </li>
         ))}
       </ul>
