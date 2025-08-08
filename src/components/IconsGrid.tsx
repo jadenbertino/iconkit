@@ -64,10 +64,10 @@ export function IconsGrid({
             ))
           ) : (
             <div className='absolute inset-0 flex justify-center top-4'>
-              <p className='text-sm text-neutral-low text-center'>
+              <p className='text-small text-neutral-low text-center'>
                 No icons found for
                 <br />
-                <span className='font-semibold pt-1'>"{search.text.trim()}"</span>
+                <span className='font-semibold pt-1'>&ldquo;{search.text.trim()}&rdquo;</span>
               </p>
             </div>
           )}
