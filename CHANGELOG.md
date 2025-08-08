@@ -1,3 +1,6 @@
+1.0.3
+- Add sentry
+
 1.0.2
 - Rename footer section "Info" to "Legal"
 

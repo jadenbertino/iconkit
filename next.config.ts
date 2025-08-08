@@ -1,3 +1,4 @@
+import { withSentryConfig } from '@sentry/nextjs'
 import type { NextConfig } from 'next'
 
 function getNextConfig(): NextConfig {
@@ -39,6 +40,32 @@ const securityHeaders = [
   },
 ]
 
-const nextConfig = getNextConfig()
+// Note: Next.config runs before our env validation, so we need to access process.env directly here
+// This is the only exception where we use process.env directly
+const nextConfig = withSentryConfig(getNextConfig(), {
+  // For all available options, see:
+  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  org: process.env['SENTRY_ORG'],
+  project: process.env['SENTRY_PROJECT'],
+  silent: !process.env['CI'],
+  widenClientFileUpload: true, // Upload a larger set of source maps for prettier stack traces (increases build time)
+  reactComponentAnnotation: {
+    enabled: true,
+  },
+  sourcemaps: {
+    disable: false,
+    deleteSourcemapsAfterUpload: true,
+  },
+  disableLogger: true, // Automatically tree-shake Sentry logger statements to reduce bundle size
+  automaticVercelMonitors: false,
+
+  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+  // This can increase your server load as well as your hosting bill.
+  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+  // side errors will fail.
+  tunnelRoute: true,
+})
 
 export default nextConfig
