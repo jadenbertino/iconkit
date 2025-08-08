@@ -1,3 +1,6 @@
+1.0.6
+- Disable posthog debug logs
+
 1.0.5
 - Add posthog
 
